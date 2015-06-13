@@ -8,13 +8,9 @@ body{
     text-align:center;
 }
 
-table{
+#arena{
     margin:auto;
     text-align:center;
-    border:0px;
-}
-td{
-    margin:0px;
 }
 
 h1,
@@ -26,38 +22,84 @@ h6{
     font-family:"comic sans ms";
 }
 
-.hex2{
+.hex{
     float:left;
-    margin-right:-26px;
-    margin-bottom:-50px;
-}
-.hex2 .left{
+    margin-top:-75px;
+    margin-left:172.904px;
+    width:86px;
+    height:150px;
+    background-color:blue;
+    position:relative;
     float:left;
-    width:0;
-    border-right:30px solid #6C6;
-    border-top:52px solid transparent;
-    border-bottom:52px solid transparent;
-}
-.hex2 .middle{
-    float:left;
-    width:60px;
-    height:104px;
-    background:#6C6;
-}
-.hex2 .right{
-    float:left;
-    width:0;
-    border-left:30px solid #6C6;
-    border-top:52px solid transparent;
-    border-bottom:52px solid transparent;
-}
-.hex2-row{
-    clear:left;
-}
-.hex2.even{
-    margin-top:53px;
+    text-align:center;
+    zoom:0.1;
 }
 
-#arena .hex:hover{
-    background-color:darkblue;
+.hex-row:first-child .hex{
+    float:left;
+    margin-top:0px;
+    margin-bottom:-50px;
+    margin-left:172.904px;
+    width:86px;
+    height:150px;
+    background-color:blue;
+    position:relative;
+    float:left;
+    text-align:center;
+}
+
+
+
+.hex-row .hex:first-child{
+    margin-left:40px;
+}
+
+
+
+.hex .corner-1,
+.hex .corner-2{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:inherit;
+    z-index:-2;
+    overflow:hidden;
+    backface-visibility:hidden;
+}
+
+.hex .corner-1{
+    z-index:-1;
+    transform:rotate(60deg);
+}
+
+.hex .corner-2{
+    transform:rotate(-60deg);
+}
+
+.hex-row{
+    clear:left;
+}
+
+.hex-row.even .hex{
+    background-color: red;
+    margin-left:172.904px;
+    margin-bottom:0px;
+    margin-top:-75px;
+}
+
+.hex-row.even .hex:first-child{
+    margin-left:170px;
+}
+
+.hex-row:nth-child(2) .hex{
+    background-color: red;
+    margin-left:172.904px;
+    margin-bottom:0px;
+    margin-top:-25px;
+}
+
+.hex.even{
+    margin-left:172.904px;
 }
