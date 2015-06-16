@@ -1,27 +1,22 @@
 part of DartyDiceWars;
 
-class DartyDiceWar{
-  DartyDiceGame game;
-  int level;
-  DartyDiceWar(this.level){    
-    this.game = new DartyDiceGame(32, 28, (level+1));
-    
-  }
-}
+
 class DartyDiceGame{
-  int _playercount;
+  int level;
+  int playercount;
   Arena _arena;
   List<Player> players;
-  DartyDiceGame(int xSize, int ySize, this._playercount){
+  DartyDiceGame(int xSize, int ySize, this.level){
     //-----Add Players (and whitefielddummy) to playerlist-----
     players = new List<Player>();
     players.add(new Player(#human, 0));
     players.add(new Player(#whitefield, 0));
-    for(int i = 1; i < _playercount; i++){
+    for(int i = 1; i <= level; i++){
       players.add(new Player(#cpu, i));
     }
+    playercount = players.length - 1;
     //--------------------Build Arena--------------------------
-    this._arena = new Arena(xSize, ySize, _playercount);
+    this._arena = new Arena(xSize, ySize, (level+1));
     
   }
 }
@@ -32,35 +27,36 @@ class Arena{
   Map<String, Tile> field;
   Map<String, Territory> territories;
   
-  Arena(this._xSize, this._ySize, int players){
-    this.field = new Map<String, Tile>(initializeArena(_xSize, _ySize));
-    this.territories = new Map<String, Territory>(initializeTerritories(players));
+  Arena(this._xSize, this._ySize, int playersCnt){
+    this.field = new Map<String, Tile>.from(initializeArena(_xSize, _ySize));
+    this.territories = new Map<String, Territory>();
+    territories.addAll(initializeTerritories(playersCnt));
   }
   
   Map<String, Tile> initializeArena(int x, int y){
-    Map<String, Tile> ret = new List<Tile>();
+    Map<String, Tile> ret = new Map<String, Tile>();
     //---------------------initialize fieldcorners-------------
     Tile c = new Tile(1,1);
     c.neighbours.add("2_1");
     c.neighbours.add("1_2");
-    ret.add(c.id, c);
+    ret[c.id] = c;
     
     c = new Tile(x, 1);
     c.neighbours.add((x-1).toString() + "_1");
     c.neighbours.add((x-1).toString() + "_2");
     c.neighbours.add(x.toString() + "_2");
-    ret.add(c.id, c);
+    ret[c.id] = c;
     
     c = new Tile(1, y);
     c.neighbours.add("1_" + (y-1).toString());
     c.neighbours.add("2_" + (y-1).toString());
     c.neighbours.add("2_" + (y).toString());
-    ret.add(c.id, c);
+    ret[c.id] = c;
     
     c = new Tile(x, y);
     c.neighbours.add(x.toString() + "_" + (y-1).toString());
     c.neighbours.add((x-1).toString() + "_" + y.toString());
-    ret.add(c.id, c);
+    ret[c.id] = c;
     //---------------------------------------------------------
     //---------------------initialize borders------------------
     for(int ix = 2; ix < x; ix++){
@@ -82,8 +78,8 @@ class Arena{
       b.neighbours.add((ix-1).toString() + "_" + y.toString());
       b.neighbours.add(ix.toString() + "_" + (y-1).toString());
       b.neighbours.add((ix+1).toString() + "_" + y.toString());
-      ret.add(t.id, t);
-      ret.add(b.id, b);
+      ret[t.id] = t;
+      ret[b.id] = b;
     }
     //---------------------------------------------------------
     for(int iy = 2; iy < y; iy++){
@@ -100,8 +96,8 @@ class Arena{
       r.neighbours.add((x-1).toString() + "_" + (iy+1).toString());
       r.neighbours.add(x.toString() + "_" + (iy+1).toString());
       
-      ret.add(r.id, r);
-      ret.add(l.id, l);
+      ret[r.id] = r;
+      ret[l.id] = l;
     }
     //---------------------------------------------------------
     //----------------------initialize inner field-------------
@@ -115,7 +111,7 @@ class Arena{
           n.neighbours.add((ix-1).toString() + "_" + (iy+1).toString());
           n.neighbours.add(ix.toString() + "_" + (iy+1).toString());
           n.neighbours.add((ix+1).toString() + "_" + (iy+1).toString());
-          ret.add(n.id, n);
+          ret[n.id] = n;
         }
       }else{
         for(int iy = 2; iy < y; iy++){
@@ -126,33 +122,39 @@ class Arena{
           n.neighbours.add((ix-1).toString() + "_" + iy.toString());
           n.neighbours.add((ix+1).toString() + "_" + iy.toString());
           n.neighbours.add(ix.toString() + "_" + (iy+1).toString());
-          ret.add(n.id, n);
+          ret[n.id] = n;
         }
       }
     }
     return ret;
   }
   
-  Map<String, Territory> initializeTerritories(int players){
-    Map<String, Territory> ret = new List<Territory>();
+  Map<String, Territory> initializeTerritories(int playersCnt){
+    Map<String, Territory> ret = new Map<String, Territory>();
     //--------------initialize vars for calculation------------
-    int maxFields = (Math.floor(32/players) * players);
-    int yMax = Math.floor(Math.sqrt(MaxFields));
-    int xMax = yMax + Math.floor(floor(32-(Math.pow(y,2)))/y);
-    int playerFields = y*x;
-    int whiteFields = maxfields - playerFields;
+    int maxFields = ((32/playersCnt) * playersCnt).floor();
+    int yMax = Math.sqrt(maxFields).floor();
+    int xMax = yMax + ((32-(Math.pow(yMax,2))).floor()/yMax).floor();
+    int playerFields = yMax*xMax;
+    int whiteFields = maxFields - playerFields;
     //-----------------create/add Territories-------------------
     int n = 1;
-    for(int i = 1; i <= xMax; i++){
-      for(int j = 1; j <= yMax; j++){
-        Territory newT = new Territory(x, y, "terr_$n");
-        newT.tiles.add("$x_$y");
-        newT.neighbourTiles.add(field[newT.id].neighbours, "");
-        ret.add(newT.id, newT);
+    for(int ix = 1; ix <= xMax; ix++){
+      for(int iy = 1; iy <= yMax; iy++){
+        Territory newT = new Territory(ix, iy, "terr_$n");
+        newT.tiles.add("${ix}_${iy}");
+        field[newT.tiles[0]].neighbours.forEach((str) => newT.neighbourTiles[str] = "");        
+        ret[newT.id] = newT;
         n++;
       }
     }
+    while(){
+      
+    }
+    
     //-----------------grow Territories------------------------
+    
+    
     return ret;
   }
 }
@@ -161,6 +163,7 @@ class Arena{
  */
 class Territory{
   String id; //individual ID per territory
+  String owner = "";
   int x, y; //coordinates of root tile for Territory
   List<String> tiles;
   Map<String, String> neighbourTiles;
@@ -170,28 +173,46 @@ class Territory{
     this.tiles = new List<String>();
     this.neighbourTiles = new Map<String, String>();
     this.neighbours = new Map<String, String>();
-    this.owner = "";
   }
 }
-
+/**
+ * Tile-Class for managing a single hexagon-tile
+ * contains a list of its neighbours for fieldinitialization
+ */
 class Tile{
   String id;
   int x;
   int y;
   List<String> neighbours;
   
+  /**
+   * Constructor-class for tile-object
+   * 
+   * @param x, x-coordinate (in imaginery 2D-array) of Tile
+   * @param y, y-coordinate (in imaginery 2D-array) of Tile
+   */
   Tile(this.x, this.y){
     this.neighbours = new List<String>();
     this.id = x.toString() + "_" + y.toString();
   }
 }
 
+/**
+ * Player-class for managing player-properties 
+ */
 class Player{
   String id;
   Symbol type;
   List<String> territories;
   Symbol aiStyle;
   
+  /**
+   * Constructor-class for player-object
+   * 
+   * @param type, symbol of playertype as one of #human, #cpu, #whitefield,
+   * whereas #whitefields exists for managing free tiles on battlefield
+   * @param num, number for creating id, in case of cpu-type
+   */
   Player(this.type, int num){
     if(type == #human){
       this.id = "human";
