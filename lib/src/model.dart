@@ -184,12 +184,12 @@ class Territory{
   int dies;
   List<String> tiles;
   Map<String, String> neighbourTiles;
-  Map<String, String> neighbours;
+  Map<String, Territory> neighbours;
   
   Territory(this.x, this.y, this.id){
     this.tiles = new List<String>();
     this.neighbourTiles = new Map<String, String>();
-    this.neighbours = new Map<String, String>();
+    this.neighbours = new Map<String, Territory>();
   }
   
   List<int> attackTerritory(Territory ter) {
@@ -258,11 +258,21 @@ abstract class Player{
 class Ai_agg extends Player {
   Ai_agg(id): super (id);
   List<Territory> turn(){
+    list = new List<Territory>();
     for(int i =0;i<territories.length;i++){
       if(territories[i].dies>1){
-        
+        territories[i].neighbours.values.forEach((f){
+          if(territories[i].id != f.id){
+            if(f.dies<territories[i].dies*6){
+             list[0]=territories[i];
+             list[1]=f;
+             return list;
+            }
+          }
+        });
       }
     }
+    return null;
   }
 }
 class Human extends Player{
