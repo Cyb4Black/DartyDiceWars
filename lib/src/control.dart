@@ -103,7 +103,7 @@ class DiceController{
            });
              
           });
-          
+          /*
           //TO BE COPYPASTED INTO ALL THREE CASES:
           String owner = _.currentTarget.getAttribute("owner");
           parent = _.currentTarget.getAttribute("parent");
@@ -137,8 +137,8 @@ class DiceController{
                                break;
                              }
                     }
-            
-          }
+           
+          }*/
         
        
       }

@@ -11,10 +11,10 @@ class DiceGame{
   DiceGame(int xSize, int ySize, this.level){
     //-----Add Players (and whitefielddummy) to playerlist-----
     players = new List<Player>();
-    players.add(new Human(#human, 0));
-    players.add(new Whitefield(#whitefield, 0));
+    players.add(new Human('#human'));
+    players.add(new Whitefield('#whitefield'));
     for(int i = 1; i <= int.parse(level.children[2].text); i++){
-      players.add(new Ai_agg(#cpu, i));
+      players.add(new Ai_agg('#cpu'+i.toString()));
     }
     playercount = players.length - 1;
     //--------------------Build Arena--------------------------
