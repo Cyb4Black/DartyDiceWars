@@ -76,23 +76,50 @@ class DiceController{
   
   onTurn() {
     while(game.players.length > 2) {
-     bool endTurn = false;
-    if (game.currentPlayer.id == "human") {
-      while (!endTurn) {
-        while (game.firstTerritory == null) {
-      }   
-        while (game.secondTerritory == null) {
+      bool endTurn = false;
+      if (game.currentPlayer.id == "human") {
+        while (!endTurn) {
+          String lastselected ="";
+        
+          view.arena.onMouseEnter.listen((ev) {
+            querySelectorAll('.hex').onClick.listen((_) {
+              if (lastselected !=_.currentTarget.id.toString()) {
+                lastselected = _.currentTarget.id.toString();
+                //INSERT STUFF YOU DO WITH SELECTED 1st and 2nd HERE
+                
+              }
+              
+           });
+           querySelectorAll('.corner-1').onClick.listen((_) {
+             if (lastselected != _.currentTarget.parentNode.id.toString()) {
+               lastselected = _.currentTarget.parentNode.id.toString();
+              //SAME TO HERE
+             } 
+           });
+           querySelectorAll('.corner-2').onClick.listen((_) {
+             if (lastselected != _.currentTarget.parentNode.id.toString()) {
+               lastselected = _.currentTarget.parentNode.id.toString();
+               //SAME TO HERE:
+             }
+           });
+             
+          });
           
-        }
+          //TO BE COPYPASTED INTO ALL THREE CASES:
         if (game.firstTerritory.id == game.secondTerritory.id) {
           game.firstTerritory = null;
           game.secondTerritory = null;
+          lastselected = "";
         }
         if (game.firstTerritory.owner == game.secondTerritory.owner) {
-          
+          //DO NOTHIN
         }
+        //IF NOT NEIGHBOROURTERRITORIES DO NOTHIN
+        
+        
+        //ELSE
         if ((game.firstTerritory.owner != game.secondTerritory.owner)) {
-          game.selectedTerritory.attackTerritory(attack[1]);
+          game.firstTerritory.attackTerritory(game.secondTerritory);
                  if (!(game.players.length > 2)) {
                    endTurn = true;
                    break;
