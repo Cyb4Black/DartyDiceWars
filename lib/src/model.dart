@@ -256,15 +256,53 @@ abstract class Player{
 class Ai_agg extends Player {
   Ai_agg(id): super (id);
   List<Territory> turn(){
-    list = new List<Territory>();
+    List<Territory> list = new List<Territory>();
     for(int i =0;i<territories.length;i++){
       if(territories[i].dies>1){
         territories[i].neighbours.values.forEach((f){
-          if(territories[i].id != f.id){
-            if(f.dies<territories[i].dies*6){
+          if(territories[i].owner != f.owner){
              list[0]=territories[i];
              list[1]=f;
              return list;
+          }
+        });
+      }
+    }
+    return null;
+  }
+}
+class Ai_deff extends Player {
+  Ai_deff(id): super (id);
+  List<Territory> turn(){
+    List<Territory> list = new List<Territory>();
+    for(int i =0;i<territories.length;i++){
+      if(territories[i].dies>2){
+        territories[i].neighbours.values.forEach((f){
+          if(territories[i].owner != f.owner){
+            if(territories[i].dies>f.dies+1||territories[i].dies==8){
+              list[0]=territories[i];
+              list[1]=f;
+              return list;
+            }
+          }
+        });
+      }
+    }
+    return null;
+  }
+}
+class Ai_smart extends Player {
+  Ai_smart(id): super (id);
+  List<Territory> turn(){
+    List<Territory> list = new List<Territory>();
+    for(int i =0;i<territories.length;i++){
+      if(territories[i].dies>2){
+        territories[i].neighbours.values.forEach((f){
+          if(territories[i].owner != f.owner){
+            if(territories[i].dies>f.dies+1||territories[i].dies==8){
+              list[0]=territories[i];
+              list[1]=f;
+              return list;
             }
           }
         });
