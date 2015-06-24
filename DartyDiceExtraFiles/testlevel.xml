@@ -1,0 +1,10 @@
+<Level>
+	<id>1</id>
+	<handycap>5</handycap>		<!-- bekommt 5 würfel mehr-->
+	<humanstart>0</humanstart> 	<!-- startet zuerst-->
+	<players>2</players>
+	<dumbAI>1</easyAI>
+	<defensiveAI>0</mediumAI>
+	<smartAI>0</hardAI>
+	<whitefields>5</whitefields> <!-- fuenf weiße territorien-->
+</Level>
