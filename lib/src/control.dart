@@ -1,12 +1,14 @@
 part of DartyDiceWars;
 
-class DartyDiceController{
+class DiceController{
 
   
-  final view = new DartyDiceView();
+  final view = new DiceView();
   var game;
   
-  DartyDiceController(){
+  
+  DiceController(){
+    
     view.startButton.onClick.listen((_){
       game = new DiceGame(60, 32,1);
       view.initializeViewField(game);
@@ -17,5 +19,13 @@ class DartyDiceController{
       view.updateFieldWithTerritorys(game);
     });
     
+    Element loadLevelData(int levelnr) {
+      HtmlElement level;
+      
+      
+      return level;
+    }
+    
   }
+  
 }

@@ -1,6 +1,6 @@
 part of DartyDiceWars;
 
-class DartyDiceView{
+class DiceView{
   
   
   HtmlElement get startButton => querySelector('#start');
@@ -10,7 +10,7 @@ class DartyDiceView{
   final arena = querySelector('#arena');
   var territories;
   
-  DartyDiceView(){
+  DiceView(){
   }
   
   void initializeViewField(DiceGame model){

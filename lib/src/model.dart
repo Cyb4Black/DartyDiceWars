@@ -20,12 +20,12 @@ class DiceGame{
     
     
     
-    int onTurn = 0;
+   /* int onTurn = 0;
     while(players.length>2){
       players[onTurn].turn();
       onTurn = onTurn==players.length ? 0 : onTurn++;
     }
-    
+  */
   }
 }
 
@@ -162,12 +162,12 @@ class Arena{
     
     
     //-----------------grow Territories------------------------
-    bool growable = true;
+  /*  bool growable = true;
     while(growable){
       territories.values.forEach((t){
         
       });
-    }
+    }*/
     
     return ret;
   }
