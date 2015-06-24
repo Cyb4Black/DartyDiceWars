@@ -4,6 +4,8 @@ part of DartyDiceWars;
 class DiceGame{
   XmlNode level;
   int playercount;
+  Player currentplayer;
+  Territory selectedTerritory;
   Arena _arena;
   List<Player> players;
   DiceGame(int xSize, int ySize, this.level){
@@ -188,6 +190,11 @@ class Territory{
     this.neighbourTiles = new Map<String, String>();
     this.neighbours = new Map<String, String>();
   }
+  
+  attackTerritory(Territory b) {
+    
+  }
+  
 }
 /**
  * Tile-Class for managing a single hexagon-tile
@@ -254,6 +261,14 @@ class Player{
   
   void humanTurn(){
     bool endTurn = false;
+    while (!endTurn) {
+      
+      
+      
+      
+    }
+    
+    
   }
   
   void aiTurn(){

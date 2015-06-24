@@ -21,9 +21,13 @@ class DiceController{
     
     view.arena.onMouseEnter.listen((ev) {
               querySelectorAll('.hex').onClick.listen((_) {
-                if (lastselected !=_.currentTarget.id.toString()) {
+                if (lastselected !=_.currentTarget.id.toString() && game.currentPlayer.id == "human") {
                   lastselected = _.currentTarget.id.toString();
-                print(_.currentTarget.id.toString());
+                  //GET THE FITTING TERRITORY
+                  //in game, if none selected mark that territory as selected
+                  //in game, if one selected do selectedTerritory.attackTerritory(2nd Territory)
+                  
+               // print(_.currentTarget.id.toString());
                 _.currentTarget.style.background = "rgb(255, 0, 0)";
                 //game.selectTerritory(_.currentTarget.id);
                 //if (TerritorySelected) 
@@ -31,18 +35,18 @@ class DiceController{
                 }
               });
               querySelectorAll('.corner-1').onClick.listen((_) {
-                if (lastselected != _.currentTarget.parentNode.id.toString()) {
+                if (lastselected != _.currentTarget.parentNode.id.toString() && game.currentPlayer.id == "human") {
                   lastselected = _.currentTarget.parentNode.id.toString();
-                      print(_.currentTarget.parentNode.id.toString());
+                      //print(_.currentTarget.parentNode.id.toString());
                       _.currentTarget.parentNode.style.background = "rgb(255, 0, 0)";
                       //game.getTerritory(_.currentTarget.id);
                       return;}
                     });
               
               querySelectorAll('.corner-2').onClick.listen((_) {
-                if (lastselected != _.currentTarget.parentNode.id.toString()) {
+                if (lastselected != _.currentTarget.parentNode.id.toString() && game.currentPlayer.id == "human") {
                   lastselected = _.currentTarget.parentNode.id.toString();
-                      print(_.currentTarget.parentNode.id.toString());
+                    //  print(_.currentTarget.parentNode.id.toString());
                       _.currentTarget.parentNode.style.background = "rgb(255, 0, 0)";
                       //game.getTerritory(_.currentTarget.id);
                       return;}
