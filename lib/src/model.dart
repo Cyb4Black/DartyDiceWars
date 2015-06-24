@@ -219,7 +219,7 @@ class Tile{
  * Player-class for managing player-properties 
  */
 abstract class Player{
-  int id;
+  String id;
   Symbol type;
   List<Territory> territories;
   /**
@@ -229,30 +229,32 @@ abstract class Player{
    * whereas #whitefields exists for managing free tiles on battlefield
    * @param num, number for creating id, in case of cpu-type
    */
-  Player(this.type, this.id){
+  Player(this.id){
     territories= new List<Territory>();
   }
   
-  bool turn();
+  void turn();
+  void addTerritory (territory);
 }
 
 class Ai_agg extends Player {
   
-  Ai_agg(type,  num): super (type,num);
-  bool turn(){
+  Ai_agg(id): super (id);
+  void turn(){
     
   }
+  
 }
 
 class Human extends Player{
-  Human(type , num): super (type,num);
-  bool turn(){
+  Human(id): super (id);
+  void turn(){
     
   }
 }
 class Whitefield extends Player{
-  Whitefield (type,  num): super (type,num);
-  bool turn(){
+  Whitefield (id): super (id);
+  void turn(){
     
   }
 }
