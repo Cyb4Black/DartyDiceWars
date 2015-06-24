@@ -68,9 +68,33 @@ class DiceController{
   
   
   onTurn() {
-    game.currentPlayer.turn();
+    while(game.players.length > 2) {
+     bool endTurn = false;
+    if (game.currentPlayer.id == "human") {
+      while (!endTurn) {
+        while (game.selectedTerritory == null) {
+      }   
+      }
+      
+    } else {
+      while (!endTurn) {
+        if (game.currentPlayer.id == "whitefield") {
+          endTurn = true;
+        } else {
+          List<Territory> attack = game.currentPlayer.turn();
+          if (attack == null) {
+          endTurn = true;
+          } else {
+            
+            attack[0].attackTerritory(attack[1]);
+          }          
+        }        
+      }
+    }
+      
+    }
     
-    
+    //start new games
     
     
   }
