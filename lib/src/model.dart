@@ -237,7 +237,6 @@ class Tile{
  */
 abstract class Player{
   String id;
-  Symbol type;
   List<Territory> territories;
   /**
    * Constructor-class for player-object
@@ -249,29 +248,24 @@ abstract class Player{
   Player(this.id){
     territories= new List<Territory>();
   }
-  
-  void turn();
-  void addTerritory (territory);
+  List<Territory> turn();
 }
 
 class Ai_agg extends Player {
-  
   Ai_agg(id): super (id);
-  void turn(){
-    
+  List<Territory> turn(){
+    for(int i =0;i<territories.length;i++){
+      if(territories[i].dies>1){
+        
+      }
+    }
   }
-  
 }
-
 class Human extends Player{
   Human(id): super (id);
-  void turn(){
-    
-  }
+  List<Territory> turn()=> null;
 }
 class Whitefield extends Player{
   Whitefield (id): super (id);
-  void turn(){
-    
-  }
+  List<Territory> turn()=> null;
 }
