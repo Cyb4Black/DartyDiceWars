@@ -27,7 +27,42 @@ class DiceController{
        game = new DiceGame(60, 32, level);
        view.initializeViewField(game);
        view.testButton.style.display = "";
+       
+       view.arena.onMouseEnter.listen((ev) {
+                 querySelectorAll('.hex').onClick.listen((_) {
+                   print(_.currentTarget.id.toString());
+                   _.currentTarget.style.background = "rgb(255, 0, 0)";
+                   //game.selectTerritory(_.currentTarget.id);
+                   //if (TerritorySelected) 
+                 });
+                 querySelectorAll('.corner-1').onClick.listen((_) {
+                         print(_.currentTarget.parentNode.id.toString());
+                         _.currentTarget.parentNode.style.background = "rgb(255, 0, 0)";
+                         //game.getTerritory(_.currentTarget.id);
+                       });
+                 
+                 querySelectorAll('.corner-2').onClick.listen((_) {
+                         print(_.currentTarget.parentNode.id.toString());
+                         _.currentTarget.parentNode.style.background = "rgb(255, 0, 0)";
+                         //game.getTerritory(_.currentTarget.id);
+                       });
+               });
   }
+  
+  
+  onTurn() {
+    
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   Future<XmlNode> loadLevelData(int levelnr) async{
       Future<XmlNode> ret;
