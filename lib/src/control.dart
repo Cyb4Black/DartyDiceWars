@@ -24,6 +24,13 @@ class DiceController{
                 if (lastselected !=_.currentTarget.id.toString() && game.currentPlayer.id == "human") {
                   lastselected = _.currentTarget.id.toString();
                   //GET THE FITTING TERRITORY
+                  Territory foundTerritory = game.arena.territories[game.arena[lastselected].parentTer];
+                  if (game.firstTerritory == null && foundTerritory.owner == "human") {
+                    game.firstTerritory = foundTerritory;
+                  }
+                  if (game.firstTerritory != null && foundTerritory.owner != "human" && firstTerritory.neighbour) {
+                    game.secondTerritory = foundTerritory;
+                  }
                   //in game, if none selected mark that territory as selected
                   //in game, if one selected do selectedTerritory.attackTerritory(2nd Territory)
                   
@@ -72,8 +79,26 @@ class DiceController{
      bool endTurn = false;
     if (game.currentPlayer.id == "human") {
       while (!endTurn) {
-        while (game.selectedTerritory == null) {
+        while (game.firstTerritory == null) {
       }   
+        while (game.secondTerritory == null) {
+          
+        }
+        if (game.firstTerritory.id == game.secondTerritory.id) {
+          game.firstTerritory = null;
+          game.secondTerritory = null;
+        }
+        if (game.firstTerritory.owner == game.secondTerritory.owner) {
+          
+        }
+        if ((game.firstTerritory.owner != game.secondTerritory.owner)) {
+          game.selectedTerritory.attackTerritory(attack[1]);
+                 if (!(game.players.length > 2)) {
+                   endTurn = true;
+                   break;
+                 }
+        }
+       
       }
       
     } else {
@@ -87,6 +112,10 @@ class DiceController{
           } else {
             
             attack[0].attackTerritory(attack[1]);
+            if (!(game.players.length > 2)) {
+              endTurn = true;
+              break;
+            }
           }          
         }        
       }
@@ -95,7 +124,8 @@ class DiceController{
     }
     
     //start new games
-    
+    game = null;
+    startGame((int.parse(level.attributes[0].value))+1);
     
   }
   
