@@ -60,12 +60,15 @@ class DiceController{
        view.initializeViewField(game);
        view.testButton.style.display = "";
        
+       
+       
+       onTurn();
 
   }
   
   
   onTurn() {
-    model.currentPlayer.turn();
+    game.currentPlayer.turn();
     
     
     

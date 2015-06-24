@@ -179,7 +179,7 @@ class Territory{
   String id; //individual ID per territory
   String owner = "";
   int x, y; //coordinates of root tile for Territory
-  int dices;
+  int dies;
   List<String> tiles;
   Map<String, String> neighbourTiles;
   Map<String, String> neighbours;
@@ -188,6 +188,22 @@ class Territory{
     this.tiles = new List<String>();
     this.neighbourTiles = new Map<String, String>();
     this.neighbours = new Map<String, String>();
+  }
+  
+  bool attackTerritory(Territory ter) {
+    if (neighbours.containsKey(ter)) {
+      //List with thrown dienumbers
+      //List with thrown def dies
+      //showAttackDies(List)
+      //showDefenseDies(List)
+      //If attack > Def change dependecies in model
+      //updateView();
+      
+      
+      
+      
+    } else return false;
+    
   }
   
 }
