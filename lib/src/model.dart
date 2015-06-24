@@ -4,6 +4,8 @@ class DiceGame{
   XmlNode level;
   int playercount;
   Player currentPlayer;
+  Territory firstTerritory;
+  Territory secondTerritory;
   Arena _arena;
   List<Player> players;
   DiceGame(int xSize, int ySize, this.level){
