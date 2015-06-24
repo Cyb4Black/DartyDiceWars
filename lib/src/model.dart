@@ -8,17 +8,10 @@ class DiceGame{
   DiceGame(int xSize, int ySize, this.level){
     //-----Add Players (and whitefielddummy) to playerlist-----
     players = new List<Player>();
-<<<<<<< HEAD
     players.add(new Human(#human, 0));
     players.add(new Whitefield(#whitefield, 0));
-    for(int i = 1; i <= level; i++){
-      players.add(new Ai_agg(#cpu, i));
-=======
-    players.add(new Player(#human, 0));
-    players.add(new Player(#whitefield, 0));
     for(int i = 1; i <= int.parse(level.children[2].text); i++){
-      players.add(new Player(#cpu, i));
->>>>>>> d1da83b89c439d64dbabfe2489197d93bdcecbb5
+      players.add(new Ai_agg(#cpu, i));
     }
     playercount = players.length - 1;
     //--------------------Build Arena--------------------------
@@ -259,7 +252,7 @@ class Human extends Player{
 }
 class Whitefield extends Player{
   Whitefield (type,  num): super (type,num);
-  boolean turn(){
+  bool turn(){
     
   }
 }
