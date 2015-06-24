@@ -65,6 +65,10 @@ class DiceController{
   
   
   onTurn() {
+    model.currentPlayer.turn();
+    
+    
+    
     
   }
   

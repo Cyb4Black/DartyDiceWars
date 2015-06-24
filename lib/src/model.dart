@@ -3,6 +3,7 @@ part of DartyDiceWars;
 class DiceGame{
   XmlNode level;
   int playercount;
+  Player currentPlayer;
   Arena _arena;
   List<Player> players;
   DiceGame(int xSize, int ySize, this.level){
@@ -18,7 +19,7 @@ class DiceGame{
     this._arena = new Arena(xSize, ySize, int.parse(level.children[2].text));
     
     
-    
+    currentPlayer = players[0];
    /* int onTurn = 0;
     while(players.length>2){
       players[onTurn].turn();

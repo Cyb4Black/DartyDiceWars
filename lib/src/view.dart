@@ -33,6 +33,7 @@ class DiceView{
     startButton.style.display = "none";
     arena.innerHtml = htmlField;
   }
+
   
   void updateFieldWithTerritorys(DiceGame model){
     model._arena.territories.values.forEach((t){
