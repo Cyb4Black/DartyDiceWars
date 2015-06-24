@@ -9,7 +9,7 @@ class DiceView{
   
   final arena = querySelector('#arena');
   var territories;
-  
+  final testout = querySelector('#testout');
   DiceView(){
   }
   

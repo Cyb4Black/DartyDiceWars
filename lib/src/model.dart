@@ -2,7 +2,7 @@ part of DartyDiceWars;
 
 
 class DiceGame{
-  int level;
+  XmlNode level;
   int playercount;
   Arena _arena;
   List<Player> players;
@@ -11,12 +11,12 @@ class DiceGame{
     players = new List<Player>();
     players.add(new Player(#human, 0));
     players.add(new Player(#whitefield, 0));
-    for(int i = 1; i <= level; i++){
+    for(int i = 1; i <= int.parse(level.children[2].text); i++){
       players.add(new Player(#cpu, i));
     }
     playercount = players.length - 1;
     //--------------------Build Arena--------------------------
-    this._arena = new Arena(xSize, ySize, (level+1));
+    this._arena = new Arena(xSize, ySize, int.parse(level.children[2].text));
     
     
     
