@@ -5,27 +5,90 @@ class DiceController{
   
   final view = new DiceView();
   var game;
+  XmlNode level;
   
-  
-  DiceController(){
+  DiceController() {
+    String lastselected ="";
+    view.startButton.onClick.listen((_) {
+      
+      startGame(1);
     
-    view.startButton.onClick.listen((_){
-      game = new DiceGame(60, 32,1);
-      view.initializeViewField(game);
-      view.testButton.style.display = "";
     });
     
     view.testButton.onClick.listen((_){
       view.updateFieldWithTerritorys(game);
     });
     
-    Element loadLevelData(int levelnr) {
-      HtmlElement level;
-      
-      
-      return level;
-    }
+    view.arena.onMouseEnter.listen((ev) {
+              querySelectorAll('.hex').onClick.listen((_) {
+                if (lastselected !=_.currentTarget.id.toString()) {
+                  lastselected = _.currentTarget.id.toString();
+                print(_.currentTarget.id.toString());
+                _.currentTarget.style.background = "rgb(255, 0, 0)";
+                //game.selectTerritory(_.currentTarget.id);
+                //if (TerritorySelected) 
+                return;
+                }
+              });
+              querySelectorAll('.corner-1').onClick.listen((_) {
+                if (lastselected != _.currentTarget.parentNode.id.toString()) {
+                  lastselected = _.currentTarget.parentNode.id.toString();
+                      print(_.currentTarget.parentNode.id.toString());
+                      _.currentTarget.parentNode.style.background = "rgb(255, 0, 0)";
+                      //game.getTerritory(_.currentTarget.id);
+                      return;}
+                    });
+              
+              querySelectorAll('.corner-2').onClick.listen((_) {
+                if (lastselected != _.currentTarget.parentNode.id.toString()) {
+                  lastselected = _.currentTarget.parentNode.id.toString();
+                      print(_.currentTarget.parentNode.id.toString());
+                      _.currentTarget.parentNode.style.background = "rgb(255, 0, 0)";
+                      //game.getTerritory(_.currentTarget.id);
+                      return;}
+                    });
+            });
+  }
+
+  startGame(int levelnr) async {
+        await loadLevelData(levelnr);
+       game = new DiceGame(60, 32, level);
+       view.initializeViewField(game);
+       view.testButton.style.display = "";
+       
+
+  }
+  
+  
+  onTurn() {
     
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  Future<XmlNode> loadLevelData(int levelnr) async{
+      Future<XmlNode> ret;
+      try {
+       dynamic file = await HttpRequest.getString('levels.xml');
+        var levels = parse(file);
+        print(file);
+        for (XmlNode x in levels.firstChild.children) {
+           if (x.attributes[0].value == levelnr.toString()) {
+             level = x;
+           }
+        }
+      } catch (e) {
+        print("NIGGA"+e.toString());
+      }
+      return ret;
   }
   
 }
