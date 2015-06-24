@@ -4,17 +4,31 @@ body{
 }
 
 #content{
-    position:absolute;
+    position:left;
     left:50%;
-    text-align:center;
+    text-align:left;
 }
 
 #arena{
-    position:absolute;
+    position:left;
     left:50%;
 }
 
 #start{
+    position:absolute;
+    top: 50%;
+    left:50%;
+    padding: 5px 20px 5px 20px;
+    font-style: normal;
+    font-size: 2rem;
+    text-decoration: none;
+    color: black;
+    background: lightgray;
+    border: 3px solid black;
+    border-radius: 5px;
+}
+
+#test{
     position:absolute;
     top: 50%;
     left:50%;

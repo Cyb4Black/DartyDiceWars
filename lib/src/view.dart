@@ -4,6 +4,7 @@ class DartyDiceView{
   
   
   HtmlElement get startButton => querySelector('#start');
+  HtmlElement get testButton => querySelector('#test');
     
   
   final arena = querySelector('#arena');
@@ -12,18 +13,18 @@ class DartyDiceView{
   DartyDiceView(){
   }
   
-  void initializeViewField(DartyDiceGame model){
+  void initializeViewField(DiceGame model){
     var field = model._arena;
     String htmlField = "";
     for(int iy = 1; iy <= field._ySize; iy++){
       String rowA = '<div class="hex-row">';
       String rowB = '<div class="hex-row even">';
       
-      for(int ix = 1; ix <= field._ySize; ix++){
+      for(int ix = 1; ix <= field._xSize; ix++){
         if(ix % 2 != 0){
-          rowA += '<div id="${ix}_${iy}" class="hex"><div class="corner-1"></div><div class="corner-2"></div></div>';
+          rowA += '<div id="ID${ix}_${iy}" class="hex"><div class="corner-1"></div><div class="corner-2"></div></div>';
         }else{
-          rowB += '<div id="${ix}_${iy}" class="hex"><div class="corner-1"></div><div class="corner-2"></div></div>';
+          rowB += '<div id="ID${ix}_${iy}" class="hex"><div class="corner-1"></div><div class="corner-2"></div></div>';
         }
         
       }
@@ -33,7 +34,12 @@ class DartyDiceView{
     arena.innerHtml = htmlField;
   }
   
-  void updateFieldWithTerritorys(DartyDiceGame model){
-    
+  void updateFieldWithTerritorys(DiceGame model){
+    model._arena.territories.values.forEach((t){
+      t.tiles.forEach((ti){
+        HtmlElement change = arena.querySelector("#" + ti.toString());
+        change.setAttribute("class", "hex ${t.id} ${t.owner}");
+      });
+    });
   }
 }

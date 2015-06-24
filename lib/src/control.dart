@@ -8,8 +8,13 @@ class DartyDiceController{
   
   DartyDiceController(){
     view.startButton.onClick.listen((_){
-      game = new DartyDiceGame(32, 28,1);
+      game = new DiceGame(60, 32,1);
       view.initializeViewField(game);
+      view.testButton.style.display = "";
+    });
+    
+    view.testButton.onClick.listen((_){
+      view.updateFieldWithTerritorys(game);
     });
     
   }
