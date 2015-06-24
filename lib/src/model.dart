@@ -190,19 +190,21 @@ class Territory{
     this.neighbours = new Map<String, String>();
   }
   
-  bool attackTerritory(Territory ter) {
+  List<int> attackTerritory(Territory ter) {
+    List<int> ret= new List();
     if (neighbours.containsKey(ter)) {
-      //List with thrown dienumbers
-      //List with thrown def dies
+      
+      ret.add(this.dies);
+      ret.add(ter.dies);
+
+      
+      
       //showAttackDies(List)
       //showDefenseDies(List)
       //If attack > Def change dependecies in model
-      //updateView();
+      return ret;
       
-      
-      
-      
-    } else return false;
+    }
     
   }
   
