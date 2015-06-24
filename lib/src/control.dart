@@ -18,17 +18,18 @@ class DiceController{
     view.testButton.onClick.listen((_){
       view.updateFieldWithTerritorys(game);
     });
-    
+    /*
     view.arena.onMouseEnter.listen((ev) {
               querySelectorAll('.hex').onClick.listen((_) {
                 if (lastselected !=_.currentTarget.id.toString() && game.currentPlayer.id == "human") {
                   lastselected = _.currentTarget.id.toString();
+               
                   //GET THE FITTING TERRITORY
                   Territory foundTerritory = game.arena.territories[game.arena[lastselected].parentTer];
                   if (game.firstTerritory == null && foundTerritory.owner == "human") {
                     game.firstTerritory = foundTerritory;
                   }
-                  if (game.firstTerritory != null && foundTerritory.owner != "human" && firstTerritory.neighbour) {
+                  if (game.firstTerritory != null && foundTerritory.owner != "human" && game.firstTerritory.neighbour) {
                     game.secondTerritory = foundTerritory;
                   }
                   //in game, if none selected mark that territory as selected
@@ -58,7 +59,7 @@ class DiceController{
                       //game.getTerritory(_.currentTarget.id);
                       return;}
                     });
-            });
+            });*/
   }
 
   startGame(int levelnr) async {
@@ -79,26 +80,24 @@ class DiceController{
       bool endTurn = false;
       if (game.currentPlayer.id == "human") {
         while (!endTurn) {
-          String lastselected ="";
+          String parent ="";
         
           view.arena.onMouseEnter.listen((ev) {
             querySelectorAll('.hex').onClick.listen((_) {
-              if (lastselected !=_.currentTarget.id.toString()) {
-                lastselected = _.currentTarget.id.toString();
+              if (parent != _.currentTarget.getAttribute("parent")) {
+                parent != _.currentTarget.getAttribute("parent");
                 //INSERT STUFF YOU DO WITH SELECTED 1st and 2nd HERE
-                
-              }
-              
-           });
-           querySelectorAll('.corner-1').onClick.listen((_) {
-             if (lastselected != _.currentTarget.parentNode.id.toString()) {
-               lastselected = _.currentTarget.parentNode.id.toString();
+                }
+              });
+            querySelectorAll('.corner-1').onClick.listen((_) {
+             if (parent != _.currentTarget.parentNode.getAttribute("parent")) {
+               parent = _.currentTarget.parentNode.getAttribute("parent");
               //SAME TO HERE
              } 
            });
            querySelectorAll('.corner-2').onClick.listen((_) {
-             if (lastselected != _.currentTarget.parentNode.id.toString()) {
-               lastselected = _.currentTarget.parentNode.id.toString();
+             if (parent != _.currentTarget.parentNode.getAttribute("parent")) {
+               parent = _.currentTarget.parentNode.getAttribute("parent");
                //SAME TO HERE:
              }
            });
@@ -106,25 +105,41 @@ class DiceController{
           });
           
           //TO BE COPYPASTED INTO ALL THREE CASES:
-        if (game.firstTerritory.id == game.secondTerritory.id) {
-          game.firstTerritory = null;
-          game.secondTerritory = null;
-          lastselected = "";
-        }
-        if (game.firstTerritory.owner == game.secondTerritory.owner) {
-          //DO NOTHIN
-        }
-        //IF NOT NEIGHBOROURTERRITORIES DO NOTHIN
+          String owner = _.currentTarget.getAttribute("owner");
+          parent = _.currentTarget.getAttribute("parent");
+          if (game.firstTerritory == null) {
+            game.firstTerritory = game.arena.territories[parent];
+          }
+          if (game.firstTerritory != null && parent == game.firstTerritory.id) {
+            game.firstTerritory  = null;
+          }
+          if (game.firstTerritory != null && game.secondTerritory == null && game.firstTerritory.neighbours.keys.contains(parent) && game.firstTerritory.owner != owner) {
+            game.secondTerritory = game.arena.territories[parent];
+          }
+         //game.arena.territories[game.firstTerritory.id].contains("parents");
+          if (game.firstTerritory != null && game.secondTerritory != null) { //IF BOTH AREAS ARE SET
+            if (game.firstTerritory.id == game.secondTerritory.id) {
+                      game.firstTerritory = null;
+                      game.secondTerritory = null;
+                      lastselected = "";
+                    }
+                    if (game.firstTerritory.owner == game.secondTerritory.owner) {
+                      //DO NOTHIN
+                    }
+                    //IF NOT NEIGHBOROURTERRITORIES DO NOTHIN
+                    
+                    
+                    //ELSE
+                    if ((game.firstTerritory.owner != game.secondTerritory.owner)) {
+                      game.firstTerritory.attackTerritory(game.secondTerritory);
+                             if (!(game.players.length > 2)) {
+                               endTurn = true;
+                               break;
+                             }
+                    }
+            
+          }
         
-        
-        //ELSE
-        if ((game.firstTerritory.owner != game.secondTerritory.owner)) {
-          game.firstTerritory.attackTerritory(game.secondTerritory);
-                 if (!(game.players.length > 2)) {
-                   endTurn = true;
-                   break;
-                 }
-        }
        
       }
       
