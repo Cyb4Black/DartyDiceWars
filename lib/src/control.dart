@@ -8,7 +8,7 @@ class DiceController{
   XmlNode level;
   
   DiceController() {
-    
+    String lastselected ="";
     view.startButton.onClick.listen((_) {
       
       startGame(1);
@@ -19,7 +19,35 @@ class DiceController{
       view.updateFieldWithTerritorys(game);
     });
     
-    
+    view.arena.onMouseEnter.listen((ev) {
+              querySelectorAll('.hex').onClick.listen((_) {
+                if (lastselected !=_.currentTarget.id.toString()) {
+                  lastselected = _.currentTarget.id.toString();
+                print(_.currentTarget.id.toString());
+                _.currentTarget.style.background = "rgb(255, 0, 0)";
+                //game.selectTerritory(_.currentTarget.id);
+                //if (TerritorySelected) 
+                return;
+                }
+              });
+              querySelectorAll('.corner-1').onClick.listen((_) {
+                if (lastselected != _.currentTarget.parentNode.id.toString()) {
+                  lastselected = _.currentTarget.parentNode.id.toString();
+                      print(_.currentTarget.parentNode.id.toString());
+                      _.currentTarget.parentNode.style.background = "rgb(255, 0, 0)";
+                      //game.getTerritory(_.currentTarget.id);
+                      return;}
+                    });
+              
+              querySelectorAll('.corner-2').onClick.listen((_) {
+                if (lastselected != _.currentTarget.parentNode.id.toString()) {
+                  lastselected = _.currentTarget.parentNode.id.toString();
+                      print(_.currentTarget.parentNode.id.toString());
+                      _.currentTarget.parentNode.style.background = "rgb(255, 0, 0)";
+                      //game.getTerritory(_.currentTarget.id);
+                      return;}
+                    });
+            });
   }
 
   startGame(int levelnr) async {
@@ -28,25 +56,7 @@ class DiceController{
        view.initializeViewField(game);
        view.testButton.style.display = "";
        
-       view.arena.onMouseEnter.listen((ev) {
-                 querySelectorAll('.hex').onClick.listen((_) {
-                   print(_.currentTarget.id.toString());
-                   _.currentTarget.style.background = "rgb(255, 0, 0)";
-                   //game.selectTerritory(_.currentTarget.id);
-                   //if (TerritorySelected) 
-                 });
-                 querySelectorAll('.corner-1').onClick.listen((_) {
-                         print(_.currentTarget.parentNode.id.toString());
-                         _.currentTarget.parentNode.style.background = "rgb(255, 0, 0)";
-                         //game.getTerritory(_.currentTarget.id);
-                       });
-                 
-                 querySelectorAll('.corner-2').onClick.listen((_) {
-                         print(_.currentTarget.parentNode.id.toString());
-                         _.currentTarget.parentNode.style.background = "rgb(255, 0, 0)";
-                         //game.getTerritory(_.currentTarget.id);
-                       });
-               });
+
   }
   
   
