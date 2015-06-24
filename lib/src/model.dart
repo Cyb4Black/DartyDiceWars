@@ -1,6 +1,5 @@
 part of DartyDiceWars;
 
-
 class DiceGame{
   int level;
   int playercount;
@@ -9,10 +8,10 @@ class DiceGame{
   DiceGame(int xSize, int ySize, this.level){
     //-----Add Players (and whitefielddummy) to playerlist-----
     players = new List<Player>();
-    players.add(new Player(#human, 0));
-    players.add(new Player(#whitefield, 0));
+    players.add(new Human(#human, 0));
+    players.add(new Whitefield(#whitefield, 0));
     for(int i = 1; i <= level; i++){
-      players.add(new Player(#cpu, i));
+      players.add(new Ai_agg(#cpu, i));
     }
     playercount = players.length - 1;
     //--------------------Build Arena--------------------------
@@ -179,6 +178,7 @@ class Territory{
   String id; //individual ID per territory
   String owner = "";
   int x, y; //coordinates of root tile for Territory
+  int dices;
   List<String> tiles;
   Map<String, String> neighbourTiles;
   Map<String, String> neighbours;
@@ -188,6 +188,7 @@ class Territory{
     this.neighbourTiles = new Map<String, String>();
     this.neighbours = new Map<String, String>();
   }
+  
 }
 /**
  * Tile-Class for managing a single hexagon-tile
@@ -212,15 +213,15 @@ class Tile{
   }
 }
 
+
+
 /**
  * Player-class for managing player-properties 
  */
-class Player{
-  String id;
+abstract class Player{
+  int id;
   Symbol type;
-  List<String> territories;
-  Symbol aiStyle;
-  
+  List<Territory> territories;
   /**
    * Constructor-class for player-object
    * 
@@ -228,47 +229,30 @@ class Player{
    * whereas #whitefields exists for managing free tiles on battlefield
    * @param num, number for creating id, in case of cpu-type
    */
-  Player(this.type, int num){
-    if(type == #human){
-      this.id = "human";
-      this.aiStyle = null;
-    }else if(type == #whitefield){
-      this.id = "whitefields";
-      this.aiStyle = null;
-    }else{
-      this.id = "cpu_" + num.toString();
-      this.aiStyle = #intelligent;
-    }
-    this.territories = new List<String>();
+  Player(this.type, this.id){
+    territories= new List<Territory>();
   }
   
-  void turn(){
-    if(this.type == #whitefield){
-      return;
-    }else if(this.type == #human){
-      this.humanTurn();
-    }else{
-      this.aiTurn();
-    }
-  }
+  bool turn();
+}
+
+class Ai_agg extends Player {
   
-  void humanTurn(){
-    bool endTurn = false;
-  }
-  
-  void aiTurn(){
-    bool endTurn = false;
+  Ai_agg(type,  num): super (type,num);
+  bool turn(){
+    
   }
 }
 
-class dumbAI{
-  
+class Human extends Player{
+  Human(type , num): super (type,num);
+  bool turn(){
+    
+  }
 }
-
-class defensiveAI{
-  
-}
-
-class smartAI{
-  
+class Whitefield extends Player{
+  Whitefield (type,  num): super (type,num);
+  boolean turn(){
+    
+  }
 }
