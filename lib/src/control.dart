@@ -6,7 +6,6 @@ class DiceController {
   XmlNode level;
   String parent = "";
   DiceController() {
-    String lastselected = "";
     view.startButton.onClick.listen((_) {
       startGame(1);
     });
@@ -180,9 +179,11 @@ class DiceController {
 
   //gets the next player and 
   nextTurn() {
+    
+    game.nextPlayer;
     //resupply n stuff, ALSO ASSIGN NEW CURRENT PLAYER
     if (game.currentplayer != "#human") {
-      onTurn();
+      this.onTurn();
     }
   }
   
