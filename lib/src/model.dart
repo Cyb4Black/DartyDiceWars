@@ -1,5 +1,6 @@
 part of DartyDiceWars;
 
+
 class DiceGame {
   XmlNode level;
   int playercount;
@@ -275,7 +276,7 @@ abstract class Player {
       if(temp>max)max=temp;
     } 
     for(int i =0;i<max;i++){
-      Random test; 
+      _random = new Random(); 
     }
   }
   
