@@ -250,6 +250,35 @@ abstract class Player {
     territories = new List<Territory>();
   }
   List<Territory> turn();
+  void resupply(){
+    int max =1;
+    int temp=1 ;
+    for(int i =0;i<territories.length;i++){    
+      List<Territory> list =new List<Territory>(); 
+      list.add(territories[i]);
+      temp = longestRoute(territories[i],list,1);
+      if(temp>max)max=temp;
+    } 
+    for(int i =0;i<max;i++){
+      Random test; 
+    }
+  }
+  
+  int longestRoute (Territory territory,List<Territory> list, int max){
+    int ret =max;
+    int temp;
+    territory.neighbours.values.forEach((f) {            
+              if (territory.owner == f.owner&&!list.contains(f)) {
+                List<Territory> out = new List<Territory> ();
+                out.addAll(list);
+                out.add(territory);
+                temp = longestRoute(f,out,max+1);
+                if(temp>ret)ret=temp;
+              }
+            });
+    return ret;
+  }
+  
 }
 
 class Ai_agg extends Player {
@@ -267,7 +296,7 @@ class Ai_agg extends Player {
         });
       }
     }
-    return null;
+    return list;
   }
 }
 class Ai_deff extends Player {
@@ -287,7 +316,7 @@ class Ai_deff extends Player {
         });
       }
     }
-    return null;
+    return list;
   }
 }
 class Ai_smart extends Player {
@@ -307,7 +336,7 @@ class Ai_smart extends Player {
         });
       }
     }
-    return null;
+    return list;
   }
 }
 class Human extends Player {
