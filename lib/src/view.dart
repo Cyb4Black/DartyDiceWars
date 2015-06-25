@@ -26,7 +26,7 @@ class DiceView {
       }
       htmlField += (rowA + '</div>' + rowB + '</div>');
     }
-    startButton.style.display = "none";
+    
     
     endTurn.style.display = "";
     arena.innerHtml = htmlField;

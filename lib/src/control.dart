@@ -7,11 +7,15 @@ class DiceController {
   String parent = "";
   DiceController() {
     view.startButton.onClick.listen((_) {
-      startGame(1);
+      if (level == null) {
+        
+       view.startButton.style.display = "none";
+       startGame(1);
+      }
     });
     view.arena.onMouseEnter.listen((ev) {
       querySelectorAll('.hex').onClick.listen((_) {
-        if (game.currentPlayer.id == "#human" &&
+        if (game != null && game.currentPlayer.id == "#human" &&
             parent != _.currentTarget.getAttribute("parent")) {
           parent != _.currentTarget.getAttribute("parent");
           String owner = _.currentTarget.getAttribute("owner");
@@ -60,7 +64,7 @@ class DiceController {
         //COPYPASTE ALL OF THE ABOVE
       });
       querySelectorAll('.corner-1').onClick.listen((_) {
-        if (game.currentPlayer.id == "#human" &&
+        if (game != null && game.currentPlayer.id == "#human" &&
             parent != _.currentTarget.parentNode.getAttribute("parent")) {
           parent = _.currentTarget.parentNode.getAttribute("parent");
           String owner = _.currentTarget.parentNode.getAttribute("owner");
@@ -109,7 +113,7 @@ class DiceController {
 
       });
       querySelectorAll('.corner-2').onClick.listen((_) {
-        if (game.currentPlayer.id == "#human" &&
+        if (game != null && game.currentPlayer.id == "#human" &&
             parent != _.currentTarget.parentNode.getAttribute("parent")) {
           parent = _.currentTarget.parentNode.getAttribute("parent");
           String owner = _.currentTarget.parentNode.getAttribute("owner");
@@ -161,18 +165,21 @@ class DiceController {
     });
 
     view.endTurn.onClick.listen((_) {
-      game.firstTerritory = null;
-      game.secondTerritory = null;
-      parent = "";
-      this.nextTurn();
+      if (game != null) {
+        game.firstTerritory = null;
+             game.secondTerritory = null;
+             parent = "";
+             this.nextTurn();
+      }
+     
     });
   }
 
-  startGame(int levelnr) async {
+  startGame(int levelnr) async{
     await this.loadLevelData(levelnr);
     game = new DiceGame(60, 32, level);
     
-    await view.initializeViewField(game);
+    view.initializeViewField(game);
     print("First Player: " + game.currentPlayer.id.toString());
     if (game.currentPlayer.id != "#human") {
       this.onTurn();
@@ -229,8 +236,8 @@ class DiceController {
     this.nextTurn();
   }
 
-  Future<XmlNode> loadLevelData(int levelnr) async {
-    Future<XmlNode> ret;
+  loadLevelData(int levelnr) async {
+    Future<XmlNode> ret = null;
     try {
       dynamic file = await HttpRequest.getString('levels.xml');
       var levels = parse(file);
@@ -244,6 +251,5 @@ class DiceController {
       print(
           "Damn biatch, how did you even get here?! oh also: " + e.toString());
     }
-    return ret;
   }
 }
