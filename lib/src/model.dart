@@ -1,6 +1,5 @@
 part of DartyDiceWars;
 
-
 class DiceGame {
   XmlNode level;
   int playercount;
@@ -14,37 +13,55 @@ class DiceGame {
     players = new List<Player>();
     players.add(new Human('#human'));
     players.add(new Whitefield('#whitefield'));
-    for (int i = 1; i <= int.parse(level.children[2].text); i++) {
-      players.add(new Ai_agg('#cpu' + i.toString()));
+
+    int aggressiveAIs = int.parse(level.children[3].text);
+    int defensiveAIs = int.parse(level.children[4].text);
+    int smartAIs = int.parse(level.children[5].text);
+
+    for (int i = 1; i < int.parse(level.children[2].text); i++) {
+      if (aggressiveAIs > 0) {
+        players.add(new Ai_agg('#cpu' + i.toString()));
+        aggressiveAIs--;
+      } else if (defensiveAIs > 0) {
+        players.add(new Ai_deff('#cpu' + i.toString()));
+        defensiveAIs--;
+      } else if (smartAIs > 0) {
+        players.add(new Ai_smart('#cpu' + i.toString()));
+        smartAIs--;
+      }
     }
     playercount = players.length - 1;
     //--------------------Build Arena--------------------------
-    this._arena = new Arena(xSize, ySize, int.parse(level.children[2].text));
+    this._arena = new Arena(xSize, ySize, int.parse(level.children[2].text), int.parse(level.children[6].text));
 
-    currentPlayer = players[0];
+    int order = players.length - int.parse(level.children[1].text);
+    if (order == players.length) {
+      order = 0;
+    }
+    currentPlayer = players[order];
     /* int onTurn = 0;
     while(players.length>2){
       players[onTurn].turn();
       onTurn = onTurn==players.length ? 0 : onTurn++;
     }
   */
-   
+
   }
-  
-  
+
   nextPlayer() {
-    currentPlayer.resupply(); //give this player the right amount of dies on random fields
+    if (currentPlayer.id != "#whitefield") {
+      currentPlayer
+          .resupply(); //give this player the right amount of dies on random fields
+    }
     for (int i = 0; i < players.length; i++) {
       if (players[i].id == currentPlayer.id) {
         currentPlayer = players[i + 1];
         break;
       }
     }
-    
-    
+
     //ALSO SET NEXT CURRENTPLAYER
   }
-  
 }
 
 class Arena {
@@ -53,7 +70,7 @@ class Arena {
   Map<String, Tile> field;
   Map<String, Territory> territories;
 
-  Arena(this._xSize, this._ySize, int playersCnt) {
+  Arena(this._xSize, this._ySize, int playersCnt, int whitefields) {
     this.field = new Map<String, Tile>.from(initializeArena(_xSize, _ySize));
     this.territories = new Map<String, Territory>();
     territories.addAll(initializeTerritories(playersCnt));
@@ -266,35 +283,34 @@ abstract class Player {
     territories = new List<Territory>();
   }
   List<Territory> turn();
-  void resupply(){
-    int max =1;
-    int temp=1 ;
-    for(int i =0;i<territories.length;i++){    
-      List<Territory> list =new List<Territory>(); 
+  void resupply() {
+    int max = 1;
+    int temp = 1;
+    for (int i = 0; i < territories.length; i++) {
+      List<Territory> list = new List<Territory>();
       list.add(territories[i]);
-      temp = longestRoute(territories[i],list,1);
-      if(temp>max)max=temp;
-    } 
-    for(int i =0;i<max;i++){
-      var _random = new Random(); 
+      temp = longestRoute(territories[i], list, 1);
+      if (temp > max) max = temp;
+    }
+    for (int i = 0; i < max; i++) {
+      var _random = new Random();
     }
   }
-  
-  int longestRoute (Territory territory,List<Territory> list, int max){
-    int ret =max;
+
+  int longestRoute(Territory territory, List<Territory> list, int max) {
+    int ret = max;
     int temp;
-    territory.neighbours.values.forEach((f) {            
-              if (territory.owner == f.owner&&!list.contains(f)) {
-                List<Territory> out = new List<Territory> ();
-                out.addAll(list);
-                out.add(territory);
-                temp = longestRoute(f,out,max+1);
-                if(temp>ret)ret=temp;
-              }
-            });
+    territory.neighbours.values.forEach((f) {
+      if (territory.owner == f.owner && !list.contains(f)) {
+        List<Territory> out = new List<Territory>();
+        out.addAll(list);
+        out.add(territory);
+        temp = longestRoute(f, out, max + 1);
+        if (temp > ret) ret = temp;
+      }
+    });
     return ret;
   }
-  
 }
 
 class Ai_agg extends Player {
