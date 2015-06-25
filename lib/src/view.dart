@@ -2,11 +2,10 @@ part of DartyDiceWars;
 
 class DiceView {
   HtmlElement get startButton => querySelector('#start');
-  HtmlElement get testButton => querySelector('#test');
   HtmlElement get endTurn => querySelector('#endTurn');
   final arena = querySelector('#arena');
   var territories;
-  final testout = querySelector('#testout');
+  
   DiceView() {}
 
   void initializeViewField(DiceGame model) {
