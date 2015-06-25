@@ -208,9 +208,9 @@ class Arena {
     var rng = new Math.Random();
     int tilesLeft = (_xSize * _ySize) - (maxFields * 7);
     while (tilesLeft != 0) {
-      territories.values.forEach((t) {
+      ret.values.forEach((t) {
         Tile testTile =
-            t.neighbourTiles.values[rng.nextInt(t.neighbourTiles.length)];
+            t.neighbourTiles.values.toList()[rng.nextInt(t.neighbourTiles.length)];
         if (testTile.parentTerr == null) {
           t.tiles.add(testTile.id);
           testTile.neighbours.forEach((n) {
@@ -221,7 +221,7 @@ class Arena {
           t.neighbourTiles.remove(testTile.id);
           tilesLeft--;
         } else if (testTile.parentTerr != t.id) {
-          t.neighbours[testTile.parentTerr] = territories[testTile.parentTerr];
+          t.neighbours[testTile.parentTerr] = ret[testTile.parentTerr];
           t.neighbourTiles.remove(testTile.id);
         }
       });
