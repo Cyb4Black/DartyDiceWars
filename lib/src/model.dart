@@ -1,6 +1,4 @@
 part of DartyDiceWars;
-
-
 class DiceGame {
   XmlNode level;
   int playercount;
@@ -28,10 +26,7 @@ class DiceGame {
       onTurn = onTurn==players.length ? 0 : onTurn++;
     }
   */
-   
   }
-  
-  
   nextPlayer() {
     currentPlayer.resupply(); //give this player the right amount of dies on random fields
     for (int i = 0; i < players.length; i++) {
@@ -40,8 +35,6 @@ class DiceGame {
         break;
       }
     }
-    
-    
     //ALSO SET NEXT CURRENTPLAYER
   }
   
@@ -201,6 +194,7 @@ class Arena {
 class Territory {
   String id; //individual ID per territory
   String owner = "";
+  Player ownerRef;
   int x, y; //coordinates of root tile for Territory
   int dies;
   List<String> tiles;
@@ -212,18 +206,40 @@ class Territory {
     this.neighbourTiles = new Map<String, String>();
     this.neighbours = new Map<String, Territory>();
   }
-
   List<List<int>> attackTerritory(Territory ter) {
     List<List<int>> ret = new List();
-    if (neighbours.containsKey(ter)) {
-      ret.add(this.dies);
-      ret.add(ter.dies);
-
-      //showAttackDies(List)
-      //showDefenseDies(List)
-      //If attack > Def change dependecies in model
-      return ret;
+    if (neighbours.containsValue(ter)) {
+      var _random = new Math.Random(); 
+      int myMax=0;
+      int hisMax=0;
+      int temp;
+      List<int> myList=new List();
+      List<int> hisList=new List();
+      for(int i=0;i<dies;i++){
+        temp = 1+ _random.nextInt(5);
+        myMax+=temp;
+        myList.add(temp);
+      }
+      for(int i=0;i<ter.dies;i++){
+        temp = 1+ _random.nextInt(5);
+        hisMax+=temp;
+        hisList.add(temp);
+      }
+      if(myMax>hisMax){
+        ter.ownerRef.territories.remove(ter);
+        ter.owner=owner;
+        ter.ownerRef=ownerRef;
+        ownerRef.territories.add(ter);
+        ter.dies=dies-1;
+        dies=1;
+      }
+      else{
+        dies=1;
+      }
+      ret.add(myList);
+      ret.add(hisList);
     }
+    return ret;
   }
 }
 /**
@@ -275,8 +291,9 @@ abstract class Player {
       temp = longestRoute(territories[i],list,1);
       if(temp>max)max=temp;
     } 
+    var _random = new Math.Random(); 
     for(int i =0;i<max;i++){
-      var _random = new Random(); 
+        territories[_random.nextInt(territories.length-1)].dies++;   
     }
   }
   
