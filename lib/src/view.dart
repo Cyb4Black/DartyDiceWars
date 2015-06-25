@@ -27,6 +27,8 @@ class DiceView {
       htmlField += (rowA + '</div>' + rowB + '</div>');
     }
     startButton.style.display = "none";
+    
+    endTurn.style.display = "";
     arena.innerHtml = htmlField;
   }
   //ter = territory to mark, direction true = mark it, false = unmark it

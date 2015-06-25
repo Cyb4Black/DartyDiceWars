@@ -50,7 +50,13 @@ class DiceGame {
         .resupply(); //give this player the right amount of dies on random fields
     for (int i = 0; i < players.length; i++) {
       if (players[i].id == currentPlayer.id) {
-        currentPlayer = players[i + 1];
+        if (i < players.length-1) {
+          currentPlayer = players[i + 1];
+        } else {
+          currentPlayer = players[0];
+        }
+        
+        
         break;
       }
     }
@@ -311,7 +317,9 @@ abstract class Player {
     }
     var _random = new Math.Random();
     for (int i = 0; i < max; i++) {
-      territories[_random.nextInt(territories.length - 1)].dies++;
+      if (territories.length > 0) {
+        territories[_random.nextInt(territories.length - 1)].dies++;
+      }  
     }
   }
 
