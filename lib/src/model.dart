@@ -229,6 +229,7 @@ class Territory {
     this.tiles = new List<String>();
     this.neighbourTiles = new Map<String, String>();
     this.neighbours = new Map<String, Territory>();
+    dies =1;
   }
   List<List<int>> attackTerritory(Territory ter) {
     List<List<int>> ret = new List();
