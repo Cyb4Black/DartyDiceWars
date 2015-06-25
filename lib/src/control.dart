@@ -11,7 +11,8 @@ class DiceController {
     });
     view.arena.onMouseEnter.listen((ev) {
       querySelectorAll('.hex').onClick.listen((_) {
-        if (game.currentPlayer.id == "#human" && parent != _.currentTarget.getAttribute("parent")) {
+        if (game.currentPlayer.id == "#human" &&
+            parent != _.currentTarget.getAttribute("parent")) {
           parent != _.currentTarget.getAttribute("parent");
           String owner = _.currentTarget.getAttribute("owner");
           //INSERT STUFF YOU DO WITH SELECTED 1st and 2nd HERE
@@ -59,7 +60,8 @@ class DiceController {
         //COPYPASTE ALL OF THE ABOVE
       });
       querySelectorAll('.corner-1').onClick.listen((_) {
-        if (game.currentPlayer.id == "#human" && parent != _.currentTarget.parentNode.getAttribute("parent")) {
+        if (game.currentPlayer.id == "#human" &&
+            parent != _.currentTarget.parentNode.getAttribute("parent")) {
           parent = _.currentTarget.parentNode.getAttribute("parent");
           String owner = _.currentTarget.parentNode.getAttribute("owner");
           //SAME TO HERE
@@ -107,7 +109,8 @@ class DiceController {
 
       });
       querySelectorAll('.corner-2').onClick.listen((_) {
-        if (game.currentPlayer.id == "#human" && parent != _.currentTarget.parentNode.getAttribute("parent")) {
+        if (game.currentPlayer.id == "#human" &&
+            parent != _.currentTarget.parentNode.getAttribute("parent")) {
           parent = _.currentTarget.parentNode.getAttribute("parent");
           String owner = _.currentTarget.parentNode.getAttribute("owner");
           //SAME TO HERE:
@@ -163,30 +166,28 @@ class DiceController {
       parent = "";
       this.nextTurn();
     });
-
   }
 
   startGame(int levelnr) async {
     await this.loadLevelData(levelnr);
     game = new DiceGame(60, 32, level);
     view.initializeViewField(game);
-
-    
+    print("First Player: " + game.currentPlayer.id.toString());
     if (game.currentPlayer.id != "#human") {
       this.onTurn();
     }
   }
 
-  //gets the next player and 
+  //gets the next player and
   nextTurn() {
-    
-    game.nextPlayer;
+    game.nextPlayer();
     //resupply n stuff, ALSO ASSIGN NEW CURRENT PLAYER
-    if (game.currentplayer != "#human") {
+    print("Next Player: "+game.currentPlayer.id.toString());
+    if (game.currentPlayer.id != "#human") {
       this.onTurn();
     }
   }
-  
+
   onTurn() {
     bool turn = true;
     while (turn) {
@@ -207,8 +208,8 @@ class DiceController {
           view.markTerritory(actors[1], false);
 
           List<String> toupdate = new List();
-          toupdate.add(game._arena.territories[actors[
-              0].id]); //grab the two actual elements out of the arena
+          toupdate.add(game._arena.territories[
+              actors[0].id]); //grab the two actual elements out of the arena
           toupdate.add(game._arena.territories[actors[1].id]);
           view.updateSelectedTerritories(toupdate);
 
