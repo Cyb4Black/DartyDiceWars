@@ -1,4 +1,5 @@
 part of DartyDiceWars;
+
 class DiceGame {
   XmlNode level;
   int playercount;
@@ -12,13 +13,30 @@ class DiceGame {
     players = new List<Player>();
     players.add(new Human('#human'));
     players.add(new Whitefield('#whitefield'));
-    for (int i = 1; i <= int.parse(level.children[2].text); i++) {
-      players.add(new Ai_agg('#cpu' + i.toString()));
+    int aggressiveAIs = int.parse(level.children[3].text);
+    int defensiveAIs = int.parse(level.children[4].text);
+    int smartAIs = int.parse(level.children[5].text);
+
+    for (int i = 1; i < int.parse(level.children[2].text); i++) {
+      if (aggressiveAIs > 0) {
+        players.add(new Ai_agg('#cpu' + i.toString()));
+        aggressiveAIs--;
+      } else if (defensiveAIs > 0) {
+        players.add(new Ai_deff('#cpu' + i.toString()));
+        defensiveAIs--;
+      } else if (smartAIs > 0) {
+        players.add(new Ai_smart('#cpu' + i.toString()));
+        smartAIs--;
+      }
     }
     playercount = players.length - 1;
     //--------------------Build Arena--------------------------
-    this._arena = new Arena(xSize, ySize, int.parse(level.children[2].text));
+    this._arena = new Arena(xSize, ySize, int.parse(level.children[2].text), int.parse(level.children[6].text),int.parse(level.children[0].text));
 
+    int order = players.length - int.parse(level.children[1].text);
+     if (order == players.length) {
+       order = 0;
+     }
     currentPlayer = players[0];
     /* int onTurn = 0;
     while(players.length>2){
@@ -28,7 +46,8 @@ class DiceGame {
   */
   }
   nextPlayer() {
-    currentPlayer.resupply(); //give this player the right amount of dies on random fields
+    currentPlayer
+        .resupply(); //give this player the right amount of dies on random fields
     for (int i = 0; i < players.length; i++) {
       if (players[i].id == currentPlayer.id) {
         currentPlayer = players[i + 1];
@@ -37,7 +56,6 @@ class DiceGame {
     }
     //ALSO SET NEXT CURRENTPLAYER
   }
-  
 }
 
 class Arena {
@@ -46,7 +64,7 @@ class Arena {
   Map<String, Tile> field;
   Map<String, Territory> territories;
 
-  Arena(this._xSize, this._ySize, int playersCnt) {
+  Arena(this._xSize, this._ySize, int playersCnt, int whitefields, int playerhandycap) {
     this.field = new Map<String, Tile>.from(initializeArena(_xSize, _ySize));
     this.territories = new Map<String, Territory>();
     territories.addAll(initializeTerritories(playersCnt));
@@ -210,32 +228,31 @@ class Territory {
   List<List<int>> attackTerritory(Territory ter) {
     List<List<int>> ret = new List();
     if (neighbours.containsValue(ter)) {
-      var _random = new Math.Random(); 
-      int myMax=0;
-      int hisMax=0;
+      var _random = new Math.Random();
+      int myMax = 0;
+      int hisMax = 0;
       int temp;
-      List<int> myList=new List();
-      List<int> hisList=new List();
-      for(int i=0;i<dies;i++){
-        temp = 1+ _random.nextInt(5);
-        myMax+=temp;
+      List<int> myList = new List();
+      List<int> hisList = new List();
+      for (int i = 0; i < dies; i++) {
+        temp = 1 + _random.nextInt(5);
+        myMax += temp;
         myList.add(temp);
       }
-      for(int i=0;i<ter.dies;i++){
-        temp = 1+ _random.nextInt(5);
-        hisMax+=temp;
+      for (int i = 0; i < ter.dies; i++) {
+        temp = 1 + _random.nextInt(5);
+        hisMax += temp;
         hisList.add(temp);
       }
-      if(myMax>hisMax){
+      if (myMax > hisMax) {
         ter.ownerRef.territories.remove(ter);
-        ter.owner=owner;
-        ter.ownerRef=ownerRef;
+        ter.owner = owner;
+        ter.ownerRef = ownerRef;
         ownerRef.territories.add(ter);
-        ter.dies=dies-1;
-        dies=1;
-      }
-      else{
-        dies=1;
+        ter.dies = dies - 1;
+        dies = 1;
+      } else {
+        dies = 1;
       }
       ret.add(myList);
       ret.add(hisList);
@@ -283,36 +300,35 @@ abstract class Player {
     territories = new List<Territory>();
   }
   List<Territory> turn();
-  void resupply(){
-    int max =1;
-    int temp=1 ;
-    for(int i =0;i<territories.length;i++){    
-      List<Territory> list =new List<Territory>(); 
+  void resupply() {
+    int max = 1;
+    int temp = 1;
+    for (int i = 0; i < territories.length; i++) {
+      List<Territory> list = new List<Territory>();
       list.add(territories[i]);
-      temp = longestRoute(territories[i],list,1);
-      if(temp>max)max=temp;
-    } 
-    var _random = new Math.Random(); 
-    for(int i =0;i<max;i++){
-        territories[_random.nextInt(territories.length-1)].dies++;   
+      temp = longestRoute(territories[i], list, 1);
+      if (temp > max) max = temp;
+    }
+    var _random = new Math.Random();
+    for (int i = 0; i < max; i++) {
+      territories[_random.nextInt(territories.length - 1)].dies++;
     }
   }
-  
-  int longestRoute (Territory territory,List<Territory> list, int max){
-    int ret =max;
+
+  int longestRoute(Territory territory, List<Territory> list, int max) {
+    int ret = max;
     int temp;
-    territory.neighbours.values.forEach((f) {            
-              if (territory.owner == f.owner&&!list.contains(f)) {
-                List<Territory> out = new List<Territory> ();
-                out.addAll(list);
-                out.add(territory);
-                temp = longestRoute(f,out,max+1);
-                if(temp>ret)ret=temp;
-              }
-            });
+    territory.neighbours.values.forEach((f) {
+      if (territory.owner == f.owner && !list.contains(f)) {
+        List<Territory> out = new List<Territory>();
+        out.addAll(list);
+        out.add(territory);
+        temp = longestRoute(f, out, max + 1);
+        if (temp > ret) ret = temp;
+      }
+    });
     return ret;
   }
-  
 }
 
 class Ai_agg extends Player {
