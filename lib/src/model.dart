@@ -46,8 +46,11 @@ class DiceGame {
   */
   }
   nextPlayer() {
-    currentPlayer
-        .resupply(); //give this player the right amount of dies on random fields
+    if (currentPlayer.id != "#whitefield") {
+      currentPlayer
+              .resupply(); //give this player the right amount of dies on random fields
+    }
+    
     for (int i = 0; i < players.length; i++) {
       if (players[i].id == currentPlayer.id) {
         if (i < players.length-1) {
@@ -315,6 +318,7 @@ abstract class Player {
       temp = longestRoute(territories[i], list, 1);
       if (temp > max) max = temp;
     }
+    print("Resupplying with $max dies.");
     var _random = new Math.Random();
     for (int i = 0; i < max; i++) {
       if (territories.length > 0) {

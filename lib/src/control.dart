@@ -2,7 +2,7 @@ part of DartyDiceWars;
 
 class DiceController {
   final view = new DiceView();
-  var game;
+  DiceGame game;
   XmlNode level;
   String parent = "";
   DiceController() {
@@ -43,10 +43,10 @@ class DiceController {
             view.showAttack(attack);
             view.markTerritory(game.firstTerritory.id, false);
             view.markTerritory(game.secondTerritory.id, false);
-            List<String> toupdate = new List();
+            List<Territory> toupdate = new List();
             toupdate.add(game._arena.territories[
                 game.firstTerritory.id]); //grab the two actual elements out of the arena
-            toupdate.add(game._arena.territories[game.secondTerritory.id.id]);
+            toupdate.add(game._arena.territories[game.secondTerritory.id]);
             view.updateSelectedTerritories(toupdate);
             game.firstTerritory = null;
             game.secondTerritory = null;
@@ -91,10 +91,10 @@ class DiceController {
             view.showAttack(attack);
             view.markTerritory(game.firstTerritory.id, false);
             view.markTerritory(game.secondTerritory.id, false);
-            List<String> toupdate = new List();
+            List<Territory> toupdate = new List();
             toupdate.add(game._arena.territories[
                 game.firstTerritory.id]); //grab the two actual elements out of the _arena
-            toupdate.add(game._arena.territories[game.secondTerritory.id.id]);
+            toupdate.add(game._arena.territories[game.secondTerritory.id]);
             view.updateSelectedTerritories(toupdate);
             game.firstTerritory = null;
             game.secondTerritory = null;
@@ -141,10 +141,10 @@ class DiceController {
             view.markTerritory(game.firstTerritory.id, false);
             view.markTerritory(game.secondTerritory.id, false);
 
-            List<String> toupdate = new List();
+            List<Territory> toupdate = new List();
             toupdate.add(game._arena.territories[
                 game.firstTerritory.id]); //grab the two actual elements out of the arena
-            toupdate.add(game._arena.territories[game.secondTerritory.id.id]);
+            toupdate.add(game._arena.territories[game.secondTerritory.id]);
             view.updateSelectedTerritories(toupdate);
 
             game.firstTerritory = null;
@@ -171,7 +171,8 @@ class DiceController {
   startGame(int levelnr) async {
     await this.loadLevelData(levelnr);
     game = new DiceGame(60, 32, level);
-    view.initializeViewField(game);
+    
+    await view.initializeViewField(game);
     print("First Player: " + game.currentPlayer.id.toString());
     if (game.currentPlayer.id != "#human") {
       this.onTurn();
@@ -180,6 +181,12 @@ class DiceController {
 
   //gets the next player and
   nextTurn() {
+    if (!(game.players.length > 2)) {
+      int nextLevel = (int.parse(game.level.attributes[0].value))+1;
+      game = null;
+      startGame(nextLevel);
+      return;
+    }
     game.nextPlayer();
     //resupply n stuff, ALSO ASSIGN NEW CURRENT PLAYER
     print("Next Player: "+game.currentPlayer.id.toString());
@@ -207,9 +214,8 @@ class DiceController {
           view.markTerritory(actors[0], false);
           view.markTerritory(actors[1], false);
 
-          List<String> toupdate = new List();
-          toupdate.add(game._arena.territories[
-              actors[0].id]); //grab the two actual elements out of the arena
+          List<Territory> toupdate = new List();
+          toupdate.add(game._arena.territories[actors[0].id]); //grab the two actual elements out of the arena
           toupdate.add(game._arena.territories[actors[1].id]);
           view.updateSelectedTerritories(toupdate);
 
