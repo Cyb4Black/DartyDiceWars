@@ -5,7 +5,7 @@
 library DartyDiceWars;
 import 'dart:html';
 import 'dart:async';
-import 'dart:math' as Math;
+import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' as html;
 import 'package:xml/xml.dart';
