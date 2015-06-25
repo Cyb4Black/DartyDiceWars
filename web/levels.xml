@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 <Levels><Level id="1"><handycap>5</handycap><humanstart>0</humanstart><players>3</players><aggressiveAI>1</aggressiveAI><defensiveAI>1</defensiveAI><smartAI>0</smartAI><whitefields>5</whitefields></Level><Level id="2"><handycap>5</handycap><humanstart>0</humanstart><players>3</players><aggressiveAI>2</aggressiveAI><defensiveAI>0</defensiveAI><smartAI>0</smartAI><whitefields>5</whitefields></Level></Levels>
+=======
+<Levels><Level id="1"><handycap>5</handycap><humanstart>0</humanstart><players>2</players><aggressiveAI>1</aggressiveAI><defensiveAI>0</defensiveAI><smartAI>0</smartAI><whitefields>5</whitefields></Level><Level id="2"><handycap>5</handycap><humanstart>0</humanstart><players>3</players><aggressiveAI>2</aggressiveAI><defensiveAI>0</defensiveAI><smartAI>0</smartAI><whitefields>5</whitefields></Level></Levels>
+>>>>>>> 09dd51e4e6b88cf139a11c8f0d3f21191c453a53
