@@ -29,6 +29,21 @@ class DiceGame {
   */
    
   }
+  
+  
+  nextPlayer() {
+    currentPlayer.resupply(); //give this player the right amount of dies on random fields
+    for (int i = 0; i < players.length; i++) {
+      if (players[i].id == currentPlayer.id) {
+        currentPlayer = players[i + 1];
+        break;
+      }
+    }
+    
+    
+    //ALSO SET NEXT CURRENTPLAYER
+  }
+  
 }
 
 class Arena {
