@@ -16,7 +16,7 @@ class DiceGame {
     int aggressiveAIs = int.parse(level.children[3].text);
     int defensiveAIs = int.parse(level.children[4].text);
     int smartAIs = int.parse(level.children[5].text);
-
+//add AIs based on settings in levels.xml
     for (int i = 1; i < int.parse(level.children[2].text); i++) {
       if (aggressiveAIs > 0) {
         players.add(new Ai_agg('#cpu' + i.toString()));
@@ -35,6 +35,7 @@ class DiceGame {
         int.parse(level.children[6].text), int.parse(level.children[0].text),
         level, players);
     
+    //select first player based on startposition in levels.xml
     int order = players.length - int.parse(level.children[1].text);
     if (order == players.length) {
       order = 0;

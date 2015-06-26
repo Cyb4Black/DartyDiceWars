@@ -249,7 +249,7 @@ class DiceController {
       }
     } catch (e) {
       print(
-          "Damn biatch, how did you even get here?! oh also: " + e.toString());
+          "How did you even get here?! oh also: " + e.toString());
     }
   }
 }
