@@ -34,6 +34,16 @@ class DiceGame {
     this._arena = new Arena(xSize, ySize, int.parse(level.children[2].text),
         int.parse(level.children[6].text), int.parse(level.children[0].text),
         level, players);
+    
+    int order = players.length - int.parse(level.children[1].text);
+    if (order == players.length) {
+      order = 0;
+    }
+    currentPlayer = players[order];
+    
+    
+    
+    
   }
   nextPlayer() {
     if (currentPlayer.id != "#whitefield") {
@@ -255,7 +265,7 @@ class Arena {
       int whiteFields, int playerFields) {
     var rng = new Math.Random();
     List<Territory> toAssign = new List<Territory>();
-    toAssign.addAll(territories.values);
+    toAssign.addAll(newTs.values);
     for (int i = 0; i < whiteFields; ) {
       Territory getT = toAssign[rng.nextInt(toAssign.length)];
       if (getT.ownerRef == null) {
@@ -271,7 +281,7 @@ class Arena {
         players[1].territories.add(getT);
         toAssign.remove(getT);
         getT.ownerRef = players[nextPlay];
-        if (nextPlay == players.length) {
+        if (nextPlay == players.length-1) {
           nextPlay = 1;
         } else {
           nextPlay++;
