@@ -205,7 +205,7 @@ class Arena {
     });
 
     //-----------------grow Territories 2.---------------------
-    var rng = new Math.Random();
+    /*var rng = new Math.Random();
     int tilesLeft = (_xSize * _ySize) - (maxFields * 7);
     while (tilesLeft != 0) {
       ret.values.forEach((t) {
@@ -216,16 +216,15 @@ class Arena {
           testTile.neighbours.forEach((n) {
             t.neighbourTiles[n] = field[n];
             field[n].parentTerr = t.id;
-            tilesLeft--;
           });
           t.neighbourTiles.remove(testTile.id);
-          tilesLeft--;
+          tilesLeft = tilesLeft -1;
         } else if (testTile.parentTerr != t.id) {
           t.neighbours[testTile.parentTerr] = ret[testTile.parentTerr];
           t.neighbourTiles.remove(testTile.id);
         }
       });
-    }
+    }*/
     assignTerritories(ret, players, whiteFields, playerFields);
 
     return ret;
@@ -257,13 +256,12 @@ class Arena {
     var rng = new Math.Random();
     List<Territory> toAssign = new List<Territory>();
     toAssign.addAll(territories.values);
-    for (int i = 0; i < whiteFields; i++) {
+    for (int i = 0; i < whiteFields; ) {
       Territory getT = toAssign[rng.nextInt(toAssign.length)];
       if (getT.ownerRef == null) {
         players[1].territories.add(getT);
         toAssign.remove(getT);
-      } else {
-        i--;
+        i++;
       }
     }
     int nextPlay = 1;
