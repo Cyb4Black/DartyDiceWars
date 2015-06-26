@@ -34,6 +34,7 @@ class DiceView {
   //ter = territory to mark, direction true = mark it, false = unmark it
   void markTerritory(String ter, bool direction) {
     //a short wait 1/10th second or so needs to be done here too for effects <3
+    new Timer(new Duration(milliseconds: 100), () => print('timer'));
   }
   
   void showAttack(List<List<int>> attack) {
