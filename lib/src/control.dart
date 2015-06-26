@@ -15,7 +15,7 @@ class DiceController {
     });
     view.arena.onMouseEnter.listen((ev) {
       querySelectorAll('.hex').onClick.listen((_) {
-        if (game != null && game.currentPlayer.id == "#human" &&
+        if (game != null && game.currentPlayer.id == "human" &&
             parent != _.currentTarget.getAttribute("parent")) {
           parent != _.currentTarget.getAttribute("parent");
           String owner = _.currentTarget.getAttribute("owner");
@@ -24,7 +24,7 @@ class DiceController {
           //TO BE COPYPASTED INTO ALL THREE CASES
 
           if (game.firstTerritory == null &&
-              owner != "#human" &&
+              owner != "human" &&
               game._arena.territories[parent].dies > 1) {
             //selectTerritory as first one
             game.firstTerritory = game._arena.territories[parent];
@@ -37,7 +37,7 @@ class DiceController {
           } else if (game.firstTerritory != null &&
               game.secondTerritory == null &&
               game.firstTerritory.neighbours.keys.contains(parent) &&
-              owner != "#human") {
+              owner != "human") {
             game.secondTerritory = game._arena.territories[parent];
             view.markTerritory(parent, true);
           }
@@ -64,7 +64,7 @@ class DiceController {
         //COPYPASTE ALL OF THE ABOVE
       });
       querySelectorAll('.corner-1').onClick.listen((_) {
-        if (game != null && game.currentPlayer.id == "#human" &&
+        if (game != null && game.currentPlayer.id == "human" &&
             parent != _.currentTarget.parentNode.getAttribute("parent")) {
           parent = _.currentTarget.parentNode.getAttribute("parent");
           String owner = _.currentTarget.parentNode.getAttribute("owner");
@@ -85,7 +85,7 @@ class DiceController {
           } else if (game.firstTerritory != null &&
               game.secondTerritory == null &&
               game.firstTerritory.neighbours.keys.contains(parent) &&
-              owner != "#human") {
+              owner != "human") {
             game.secondTerritory = game._arena.territories[parent];
             view.markTerritory(parent, true);
           }
@@ -113,7 +113,7 @@ class DiceController {
 
       });
       querySelectorAll('.corner-2').onClick.listen((_) {
-        if (game != null && game.currentPlayer.id == "#human" &&
+        if (game != null && game.currentPlayer.id == "human" &&
             parent != _.currentTarget.parentNode.getAttribute("parent")) {
           parent = _.currentTarget.parentNode.getAttribute("parent");
           String owner = _.currentTarget.parentNode.getAttribute("owner");
@@ -121,7 +121,7 @@ class DiceController {
           //TO BE COPYPASTED INTO ALL THREE CASES
 
           if (game.firstTerritory == null &&
-              owner != "#human" &&
+              owner != "human" &&
               game._arena.territories[parent].dies > 1) {
             //selectTerritory as first one
             game.firstTerritory = game._arena.territories[parent];
@@ -134,7 +134,7 @@ class DiceController {
           } else if (game.firstTerritory != null &&
               game.secondTerritory == null &&
               game.firstTerritory.neighbours.keys.contains(parent) &&
-              owner != "#human") {
+              owner != "human") {
             game.secondTerritory = game._arena.territories[parent];
             view.markTerritory(parent, true);
           }
@@ -180,8 +180,9 @@ class DiceController {
     game = new DiceGame(60, 32, level);
     
     view.initializeViewField(game);
+    view.updateFieldWithTerritories(game);
     print("First Player: " + game.currentPlayer.id.toString());
-    if (game.currentPlayer.id != "#human") {
+    if (game.currentPlayer.id != "human") {
       this.onTurn();
     }
   }
@@ -197,7 +198,7 @@ class DiceController {
     game.nextPlayer();
     //resupply n stuff, ALSO ASSIGN NEW CURRENT PLAYER
     print("Next Player: "+game.currentPlayer.id.toString());
-    if (game.currentPlayer.id != "#human") {
+    if (game.currentPlayer.id != "human") {
       this.onTurn();
     }
   }
@@ -205,9 +206,9 @@ class DiceController {
   onTurn() {
     bool turn = true;
     while (turn) {
-      if (game.currentPlayer.id == "#whitefield") {
+      if (game.currentPlayer.id == "whitefield") {
         turn = false;
-      } else if (game.currentPlayer.id != "#human") {
+      } else if (game.currentPlayer.id != "human") {
         List<Territory> actors = game.currentPlayer.turn();
         if (actors.length == 0) {
           turn = false;

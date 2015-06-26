@@ -18,10 +18,10 @@ class DiceView {
       for (int ix = 1; ix <= field._xSize; ix++) {
         if (ix % 2 != 0) {
           rowA +=
-              '<div id="ID${ix}_${iy}" class="hex ${model._arena.territories[model._arena.field["ID${ix}_${iy}"]]}"><div class="corner-1"></div><div class="corner-2"></div></div>';
+              '<div id="ID${ix}_${iy}" class="hex"><div class="corner-1"></div><div class="corner-2"></div></div>';
         } else {
           rowB +=
-              '<div id="ID${ix}_${iy}" class="hex ${model._arena.territories[model._arena.field["ID${ix}_${iy}"]]}"><div class="corner-1"></div><div class="corner-2"></div></div>';
+              '<div id="ID${ix}_${iy}" class="hex"><div class="corner-1"></div><div class="corner-2"></div></div>';
         }
       }
       htmlField += (rowA + '</div>' + rowB + '</div>');
@@ -47,8 +47,10 @@ class DiceView {
   void updateFieldWithTerritories(DiceGame model) {
     model._arena.territories.values.forEach((t) {
       t.tiles.forEach((ti) {
-        HtmlElement change = arena.querySelector("#" + ti.toString());
-        change.setAttribute("class", "hex ${t.id} ${t.owner}");
+        HtmlElement change = arena.querySelector("#" + ti);
+        change.setAttribute("class", "hex ${t.ownerRef.id}");
+        change.setAttribute("owner", t.ownerRef.id);
+        change.setAttribute("parent", t.id);
       });
     });
   }
