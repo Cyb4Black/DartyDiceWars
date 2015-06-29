@@ -124,8 +124,15 @@ h6{
     margin-top:-25px;
 }
 
+.hex.selected{
+  opacity: 0.7;
+}
+ 
+.hex.hover{
+  opacity: 0.9;
+}
 .hex.human{
-    background-color:blue;
+    background-color:darkmagenta;
 }
 
 .hex.whitefield{
@@ -133,15 +140,15 @@ h6{
 }
 
 .hex.cpu1{
-    background-color:green;
+    background-color:darkgreen;
 }
 
 .hex.cpu2{
-    background-color:red;
+    background-color:darkred;
 }
 
 .hex.cpu3{
-    background-color:yellow;
+    background-color:darkblue;
 }
 
 .hex.cpu4{
@@ -153,9 +160,9 @@ h6{
 }
 
 .hex.cpu6{
-    background-color:purple;
+    background-color:saddlebrown;
 }
 
 .hex.cpu7{
-    background-color:orange;
+    background-color:darkorange;
 }

@@ -13,40 +13,52 @@ class DiceController {
        startGame(1);
       }
     });
+    
+    view.arena.onMouseLeave.listen((ev) {
+      view.showHover("");
+    });
+    
     view.arena.onMouseEnter.listen((ev) {
+      if (game.currentPlayer.id == "human") {
+        querySelectorAll('.hex').onMouseOver.listen((_) {
+              view.showHover(_.currentTarget.getAttribute("parent"));
+            });
+      }
+    });
+    
+    view.arena.onMouseEnter.listen((ev) {
+      
       querySelectorAll('.hex').onClick.listen((_) {
-        if (game != null && game.currentPlayer.id == "human" &&
-            parent != _.currentTarget.getAttribute("parent")) {
-          parent != _.currentTarget.getAttribute("parent");
+        if (game != null && game.currentPlayer.id == "human" ) {//&&
+          parent = _.currentTarget.getAttribute("parent");
           String owner = _.currentTarget.getAttribute("owner");
           //INSERT STUFF YOU DO WITH SELECTED 1st and 2nd HERE
 
           //TO BE COPYPASTED INTO ALL THREE CASES
-
+        print(game._arena.territories[parent].dies);
           if (game.firstTerritory == null &&
-              owner != "human" &&
+              owner == "human" &&
               game._arena.territories[parent].dies > 1) {
+              
             //selectTerritory as first one
             game.firstTerritory = game._arena.territories[parent];
-            view.markTerritory(parent, true);
+            view.markTerritory(parent);
           } else if (game.firstTerritory != null &&
               parent == game.firstTerritory.id) {
             //if there is a territory selected and the new one is the same
             game.firstTerritory = null;
-            view.markTerritory(parent, false);
+            view.markTerritory(parent);
           } else if (game.firstTerritory != null &&
               game.secondTerritory == null &&
               game.firstTerritory.neighbours.keys.contains(parent) &&
-              owner != "human") {
+              owner != "human" && owner != "whitefield") {
             game.secondTerritory = game._arena.territories[parent];
-            view.markTerritory(parent, true);
+            view.markTerritory(parent);
           }
           if (game.firstTerritory != null && game.secondTerritory != null) {
             List<List<int>> attack =
                 game.firstTerritory.attackTerritory(game.secondTerritory);
             view.showAttack(attack);
-            view.markTerritory(game.firstTerritory.id, false);
-            view.markTerritory(game.secondTerritory.id, false);
             List<Territory> toupdate = new List();
             toupdate.add(game._arena.territories[
                 game.firstTerritory.id]); //grab the two actual elements out of the arena
@@ -63,109 +75,14 @@ class DiceController {
         }
         //COPYPASTE ALL OF THE ABOVE
       });
-      querySelectorAll('.corner-1').onClick.listen((_) {
-        if (game != null && game.currentPlayer.id == "human" &&
-            parent != _.currentTarget.parentNode.getAttribute("parent")) {
-          parent = _.currentTarget.parentNode.getAttribute("parent");
-          String owner = _.currentTarget.parentNode.getAttribute("owner");
-          //SAME TO HERE
-          //TO BE COPYPASTED INTO ALL THREE CASES
-
-          if (game.firstTerritory == null &&
-              owner != "#human" &&
-              game._arena.territories[parent].dies > 1) {
-            //selectTerritory as first one
-            game.firstTerritory = game._arena.territories[parent];
-            view.markTerritory(parent, true);
-          } else if (game.firstTerritory != null &&
-              parent == game.firstTerritory.id) {
-            //if there is a territory selected and the new one is the same
-            game.firstTerritory = null;
-            view.markTerritory(parent, false);
-          } else if (game.firstTerritory != null &&
-              game.secondTerritory == null &&
-              game.firstTerritory.neighbours.keys.contains(parent) &&
-              owner != "human") {
-            game.secondTerritory = game._arena.territories[parent];
-            view.markTerritory(parent, true);
-          }
-          if (game.firstTerritory != null && game.secondTerritory != null) {
-            List<List<int>> attack =
-                game.firstTerritory.attackTerritory(game.secondTerritory);
-            view.showAttack(attack);
-            view.markTerritory(game.firstTerritory.id, false);
-            view.markTerritory(game.secondTerritory.id, false);
-            List<Territory> toupdate = new List();
-            toupdate.add(game._arena.territories[
-                game.firstTerritory.id]); //grab the two actual elements out of the _arena
-            toupdate.add(game._arena.territories[game.secondTerritory.id]);
-            view.updateSelectedTerritories(toupdate);
-            game.firstTerritory = null;
-            game.secondTerritory = null;
-            parent = "";
-
-            if (!(game.players.length > 2)) {
-              this.nextTurn();
-            }
-          }
-        }
-        //COPYPASTE ALL OF THE ABOVE
-
-      });
-      querySelectorAll('.corner-2').onClick.listen((_) {
-        if (game != null && game.currentPlayer.id == "human" &&
-            parent != _.currentTarget.parentNode.getAttribute("parent")) {
-          parent = _.currentTarget.parentNode.getAttribute("parent");
-          String owner = _.currentTarget.parentNode.getAttribute("owner");
-          //SAME TO HERE:
-          //TO BE COPYPASTED INTO ALL THREE CASES
-
-          if (game.firstTerritory == null &&
-              owner != "human" &&
-              game._arena.territories[parent].dies > 1) {
-            //selectTerritory as first one
-            game.firstTerritory = game._arena.territories[parent];
-            view.markTerritory(parent, true);
-          } else if (game.firstTerritory != null &&
-              parent == game.firstTerritory.id) {
-            //if there is a territory selected and the new one is the same
-            game.firstTerritory = null;
-            view.markTerritory(parent, false);
-          } else if (game.firstTerritory != null &&
-              game.secondTerritory == null &&
-              game.firstTerritory.neighbours.keys.contains(parent) &&
-              owner != "human") {
-            game.secondTerritory = game._arena.territories[parent];
-            view.markTerritory(parent, true);
-          }
-          if (game.firstTerritory != null && game.secondTerritory != null) {
-            List<List<int>> attack =
-                game.firstTerritory.attackTerritory(game.secondTerritory);
-            view.showAttack(attack);
-            view.markTerritory(game.firstTerritory.id, false);
-            view.markTerritory(game.secondTerritory.id, false);
-
-            List<Territory> toupdate = new List();
-            toupdate.add(game._arena.territories[
-                game.firstTerritory.id]); //grab the two actual elements out of the arena
-            toupdate.add(game._arena.territories[game.secondTerritory.id]);
-            view.updateSelectedTerritories(toupdate);
-
-            game.firstTerritory = null;
-            game.secondTerritory = null;
-            parent = "";
-
-            if (!(game.players.length > 2)) {
-              this.nextTurn();
-            }
-          }
-        }
-        //COPYPASTE ALL OF THE ABOVE
-      });
+    
     });
 
     view.endTurn.onClick.listen((_) {
       if (game != null) {
+        if (game.firstTerritory != null) {
+          view.markTerritory(game.firstTerritory.id);
+        }
         game.firstTerritory = null;
              game.secondTerritory = null;
              parent = "";
@@ -213,14 +130,8 @@ class DiceController {
         if (actors.length == 0) {
           turn = false;
         } else {
-          view.markTerritory(actors[0], true);
-          view.markTerritory(actors[1], true);
-
           List<List<int>> attack = actors[0].attackTerritory(actors[1]);
-          view.showAttack(attack);
-
-          view.markTerritory(actors[0], false);
-          view.markTerritory(actors[1], false);
+          view.markAIAttack(actors[0],actors[1],attack);
 
           List<Territory> toupdate = new List();
           toupdate.add(game._arena.territories[actors[0].id]); //grab the two actual elements out of the arena

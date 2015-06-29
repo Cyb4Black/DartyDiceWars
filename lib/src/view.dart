@@ -31,14 +31,72 @@ class DiceView {
     endTurn.style.display = "";
     arena.innerHtml = htmlField;
   }
-  //ter = territory to mark, direction true = mark it, false = unmark it
-  void markTerritory(String ter, bool direction) {
-    //a short wait 1/10th second or so needs to be done here too for effects <3
-    new Timer(new Duration(milliseconds: 100), () => print('timer'));
+  
+  showHover(String ter) {
+    if (ter == "") {
+      List<Element> turnoff = querySelectorAll(".hover");
+              for (HtmlElement t in turnoff) {
+                t.classes.toggle('hover');
+              }
+    } else {
+    List<Element> tiles = querySelectorAll("[parent = '$ter']");
+      if (!tiles[0].classes.contains('hover') && !tiles[0].classes.contains('selected')) {
+        List<Element> turnoff = querySelectorAll(".hover");
+        for (HtmlElement t in turnoff) {
+          t.classes.toggle('hover');
+        }
+        
+        for (HtmlElement t in tiles) {
+                  t.classes.toggle('hover');    
+               } 
+      } 
+    }
   }
   
+  //ter = territory to mark, direction true = mark it, false = unmark it
+   markTerritory(String ter) {
+    showHover("");
+    List<Element> tiles = querySelectorAll("[parent = '$ter']");
+    for (HtmlElement t in tiles) {
+      t.classes.toggle('selected');    
+   } 
+ 
+  }
+
+   //display first field getting colored, then wait
+  markAIAttack(String ter1, String ter2, List<List<int>> attack){
+    List<Element> tiles = querySelectorAll("[parent = '$ter1']");
+    for (HtmlElement t in tiles) {
+      t.classes.toggle('selected');      
+    } 
+    new Timer(new Duration(milliseconds: 1000), () => markAIAttack2(ter2, attack));
+    
+  }
+  
+  //display second field getting colored, then wait
+  markAIAttack2(String ter2, List<List<int>> attack) {
+    List<Element> tiles = querySelectorAll("[parent = '$ter2']");
+    for (HtmlElement t in tiles) {
+      t.classes.toggle('selected');      
+    } 
+    new Timer(new Duration(milliseconds: 1000), () => simulateAttack(attack));
+  }
+  
+  //wait a bit before starting the attack to display both selected areas
   void showAttack(List<List<int>> attack) {
     //waiting needs to be done here to actually display the thrown dies
+    new Timer(new Duration(milliseconds: 1000), () => simulateAttack(attack));
+  }
+  
+  
+  //display all the dies etc. WIP
+  simulateAttack(List<List<int>> attack) {
+    print("Shouldve waited #shrug");
+    List<Element> tiles = querySelectorAll(".selected");
+       for (HtmlElement t in tiles) {
+         t.classes.toggle('selected');
+       }
+    
   }
   
   void updateSelectedTerritories(List<Territory> territories) {

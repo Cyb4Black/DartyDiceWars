@@ -48,8 +48,7 @@ class DiceGame {
   }
   nextPlayer() {
     if (currentPlayer.id != "whitefield") {
-      currentPlayer
-          .resupply(); //give this player the right amount of dies on random fields
+      currentPlayer.resupply(); //give this player the right amount of dies on random fields
     }
 
     for (int i = 0; i < players.length; i++) {
@@ -319,7 +318,7 @@ class Territory {
     this.tiles = new List<String>();
     this.neighbourTiles = new Map<String, Tile>();
     this.neighbours = new Map<String, Territory>();
-    dies = 1;
+    dies = 2;
   }
   List<List<int>> attackTerritory(Territory ter) {
     List<List<int>> ret = new List();
@@ -401,8 +400,8 @@ abstract class Player {
     int temp = 1;
     for (int i = 0; i < territories.length; i++) {
       List<Territory> list = new List<Territory>();
-      list.add(territories[i]);
-      temp = longestRoute(territories[i], list, 1);
+     // list.add(territories[i]);
+      temp = longestRoute(territories[i], list, this.id);
       if (temp > max) max = temp;
     }
     print("Resupplying with $max dies.");
@@ -414,20 +413,34 @@ abstract class Player {
     }
   }
 
+  int longestRoute(Territory current, List<Territory> visited, String owner) {
+    int ret = 1;
+    current.neighbours.values.forEach((f) {
+      if (current.ownerRef.id == owner && !(visited.contains(f))) {
+        visited.add(f);
+        ret  += longestRoute(f, visited, owner);
+      }
+    });
+    return ret;
+
+  }
+  /*
   int longestRoute(Territory territory, List<Territory> list, int max) {
     int ret = max;
     int temp;
     territory.neighbours.values.forEach((f) {
       if (territory.owner == f.owner && !list.contains(f)) {
         List<Territory> out = new List<Territory>();
+        //list.add(f);
         out.addAll(list);
         out.add(territory);
-        temp = longestRoute(f, out, max + 1);
+        temp = longestRoute(f, list, max + 1);
         if (temp > ret) ret = temp;
       }
     });
+   
     return ret;
-  }
+  }*/
 }
 
 class Ai_agg extends Player {
