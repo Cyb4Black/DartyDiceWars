@@ -433,8 +433,11 @@ abstract class Player {
     var _random = new Math.Random();
     
     for (int i = 0; i < max+pool; i++) {
+      var random;
       if(territory.length!=0){
-      var random = _random.nextInt(territory.length - 1);
+        if(territory.length!=1)
+          random = _random.nextInt(territory.length - 1);
+        else random=0;
       territory[random].dies++;
       if(territory[random].dies==8)territory.removeAt(random);
       }
