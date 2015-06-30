@@ -289,7 +289,7 @@ class Arena {
     while (toAssign.isNotEmpty) {
       Territory getT = toAssign[rng.nextInt(toAssign.length)];
       if (getT.ownerRef == null) {
-        players[1].territories.add(getT);
+        players[nextPlay].territories.add(getT);
         toAssign.remove(getT);
         getT.ownerRef = players[nextPlay];
         if (nextPlay == players.length-1) {
