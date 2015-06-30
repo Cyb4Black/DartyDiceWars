@@ -6,7 +6,7 @@ class DiceView {
   HtmlElement get attackbar => querySelector('#attackbar');
   final arena = querySelector('#arena');
   var territories;
-  
+ 
   DiceView() {}
 
   void initializeViewField(DiceGame model) {
@@ -31,6 +31,7 @@ class DiceView {
     
     endTurn.style.display = "";
     arena.innerHtml = htmlField;
+
   }
   
   showHover(String ter) {
@@ -65,29 +66,21 @@ class DiceView {
   }
 
    //display first field getting colored, then wait
-  markAIAttack(String ter1, String ter2, List<List<int>> attack){
+  markAIAttack(String ter1) async {
     List<Element> tiles = querySelectorAll("[parent = '$ter1']");
     for (HtmlElement t in tiles) {
       t.classes.toggle('selected');      
     } 
-    new Timer(new Duration(milliseconds: 1000), () => markAIAttack2(ter2, attack));
-    
   }
   
   //display second field getting colored, then wait
-  markAIAttack2(String ter2, List<List<int>> attack) {
+  markAIAttack2(String ter2) {
     List<Element> tiles = querySelectorAll("[parent = '$ter2']");
     for (HtmlElement t in tiles) {
       t.classes.toggle('selected');      
     } 
-    new Timer(new Duration(milliseconds: 1000), () => displayAttack(attack));
   }
   
-  //wait a bit before starting the attack to display both selected areas
-  void showAttack(List<List<int>> attack) {
-    //waiting needs to be done here to actually display the thrown dies
-    new Timer(new Duration(milliseconds: 1000), () => displayAttack(attack));
-  }
   
   
   //display all the dies etc. WIP
@@ -107,11 +100,9 @@ class DiceView {
   
   
   
-  void updateSelectedTerritories(List<Territory> territories) {
-    new Timer(new Duration(milliseconds: 1000), () => displaySelectedTerritories(territories));
-  }
+
   
-  displaySelectedTerritories(List<Territory> territories) {
+  updateSelectedTerritories(List<Territory> territories) {
     for (Territory t in territories) {
              t.tiles.forEach((ti) {
                HtmlElement change = arena.querySelector("#" + ti);
@@ -151,5 +142,7 @@ class DiceView {
         change.setAttribute("parent", t.id);
       });
     });
+    
   }
+  
 }

@@ -454,9 +454,9 @@ class Ai_agg extends Player {
     for (int i = 0; i < territories.length; i++) {
       if (territories[i].dies > 1) {
         territories[i].neighbours.values.forEach((f) {
-          if (territories[i].owner != f.owner) {
-            list[0] = territories[i];
-            list[1] = f;
+          if (territories[i].ownerRef.id != f.ownerRef.id) {
+            list.add(territories[i]);
+            list.add(f);
             return list;
           }
         });
@@ -474,8 +474,8 @@ class Ai_deff extends Player {
         territories[i].neighbours.values.forEach((f) {
           if (territories[i].owner != f.owner) {
             if (territories[i].dies > f.dies + 1 || territories[i].dies == 8) {
-              list[0] = territories[i];
-              list[1] = f;
+              list.add(territories[i]);
+                          list.add(f);
               return list;
             }
           }
@@ -494,8 +494,8 @@ class Ai_smart extends Player {
         territories[i].neighbours.values.forEach((f) {
           if (territories[i].owner != f.owner) {
             if (territories[i].dies > f.dies + 1 || territories[i].dies == 8) {
-              list[0] = territories[i];
-              list[1] = f;
+              list.add(territories[i]);
+                          list.add(f);
               return list;
             }
           }
