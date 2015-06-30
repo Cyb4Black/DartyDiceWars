@@ -318,7 +318,7 @@ class Territory {
     this.tiles = new List<String>();
     this.neighbourTiles = new Map<String, Tile>();
     this.neighbours = new Map<String, Territory>();
-    dies = 2;
+    dies = 1;
   }
   List<List<int>> attackTerritory(Territory ter) {
     List<List<int>> ret = new List();
@@ -388,6 +388,7 @@ class Tile {
 abstract class Player {
   String id;
   List<Territory> territories;
+  var pool ;
   /**
    * Constructor-class for player-object
    * 
@@ -397,22 +398,37 @@ abstract class Player {
    */
   Player(this.id) {
     territories = new List<Territory>();
+    pool=0;
   }
   List<Territory> turn();
   void resupply() {
     int max = 1;
     int temp = 1;
+    List<Territory> territory = new List<Territory>();
     for (int i = 0; i < territories.length; i++) {
       List<Territory> list = new List<Territory>();
      // list.add(territories[i]);
+      if(territories[i].dies<8){
+        territory.add(territories[i]);
+      }
       temp = longestRoute(territories[i], list, this.id);
       if (temp > max) max = temp;
     }
+    
+    
     print("Resupplying with $max dies.");
     var _random = new Math.Random();
-    for (int i = 0; i < max; i++) {
-      if (territories.length > 0) {
-        territories[_random.nextInt(territories.length - 1)].dies++;
+    
+    for (int i = 0; i < max+pool; i++) {
+      if(territory.length!=0){
+      var random = _random.nextInt(territory.length - 1);
+      territory[random].dies++;
+      if(territory[random].dies==8)territory.removeAt(random);
+      }
+      else{
+        if(i<max)pool +=max-(i);
+        if(pool>20)pool=20;
+        break;
       }
     }
   }
@@ -428,23 +444,6 @@ abstract class Player {
     return ret;
 
   }
-  /*
-  int longestRoute(Territory territory, List<Territory> list, int max) {
-    int ret = max;
-    int temp;
-    territory.neighbours.values.forEach((f) {
-      if (territory.owner == f.owner && !list.contains(f)) {
-        List<Territory> out = new List<Territory>();
-        //list.add(f);
-        out.addAll(list);
-        out.add(territory);
-        temp = longestRoute(f, list, max + 1);
-        if (temp > ret) ret = temp;
-      }
-    });
-   
-    return ret;
-  }*/
 }
 
 class Ai_agg extends Player {
@@ -454,7 +453,7 @@ class Ai_agg extends Player {
     for (int i = 0; i < territories.length; i++) {
       if (territories[i].dies > 1) {
         territories[i].neighbours.values.forEach((f) {
-          if (territories[i].ownerRef.id != f.ownerRef.id) {
+          if (territories[i].ownerRef.id != f.ownerRef.id && f.ownerRef.id !="whitefield") {
             list.add(territories[i]);
             list.add(f);
             return list;
@@ -472,7 +471,7 @@ class Ai_deff extends Player {
     for (int i = 0; i < territories.length; i++) {
       if (territories[i].dies > 2) {
         territories[i].neighbours.values.forEach((f) {
-          if (territories[i].owner != f.owner) {
+          if (territories[i].ownerRef.id  != f.ownerRef.id&& f.ownerRef.id !="whitefield" ) {
             if (territories[i].dies > f.dies + 1 || territories[i].dies == 8) {
               list.add(territories[i]);
                           list.add(f);
@@ -492,7 +491,7 @@ class Ai_smart extends Player {
     for (int i = 0; i < territories.length; i++) {
       if (territories[i].dies > 2) {
         territories[i].neighbours.values.forEach((f) {
-          if (territories[i].owner != f.owner) {
+          if (territories[i].ownerRef.id  != f.ownerRef.id&& f.ownerRef.id !="whitefield" ) {
             if (territories[i].dies > f.dies + 1 || territories[i].dies == 8) {
               list.add(territories[i]);
                           list.add(f);
