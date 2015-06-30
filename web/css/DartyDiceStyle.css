@@ -61,8 +61,10 @@ h6{
     position:relative;
     float:left;
     text-align:center;
-    zoom:0.1;
+    zoom:0.1;   
 }
+
+
 
 .hex-row:first-child .hex{
     float:left;

@@ -340,6 +340,7 @@ class Territory {
         hisList.add(temp);
       }
       if (myMax > hisMax) {
+        print("ATTACKER SUCCESSFUL");
         ter.ownerRef.territories.remove(ter);
         ter.owner = owner;
         ter.ownerRef = ownerRef;
@@ -347,8 +348,11 @@ class Territory {
         ter.dies = dies - 1;
         dies = 1;
       } else {
+        print("ATTACKER GOT PWNED KEK");
         dies = 1;
       }
+      print("MY ATTACKS:" + myList.toString());
+      print("HIS DEFENSE:" + hisList.toString());
       ret.add(myList);
       ret.add(hisList);
     }
