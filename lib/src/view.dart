@@ -83,7 +83,7 @@ class DiceView {
   
   displayPlayer(String player){
     Element el = querySelector("#playerbar");
-    el.text=player;
+    el.text=player+": ";
     el.style.display = "";
   }
   
@@ -91,10 +91,14 @@ class DiceView {
   displayAttack(List<List<int>> attack) {
     print("Shouldve waited #shrug");
     
-    attackbar.innerHtml = "ATTACKER DIES: " + attack[0].toString() + ".\nDEFENDER DIES: " + attack[1].toString();
+    //attackbar.innerHtml = ;
     
     Element el = querySelector("#attackbar");
-    el.text="test";
+    int sum1=0;
+    int sum2=0;
+    attack[0].forEach((f){sum1+=f;});
+    attack[1].forEach((f){sum2+=f;});
+    el.text="ATTACKER DIES: " + attack[0].toString() +" "+sum1.toString()+ ".\nDEFENDER DIES: " + attack[1].toString()+" "+sum2.toString();
     el.style.display = "";
     List<Element> tiles = querySelectorAll(".selected");
        for (HtmlElement t in tiles) {
