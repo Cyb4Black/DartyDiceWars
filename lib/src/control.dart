@@ -143,14 +143,14 @@ class DiceController {
           turn = false;
         } else {
           List<List<int>> attack = actors[0].attackTerritory(actors[1]);
-          new Timer(new Duration(milliseconds: 200 + (waitfor*2000)), () => view.markAIAttack(actors[0].id));
-          new Timer(new Duration(milliseconds: 400+ (waitfor*2000)), () => view.markAIAttack(actors[1].id));
-          new Timer(new Duration(milliseconds: 800+ (waitfor*2000)), () => view.displayAttack(attack));
+          new Timer(new Duration(milliseconds: 300 + (waitfor*2000)), () => view.markAIAttack(actors[0].id));
+          new Timer(new Duration(milliseconds: 500+ (waitfor*2000)), () => view.markAIAttack(actors[1].id));
+          new Timer(new Duration(milliseconds: 1000+ (waitfor*2000)), () => view.displayAttack(attack));
           List<Territory> toupdate = new List();
           toupdate.add(game._arena.territories[
               actors[0].id]); //grab the two actual elements out of the arena
           toupdate.add(game._arena.territories[actors[1].id]);
-          new Timer(new Duration(milliseconds: 2000+ (waitfor*2000)), () => view.updateSelectedTerritories(toupdate));
+          new Timer(new Duration(milliseconds: 1000+ (waitfor*2000)), () => view.updateSelectedTerritories(toupdate));
           waitfor ++;
           if (!(game.players.length > 2)) {
             turn = false;
@@ -159,7 +159,10 @@ class DiceController {
         }
       }
     }
-    new Timer(new Duration(milliseconds: 2000+ (waitfor*2000)), () => this.nextTurn());
+    if (game.currentPlayer.id != "whitefield") {
+      new Timer(new Duration(milliseconds: 1000+ (waitfor*2000)), () => this.nextTurn());
+    } else this.nextTurn();
+  
   }
 
   loadLevelData(int levelnr) async {
