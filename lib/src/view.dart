@@ -81,7 +81,11 @@ class DiceView {
     } 
   }
   
-  
+  displayPlayer(String player){
+    Element el = querySelector("#playerbar");
+    el.text=player;
+    el.style.display = "";
+  }
   
   //display all the dies etc. WIP
   displayAttack(List<List<int>> attack) {
@@ -89,13 +93,13 @@ class DiceView {
     
     attackbar.innerHtml = "ATTACKER DIES: " + attack[0].toString() + ".\nDEFENDER DIES: " + attack[1].toString();
     
-    
+    Element el = querySelector("#attackbar");
+    el.text="test";
+    el.style.display = "";
     List<Element> tiles = querySelectorAll(".selected");
        for (HtmlElement t in tiles) {
          t.classes.toggle('selected');
        }
-       
-    
   }
   
   

@@ -125,6 +125,7 @@ class DiceController {
     game.nextPlayer();
     view.updateSelectedTerritories(toUpdate);
     //resupply n stuff, ALSO ASSIGN NEW CURRENT PLAYER
+    view.displayPlayer(game.currentPlayer.id.toString());
     print("Next Player: " + game.currentPlayer.id.toString());
     if (game.currentPlayer.id != "human") {
    this.onTurn();
