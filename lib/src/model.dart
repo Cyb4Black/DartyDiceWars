@@ -42,10 +42,23 @@ class DiceGame {
     }
     currentPlayer = players[order];
     
-    
+    initDies(players);
     
     
   }
+  
+  initDies (List<Player> list){
+    int sum=0 ;
+    for (int i =1 ; i<list.length;i++){
+        int  temp=list[i].territories.length*3;
+          sum += temp;
+     }
+    sum= (sum/list.length-1).round();
+    for(int i =1;i<list.length;i++){
+      list[i].giveDies(sum);
+    }
+  }
+  
   nextPlayer() {
     if (currentPlayer.id != "whitefield") {
       currentPlayer.resupply(); //give this player the right amount of dies on random fields
@@ -432,7 +445,20 @@ abstract class Player {
       }
     }
   }
-
+  giveDies (int dies){
+    List<Territory> list = new List<Territory>();
+    for (int i = 0; i < territories.length; i++) {
+      if(territories[i].dies<8)list.add(territories[i]);
+    }
+    var _random = new Math.Random();
+    while(list.length>0&&dies!=0){
+      var random = _random.nextInt(list.length - 1);
+      list[random].dies++;
+      if(list[random].dies==8)list.removeAt(random);
+      dies--;
+    }
+    if(dies>0)pool+=dies;
+  }
   int longestRoute(Territory current, List<Territory> visited, String owner) {
     int ret = 1;
     current.neighbours.values.forEach((f) {
