@@ -16,12 +16,17 @@ class DiceController {
     
     view.arena.onMouseLeave.listen((ev) {
       view.showHover("");
-    });
+    }); 
     
     view.arena.onMouseEnter.listen((ev) {
       if (game.currentPlayer.id == "human") {
         querySelectorAll('.hex').onMouseOver.listen((_) {
-              view.showHover(_.currentTarget.getAttribute("parent"));
+              if (_.currentTarget.classes.contains("selected")) {
+                view.showHover("");
+              } else {
+                view.showHover(_.currentTarget.getAttribute("parent"));
+              }
+              
             });
       }
     });

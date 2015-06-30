@@ -3,6 +3,7 @@ part of DartyDiceWars;
 class DiceView {
   HtmlElement get startButton => querySelector('#start');
   HtmlElement get endTurn => querySelector('#endTurn');
+  HtmlElement get attackbar => querySelector('#attackbar');
   final arena = querySelector('#arena');
   var territories;
   
@@ -79,34 +80,72 @@ class DiceView {
     for (HtmlElement t in tiles) {
       t.classes.toggle('selected');      
     } 
-    new Timer(new Duration(milliseconds: 1000), () => simulateAttack(attack));
+    new Timer(new Duration(milliseconds: 1000), () => displayAttack(attack));
   }
   
   //wait a bit before starting the attack to display both selected areas
   void showAttack(List<List<int>> attack) {
     //waiting needs to be done here to actually display the thrown dies
-    new Timer(new Duration(milliseconds: 1000), () => simulateAttack(attack));
+    new Timer(new Duration(milliseconds: 1000), () => displayAttack(attack));
   }
   
   
   //display all the dies etc. WIP
-  simulateAttack(List<List<int>> attack) {
+  displayAttack(List<List<int>> attack) {
     print("Shouldve waited #shrug");
+    
+    attackbar.innerHtml = "ATTACKER DIES: " + attack[0].toString() + ".\nDEFENDER DIES: " + attack[1].toString();
+    
+    
     List<Element> tiles = querySelectorAll(".selected");
        for (HtmlElement t in tiles) {
          t.classes.toggle('selected');
        }
+       
     
   }
   
+  
+  
   void updateSelectedTerritories(List<Territory> territories) {
-    //only refresh those certain ids with the new owner and new diecount
+    new Timer(new Duration(milliseconds: 1000), () => displaySelectedTerritories(territories));
+  }
+  
+  displaySelectedTerritories(List<Territory> territories) {
+    for (Territory t in territories) {
+             t.tiles.forEach((ti) {
+               HtmlElement change = arena.querySelector("#" + ti);
+               
+            if (!(t.ownerRef.id == "whitefield")) {
+               String mid = "ID"+ t.x.toString() +"_"+t.y.toString();
+             if (mid == ti){
+                 change.text = t.dies.toString();
+               }
+            }     
+             //  HtmlElement change = arena.querySelector("#" + ti);
+               change.setAttribute("class", "hex ${t.ownerRef.id}");
+               change.setAttribute("owner", t.ownerRef.id);
+               change.setAttribute("parent", t.id);
+             });
+           }
   }
   
   void updateFieldWithTerritories(DiceGame model) {
     model._arena.territories.values.forEach((t) {
       t.tiles.forEach((ti) {
         HtmlElement change = arena.querySelector("#" + ti);
+        
+     if (!(t.ownerRef.id == "whitefield")) {
+        String mid = "ID"+ t.x.toString() +"_"+t.y.toString();
+      if (mid == ti){
+          change.text = t.dies.toString();
+        }
+     }
+
+        
+        
+        
+      //  HtmlElement change = arena.querySelector("#" + ti);
         change.setAttribute("class", "hex ${t.ownerRef.id}");
         change.setAttribute("owner", t.ownerRef.id);
         change.setAttribute("parent", t.id);
