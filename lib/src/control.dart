@@ -69,19 +69,34 @@ class DiceController {
               String defender = game.secondTerritory.ownerRef.id;
               List<List<int>> attack =
                   game.firstTerritory.attackTerritory(game.secondTerritory);
+              
+              if (game.secondTerritory.ownerRef.territories.length == 0) {
+                print(game.secondTerritory.ownerRef.id + " WAS DEFEATED. DAMN SON.");
+                game.players.remove(game.secondTerritory.ownerRef);
+              }
+              
+              
            //   new Timer(new Duration(milliseconds: 1000), () => view.displayAttack(attack, attacker, defender));
               view.displayAttack(attack, attacker, defender);
-              List<Territory> toupdate = new List();
-              //List<Territory> toupdate = new List();
-              toupdate.add(game._arena.territories[
-                  game.firstTerritory.id]); //grab the two actual elements out of the arena
-              toupdate.add(game._arena.territories[game.secondTerritory.id]);
-              new Timer(new Duration(milliseconds: 1000), () => view.updateSelectedTerritories(toupdate));
+//save all the content that is needed for the viewupdate so that it can get updated after the given delay
+        String center1 = "ID" + game._arena.territories[game.firstTerritory.id].x.toString() + "_" + game._arena.territories[game.firstTerritory.id].y.toString();
+        String center2 = "ID" + game._arena.territories[game.secondTerritory.id].x.toString() + "_" + game._arena.territories[game.secondTerritory.id].y.toString();
+        List<String> tiles1 = game._arena.territories[game.firstTerritory.id].tiles;
+        List<String> tiles2 = game._arena.territories[game.secondTerritory.id].tiles;
+        int dice1 = game._arena.territories[game.firstTerritory.id].dice;
+        int dice2 = game._arena.territories[game.secondTerritory.id].dice;
+        String owner1 = game._arena.territories[game.firstTerritory.id].ownerRef.id;
+        String owner2 = game._arena.territories[game.secondTerritory.id].ownerRef.id;
+        
+        new Timer(new Duration(milliseconds: 1000), () => view.updateAfterAttack(center1, center2, tiles1, tiles2, dice1, dice2, owner1, owner2));
               game.firstTerritory = null;
               game.secondTerritory = null;
               parent = "";
               new Timer(new Duration(milliseconds: 1000), () => view.clearFooter(game.currentPlayer.id.toString()));
-
+              
+              
+              
+              
               if (!(game.players.length > 2)) {
                 this.nextTurn();
               }
@@ -120,6 +135,7 @@ class DiceController {
 
   //gets the next player and
   nextTurn() {
+    
     if (!(game.players.length > 2)) {
       int nextLevel = (int.parse(game.level.attributes[0].value)) + 1;
       game = null;
@@ -154,13 +170,24 @@ class DiceController {
           new Timer(new Duration(milliseconds: 300 + (waitfor*2000)), () => view.markAIAttack(actors[0].id));
           new Timer(new Duration(milliseconds: 500+ (waitfor*2000)), () => view.markAIAttack(actors[1].id));
           new Timer(new Duration(milliseconds: 1000+ (waitfor*2000)), () => view.displayAttack(attack, actors[0].ownerRef.id, defender));
-          List<Territory> toupdate = new List();
-          toupdate.add(game._arena.territories[
-              actors[0].id]); //grab the two actual elements out of the arena
-          toupdate.add(game._arena.territories[actors[1].id]);
+           
+          //save all the content that is needed for the viewupdate so that it can get updated after the given delay
+          String center1 = "ID" + game._arena.territories[actors[0].id].x.toString() + "_" + game._arena.territories[actors[0].id].y.toString();
+          String center2 = "ID" + game._arena.territories[actors[1].id].x.toString() + "_" + game._arena.territories[actors[1].id].y.toString();
+          List<String> tiles1 = game._arena.territories[actors[0].id].tiles;
+          List<String> tiles2 = game._arena.territories[actors[1].id].tiles;
+          int dice1 = game._arena.territories[actors[0].id].dice;
+          int dice2 = game._arena.territories[actors[1].id].dice;
+          String owner1 = game._arena.territories[actors[0].id].ownerRef.id;
+          String owner2 = game._arena.territories[actors[1].id].ownerRef.id;
           
-          new Timer(new Duration(milliseconds: 1000+ (waitfor*2000)), () => view.updateSelectedTerritories(toupdate));
+          new Timer(new Duration(milliseconds: 1000+ (waitfor*2000)), () => view.updateAfterAttack(center1, center2, tiles1, tiles2, dice1, dice2, owner1, owner2));
           waitfor ++;
+          if (actors[1].ownerRef.territories.length == 0) {
+                      print(actors[1].ownerRef.id + " WAS DEFEATED. DAMN SON.");
+                      game.players.remove(actors[1].ownerRef);
+                    }
+          
           if (!(game.players.length > 2)) {
             turn = false;
           }

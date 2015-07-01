@@ -392,6 +392,7 @@ class Territory {
       print("HIS DEFENSE:" + hisList.toString());
       ret.add(myList);
       ret.add(hisList);
+      
     }
     return ret;
   }
