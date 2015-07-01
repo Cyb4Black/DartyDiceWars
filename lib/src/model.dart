@@ -33,7 +33,7 @@ class DiceGame {
     //--------------------Build Arena--------------------------
     this._arena = new Arena(xSize, ySize, int.parse(level.children[2].text),
         int.parse(level.children[6].text), int.parse(level.children[0].text),
-        level, players);
+        players);
 
     //select first player based on startposition in levels.xml
     int order = players.length - int.parse(level.children[1].text);
@@ -85,10 +85,10 @@ class Arena {
   Map<String, Territory> territories;
 
   Arena(this._xSize, this._ySize, int playersCnt, int whitefields,
-      int playerhandycap, XmlNode level, List<Player> players) {
+      int playerhandycap, List<Player> players) {
     this.field = new Map<String, Tile>.from(initializeArena(_xSize, _ySize));
     this.territories = new Map<String, Territory>();
-    territories.addAll(initializeTerritories(playersCnt, level, players));
+    territories.addAll(initializeTerritories(playersCnt, whitefields, players));
   }
 
   Map<String, Tile> initializeArena(int x, int y) {
@@ -192,14 +192,13 @@ class Arena {
   }
 
   Map<String, Territory> initializeTerritories(
-      int playersCnt, XmlNode level, List<Player> players) {
+      int playersCnt, int whiteFields, List<Player> players) {
     int visited = 0;
     Map<String, Territory> ret;
     int playerFields;
     while (visited != playerFields) {
       ret = new Map<String, Territory>();
       //--------------initialize vars for calculation------------
-      int whiteFields = int.parse(level.children[6].text);
       int maxFields = (((48 - whiteFields) / (playersCnt)).floor() *
               (playersCnt)) +
           whiteFields;
