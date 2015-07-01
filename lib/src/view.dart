@@ -119,6 +119,7 @@ class DiceView {
        for (HtmlElement t in tiles) {
          t.classes.toggle('selected');
        }
+       new Timer(new Duration(milliseconds: 1000), () => this.clearFooter(atckr));
   }
   
   
@@ -142,6 +143,7 @@ class DiceView {
                change.setAttribute("parent", t.id);
              });
            }
+    
   }
   
   void updateFieldWithTerritories(DiceGame model) {

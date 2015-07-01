@@ -65,9 +65,11 @@ class DiceController {
               view.markTerritory(parent);
             }
             if (game.firstTerritory != null && game.secondTerritory != null) {
+              String attacker = game.firstTerritory.ownerRef.id;
+              String defender = game.secondTerritory.ownerRef.id;
               List<List<int>> attack =
                   game.firstTerritory.attackTerritory(game.secondTerritory);
-              new Timer(new Duration(milliseconds: 1000), () => view.displayAttack(attack, game.firstTerritory.ownerRef.id, game.secondTerritory.ownerRef.id));
+              new Timer(new Duration(milliseconds: 1000), () => view.displayAttack(attack, attacker, defender));
               List<Territory> toupdate = new List();
               //List<Territory> toupdate = new List();
               toupdate.add(game._arena.territories[
@@ -162,7 +164,7 @@ class DiceController {
           }
         }
       }
-      new Timer(new Duration(milliseconds: 100), () => view.clearFooter(game.currentPlayer.id.toString()));
+      //new Timer(new Duration(milliseconds: 100), () => view.clearFooter(game.currentPlayer.id.toString()));
     }
     if (game.currentPlayer.id != "whitefield") {
       new Timer(new Duration(milliseconds: 1000+ (waitfor*2000)), () => this.nextTurn());
