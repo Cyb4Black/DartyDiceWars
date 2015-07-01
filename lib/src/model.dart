@@ -219,7 +219,6 @@ class Arena {
       int n = 1;
       for (int ix = 1; ix <= xMax; ix++) {
         for (int iy = 1; iy <= yMax; iy++) {
-          if (iy % 2 == 0) {
             Territory newT = new Territory(
                 (60 / xMax * ix).floor(), (32 / yMax * iy).floor(), "terr_$n");
             newT.tiles.add("ID${newT.x}_${newT.y}");
@@ -228,22 +227,13 @@ class Arena {
                 .forEach((str) => newT.neighbourTiles[str] = field[str]);
             ret[newT.id] = newT;
             n++;
-          } else {
-            Territory newT = new Territory(
-                (60 / xMax * ix).floor(), (32 / yMax * iy).floor(), "terr_$n");
-            newT.tiles.add("ID${newT.x}_${newT.y}");
-            field[newT.tiles[0]].parentTerr = newT.id;
-            field[newT.tiles[0]].neighbours
-                .forEach((str) => newT.neighbourTiles[str] = field[str]);
-            ret[newT.id] = newT;
-            n++;
-          }
+          
         }
       }
       //-----------------grow Territories 1.---------------------
       ret.values.forEach((t) {
         field[t.tiles[0]].neighbours.forEach((ti) {
-          if (field[ti].parentTerr != null) {
+          if (field[ti].parentTerr == null) {
             t.tiles.add(ti);
             field[ti].neighbours.forEach((f) {
               t.neighbourTiles[f] = field[f];
