@@ -69,7 +69,8 @@ class DiceController {
               String defender = game.secondTerritory.ownerRef.id;
               List<List<int>> attack =
                   game.firstTerritory.attackTerritory(game.secondTerritory);
-              new Timer(new Duration(milliseconds: 1000), () => view.displayAttack(attack, attacker, defender));
+           //   new Timer(new Duration(milliseconds: 1000), () => view.displayAttack(attack, attacker, defender));
+              view.displayAttack(attack, attacker, defender);
               List<Territory> toupdate = new List();
               //List<Territory> toupdate = new List();
               toupdate.add(game._arena.territories[

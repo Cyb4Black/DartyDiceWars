@@ -110,7 +110,7 @@ class DiceView {
     playerbar.text="$atckr: ATTACKER DICE: " + attack[0].toString() + " " + sum1.toString();
     defender.text="$dfndr: DEFENDER DICE: " + attack[1].toString()+" "+sum2.toString();
     defender.style.display = "";
-    if(sum1 < sum2){
+    if(sum1 > sum2){
       playerbar.classes.add("winner");
     }else{
       defender.classes.add("winner");
