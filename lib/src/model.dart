@@ -356,7 +356,7 @@ class Territory {
       int temp;
       List<int> myList = new List();
       List<int> hisList = new List();
-      for (int i = 0; i < dice; i++) {
+      for (int i = 0; i < this.dice; i++) {
         temp = 1 + _random.nextInt(5);
         myMax += temp;
         myList.add(temp);
@@ -372,16 +372,17 @@ class Territory {
         ter.owner = owner;
         ter.ownerRef = ownerRef;
         ownerRef.territories.add(ter);
-        ter.dice = dice - 1;
-        dice = 1;
+        ter.dice = this.dice - 1;
+        this.dice = 1;
       } else {
         print("ATTACKER GOT PWNED KEK");
-        dice = 1;
+        this.dice = 1;
       }
       print("MY ATTACKS:" + myList.toString());
       print("HIS DEFENSE:" + hisList.toString());
       ret.add(myList);
       ret.add(hisList);
+      
     }
     return ret;
   }
