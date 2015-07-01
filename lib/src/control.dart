@@ -67,9 +67,8 @@ class DiceController {
             if (game.firstTerritory != null && game.secondTerritory != null) {
               List<List<int>> attack =
                   game.firstTerritory.attackTerritory(game.secondTerritory);
-              view.displayAttack(attack, game.firstTerritory.ownerRef.id, game.secondTerritory.ownerRef.id);
+              new Timer(new Duration(milliseconds: 1000), () => view.displayAttack(attack, game.firstTerritory.ownerRef.id, game.secondTerritory.ownerRef.id));
               List<Territory> toupdate = new List();
-              new Timer(new Duration(milliseconds: 1000), () => null);
               //List<Territory> toupdate = new List();
               toupdate.add(game._arena.territories[
                   game.firstTerritory.id]); //grab the two actual elements out of the arena
