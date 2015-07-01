@@ -158,6 +158,7 @@ class DiceController {
           toupdate.add(game._arena.territories[
               actors[0].id]); //grab the two actual elements out of the arena
           toupdate.add(game._arena.territories[actors[1].id]);
+          
           new Timer(new Duration(milliseconds: 1000+ (waitfor*2000)), () => view.updateSelectedTerritories(toupdate));
           waitfor ++;
           if (!(game.players.length > 2)) {
