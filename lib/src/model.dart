@@ -194,10 +194,10 @@ class Arena {
   Map<String, Territory> initializeTerritories(
       int playersCnt, XmlNode level, List<Player> players) {
     int visited = 0;
-    Map<String, Territory> ret = new Map<String, Territory>();
+    Map<String, Territory> ret;
     int playerFields;
     while (visited != playerFields) {
-      Map<String, Territory> ret = new Map<String, Territory>();
+      ret = new Map<String, Territory>();
       //--------------initialize vars for calculation------------
       int whiteFields = int.parse(level.children[6].text);
       int maxFields = (((48 - whiteFields) / (playersCnt)).floor() *
