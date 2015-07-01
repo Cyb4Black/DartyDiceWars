@@ -70,7 +70,9 @@ class DiceGame {
         } else {
           currentPlayer = players[0];
         }
-
+         if (currentPlayer.id == "whitefield") {
+           nextPlayer();
+         }
         break;
       }
     }

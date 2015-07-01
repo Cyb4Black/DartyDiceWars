@@ -221,6 +221,7 @@ class DiceController {
           
           if (attackedPlayer.territories.length == 0) {
             print(attackedPlayer.id + " WAS DEFEATED. DAMN SON.");
+            
             game.players.remove(attackedPlayer);
           }
 
