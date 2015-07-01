@@ -43,10 +43,10 @@ class DiceController {
             //INSERT STUFF YOU DO WITH SELECTED 1st and 2nd HERE
 
             //TO BE COPYPASTED INTO ALL THREE CASES
-            print(game._arena.territories[parent].dies);
+            print(game._arena.territories[parent].dice);
             if (game.firstTerritory == null &&
                 owner == "human" &&
-                game._arena.territories[parent].dies > 1) {
+                game._arena.territories[parent].dice > 1) {
 
               //selectTerritory as first one
               game.firstTerritory = game._arena.territories[parent];
@@ -67,8 +67,10 @@ class DiceController {
             if (game.firstTerritory != null && game.secondTerritory != null) {
               List<List<int>> attack =
                   game.firstTerritory.attackTerritory(game.secondTerritory);
-              new Timer(new Duration(milliseconds: 1000), () => view.displayAttack(attack));
+              view.displayAttack(attack, game.firstTerritory.ownerRef.id, game.secondTerritory.ownerRef.id);
               List<Territory> toupdate = new List();
+              new Timer(new Duration(milliseconds: 1000), () => null);
+              //List<Territory> toupdate = new List();
               toupdate.add(game._arena.territories[
                   game.firstTerritory.id]); //grab the two actual elements out of the arena
               toupdate.add(game._arena.territories[game.secondTerritory.id]);
@@ -76,6 +78,7 @@ class DiceController {
               game.firstTerritory = null;
               game.secondTerritory = null;
               parent = "";
+              new Timer(new Duration(milliseconds: 1000), () => view.clearFooter(game.currentPlayer.id.toString()));
 
               if (!(game.players.length > 2)) {
                 this.nextTurn();
@@ -122,6 +125,7 @@ class DiceController {
       return;
     }
     List<Territory> toUpdate = game.currentPlayer.territories;
+    //CLEAR FOOTER
     game.nextPlayer();
     view.updateSelectedTerritories(toUpdate);
     //resupply n stuff, ALSO ASSIGN NEW CURRENT PLAYER
@@ -146,7 +150,7 @@ class DiceController {
           List<List<int>> attack = actors[0].attackTerritory(actors[1]);
           new Timer(new Duration(milliseconds: 300 + (waitfor*2000)), () => view.markAIAttack(actors[0].id));
           new Timer(new Duration(milliseconds: 500+ (waitfor*2000)), () => view.markAIAttack(actors[1].id));
-          new Timer(new Duration(milliseconds: 1000+ (waitfor*2000)), () => view.displayAttack(attack));
+          new Timer(new Duration(milliseconds: 1000+ (waitfor*2000)), () => view.displayAttack(attack, actors[0].ownerRef.id, actors[1].ownerRef.id));
           List<Territory> toupdate = new List();
           toupdate.add(game._arena.territories[
               actors[0].id]); //grab the two actual elements out of the arena
@@ -155,10 +159,10 @@ class DiceController {
           waitfor ++;
           if (!(game.players.length > 2)) {
             turn = false;
-            break;
           }
         }
       }
+      new Timer(new Duration(milliseconds: 100), () => view.clearFooter(game.currentPlayer.id.toString()));
     }
     if (game.currentPlayer.id != "whitefield") {
       new Timer(new Duration(milliseconds: 1000+ (waitfor*2000)), () => this.nextTurn());

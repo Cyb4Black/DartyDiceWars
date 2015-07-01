@@ -190,13 +190,17 @@ class Arena {
 
   Map<String, Territory> initializeTerritories(
       int playersCnt, XmlNode level, List<Player> players) {
+    int visited = 0;
     Map<String, Territory> ret = new Map<String, Territory>();
+    int playerFields;
+        while(visited != playerFields){
+    
     //--------------initialize vars for calculation------------
     int whiteFields = int.parse(level.children[6].text);
     int maxFields = (((48 - whiteFields) / (playersCnt)).floor() * (playersCnt)) + whiteFields;
     int yMax = Math.sqrt(maxFields).floor();
     int xMax = yMax + ((48 - (Math.pow(yMax, 2))).floor() / yMax).floor();
-    int playerFields = yMax * xMax - whiteFields;
+    playerFields = yMax * xMax - whiteFields;
     //-----------------create/add Territories-------------------
     int n = 1;
     for (int ix = 1; ix <= xMax; ix++) {
@@ -237,6 +241,7 @@ class Arena {
     List<Tile> tilesLeft = new List<Tile>();
     tilesLeft.addAll(field.values);
     tilesLeft.removeWhere((tiL) => tiL.parentTerr != null);
+    
     while (tilesLeft.isNotEmpty) {
       ret.values.where((t) => t.neighbourTiles.length > 0).forEach((t) {
         int ranD = rng.nextInt(t.neighbourTiles.length);
@@ -259,30 +264,37 @@ class Arena {
       });
     }
     assignTerritories(ret, players, whiteFields, playerFields);
+    List<Territory> temp = new List<Territory>();
+    visited = allVisited(players[1].territories[0], temp);
+    print("WhiteFields: $whiteFields \nPlayerFields: $playerFields \n Visited: $visited \n TmpLänge: ${temp.length}");
+    }
+    
 
     return ret;
   }
 
-  /*Map<String, Territory> testedMap(
-      int playersCnt, XmlNode level, List<Player> players) {
-    Map<String, Territory> ret = new Map<String, Territory>();
-    bool allVisited = false;
-    while (!allVisited) {
-      ret = initializeTerritories(playersCnt, level, players);
-      if (visited(ret, players)) {
-        allVisited = true;
+  
+  int allVisited(Territory current, List<Territory> visited) {
+      int ret = 0;
+      if(current.ownerRef.id != "whitefield"){
+        ret = 1;
+        visited.add(current);
+        current.neighbours.values.forEach((f){
+          if(!(visited.contains(f))){
+            ret += allVisited(f, visited);
+          }
+        });
       }
-    }
-    return ret;
-  }
+      /*current.neighbours.values.forEach((f) {
+        if (current.ownerRef.id != "whitefield" && !(visited.contains(f))) {
+          visited.add(f);
+          ret = 1;
+          ret  += allVisited(f, visited);
+        }
+      });*/
+      return ret;
 
-  bool visited(Map<String, Territory> toVisit, List<Player> players) {
-    Map seen = new Map();
-    while (seen.length < toVisit.length - players[0].territories.length) {
-      seen[players[1].territories[0].id] = players[1].territories[0];
-      
     }
-  }*/
 
   void assignTerritories(Map<String, Territory> newTs, List<Player> players,
       int whiteFields, int playerFields) {
@@ -322,7 +334,7 @@ class Territory {
   String owner = "";
   Player ownerRef;
   int x, y; //coordinates of root tile for Territory
-  int dies;
+  int dice;
   List<String> tiles;
   Map<String, Tile> neighbourTiles;
   Map<String, Territory> neighbours;
@@ -331,7 +343,7 @@ class Territory {
     this.tiles = new List<String>();
     this.neighbourTiles = new Map<String, Tile>();
     this.neighbours = new Map<String, Territory>();
-    dies = 1;
+    dice = 1;
   }
   List<List<int>> attackTerritory(Territory ter) {
     List<List<int>> ret = new List();
@@ -342,12 +354,12 @@ class Territory {
       int temp;
       List<int> myList = new List();
       List<int> hisList = new List();
-      for (int i = 0; i < dies; i++) {
+      for (int i = 0; i < dice; i++) {
         temp = 1 + _random.nextInt(5);
         myMax += temp;
         myList.add(temp);
       }
-      for (int i = 0; i < ter.dies; i++) {
+      for (int i = 0; i < ter.dice; i++) {
         temp = 1 + _random.nextInt(5);
         hisMax += temp;
         hisList.add(temp);
@@ -358,11 +370,11 @@ class Territory {
         ter.owner = owner;
         ter.ownerRef = ownerRef;
         ownerRef.territories.add(ter);
-        ter.dies = dies - 1;
-        dies = 1;
+        ter.dice = dice - 1;
+        dice = 1;
       } else {
         print("ATTACKER GOT PWNED KEK");
-        dies = 1;
+        dice = 1;
       }
       print("MY ATTACKS:" + myList.toString());
       print("HIS DEFENSE:" + hisList.toString());
@@ -421,7 +433,7 @@ abstract class Player {
     for (int i = 0; i < territories.length; i++) {
       List<Territory> list = new List<Territory>();
      // list.add(territories[i]);
-      if(territories[i].dies<8){
+      if(territories[i].dice<8){
         territory.add(territories[i]);
       }
       temp = longestRoute(territories[i], list, this.id);
@@ -438,8 +450,8 @@ abstract class Player {
         if(territory.length!=1)
           random = _random.nextInt(territory.length - 1);
         else random=0;
-      territory[random].dies++;
-      if(territory[random].dies==8)territory.removeAt(random);
+      territory[random].dice++;
+      if(territory[random].dice==8)territory.removeAt(random);
       }
       else{
         if(i<max)pool +=max-(i);
@@ -451,25 +463,28 @@ abstract class Player {
   giveDies (int dies){
     List<Territory> list = new List<Territory>();
     for (int i = 0; i < territories.length; i++) {
-      if(territories[i].dies<8)list.add(territories[i]);
+      if(territories[i].dice<8)list.add(territories[i]);
     }
     var _random = new Math.Random();
     while(list.length>0&&dies!=0){
       var random = _random.nextInt(list.length - 1);
-      list[random].dies++;
-      if(list[random].dies==8)list.removeAt(random);
+      list[random].dice++;
+      if(list[random].dice==8)list.removeAt(random);
       dies--;
     }
     if(dies>0)pool+=dies;
   }
   int longestRoute(Territory current, List<Territory> visited, String owner) {
-    int ret = 1;
-    current.neighbours.values.forEach((f) {
-      if (current.ownerRef.id == owner && !(visited.contains(f))) {
-        visited.add(f);
-        ret  += longestRoute(f, visited, owner);
-      }
-    });
+    int ret = 0;
+    if(current.ownerRef.id == owner){
+      ret = 1;
+      visited.add(current);
+      current.neighbours.values.forEach((f){
+        if(!(visited.contains(f))){
+          ret += longestRoute(f, visited, owner);
+        }
+      });
+    }
     return ret;
 
   }
@@ -480,7 +495,7 @@ class Ai_agg extends Player {
   List<Territory> turn() {
     List<Territory> list = new List<Territory>();
     for (int i = 0; i < territories.length; i++) {
-      if (territories[i].dies > 1) {
+      if (territories[i].dice > 1) {
         territories[i].neighbours.values.forEach((f) {
           if (territories[i].ownerRef.id != f.ownerRef.id && f.ownerRef.id !="whitefield") {
             list.add(territories[i]);
@@ -498,10 +513,10 @@ class Ai_deff extends Player {
   List<Territory> turn() {
     List<Territory> list = new List<Territory>();
     for (int i = 0; i < territories.length; i++) {
-      if (territories[i].dies > 2) {
+      if (territories[i].dice > 2) {
         territories[i].neighbours.values.forEach((f) {
           if (territories[i].ownerRef.id  != f.ownerRef.id&& f.ownerRef.id !="whitefield" ) {
-            if (territories[i].dies > f.dies + 1 || territories[i].dies == 8) {
+            if (territories[i].dice > f.dice + 1 || territories[i].dice == 8) {
               list.add(territories[i]);
                           list.add(f);
               return list;
@@ -518,10 +533,10 @@ class Ai_smart extends Player {
   List<Territory> turn() {
     List<Territory> list = new List<Territory>();
     for (int i = 0; i < territories.length; i++) {
-      if (territories[i].dies > 2) {
+      if (territories[i].dice > 2) {
         territories[i].neighbours.values.forEach((f) {
           if (territories[i].ownerRef.id  != f.ownerRef.id&& f.ownerRef.id !="whitefield" ) {
-            if (territories[i].dies > f.dies + 1 || territories[i].dies == 8) {
+            if (territories[i].dice > f.dice + 1 || territories[i].dice == 8) {
               list.add(territories[i]);
                           list.add(f);
               return list;

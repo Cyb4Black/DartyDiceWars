@@ -12,6 +12,7 @@ body{
 #arena{
     position:left;
     left:50%;
+
 }
 
 #start{
@@ -28,14 +29,37 @@ body{
     border-radius: 5px;
 }
 #footer{
-   clear: left;
+    clear: left;
 }
 #playerbar{
-  float: left;
+    float: left;
+    height:40px;
+    width:600px;
+    font-style: normal;
+    font-size: 2rem;
+    text-decoration: none;
+    color: black;
+    background: lightgray;
+    border: 3px solid black;
+    border-radius: 5px;
 }
-#attackbar{
-  float: left;
+
+#defender{
+    clear:left;
+    float: left;
+    height:40px;
+    width:600px;
+    font-style: normal;
+    font-size: 2rem;
+    text-decoration: none;
+    color: black;
+    background: lightgray;
+    border: 3px solid black;
+    border-radius: 5px;
 }
+
+
+
 #endTurn{
     float: left;
     top: 50%;
@@ -69,7 +93,8 @@ h6{
     position:relative;
     float:left;
     text-align:center;
-    zoom:0.1;   
+    zoom:0.1;
+
 }
 
 
@@ -108,14 +133,17 @@ h6{
 
 .hex .corner-1{
     transform:rotate(60deg);
+
 }
 
 .hex .corner-2{
     transform:rotate(-60deg);
+ 
 }
 
 .hex-row{
     clear:left;
+    
 }
 
 .hex-row.even .hex{
@@ -175,4 +203,16 @@ h6{
 
 .hex.cpu7{
     background-color:darkorange;
+}
+
+.root{
+    zoom: 10;
+    height:20px;
+    width:20px;
+    border: 1px solid black;
+}
+
+.winner{
+    
+    background-color: lime;
 }

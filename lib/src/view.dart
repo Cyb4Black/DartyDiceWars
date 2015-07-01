@@ -3,7 +3,9 @@ part of DartyDiceWars;
 class DiceView {
   HtmlElement get startButton => querySelector('#start');
   HtmlElement get endTurn => querySelector('#endTurn');
-  HtmlElement get attackbar => querySelector('#attackbar');
+  HtmlElement get playerbar => querySelector('#playerbar');
+  HtmlElement get  attackResult => querySelector("#attackRes");
+  HtmlElement get defender => querySelector('#defender');
   final arena = querySelector('#arena');
   var territories;
  
@@ -82,24 +84,37 @@ class DiceView {
   }
   
   displayPlayer(String player){
-    Element el = querySelector("#playerbar");
-    el.text=player+": ";
-    el.style.display = "";
+    playerbar.text=player;
+    playerbar.style.display = "";
+  }
+  
+  clearFooter(String player){
+    playerbar.text = player;
+    playerbar.classes.clear();
+    defender.classes.clear();
+    defender.text = "";
+    defender.style.display = "none";
   }
   
   //display all the dies etc. WIP
-  displayAttack(List<List<int>> attack) {
+  displayAttack(List<List<int>> attack, String atckr, String dfndr) {
     print("Shouldve waited #shrug");
     
     //attackbar.innerHtml = ;
     
-    Element el = querySelector("#attackbar");
+    
     int sum1=0;
     int sum2=0;
     attack[0].forEach((f){sum1+=f;});
     attack[1].forEach((f){sum2+=f;});
-    el.text="ATTACKER DIES: " + attack[0].toString() +" "+sum1.toString()+ ".\nDEFENDER DIES: " + attack[1].toString()+" "+sum2.toString();
-    el.style.display = "";
+    playerbar.text="$atckr: ATTACKER DICE: " + attack[0].toString() + " " + sum1.toString();
+    defender.text="$dfndr: DEFENDER DICE: " + attack[1].toString()+" "+sum2.toString();
+    defender.style.display = "";
+    if(sum1 < sum2){
+      playerbar.classes.add("winner");
+    }else{
+      defender.classes.add("winner");
+    }
     List<Element> tiles = querySelectorAll(".selected");
        for (HtmlElement t in tiles) {
          t.classes.toggle('selected');
@@ -118,7 +133,7 @@ class DiceView {
             if (!(t.ownerRef.id == "whitefield")) {
                String mid = "ID"+ t.x.toString() +"_"+t.y.toString();
              if (mid == ti){
-                 change.text = t.dies.toString();
+                 change.querySelector(".root").text = t.dice.toString();
                }
             }     
              //  HtmlElement change = arena.querySelector("#" + ti);
@@ -137,7 +152,10 @@ class DiceView {
      if (!(t.ownerRef.id == "whitefield")) {
         String mid = "ID"+ t.x.toString() +"_"+t.y.toString();
       if (mid == ti){
-          change.text = t.dies.toString();
+        String newEl = '<div class="root">' + t.dice.toString() + '</div>';
+        change.appendHtml(newEl);
+        //change.children.add((new HtmlElement.created().text = t.dice.toString()));
+          //change.text = t.dice.toString();
         }
      }
 
