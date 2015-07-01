@@ -136,7 +136,7 @@ class DiceController {
     }
   }
 
-  onTurn() async{
+  onTurn() {
     int waitfor = 0;
     bool turn = true;
     while (turn) {
@@ -147,10 +147,11 @@ class DiceController {
         if (actors.length == 0) {
           turn = false;
         } else {
+          String defender = actors[1].ownerRef.id;
           List<List<int>> attack = actors[0].attackTerritory(actors[1]);
           new Timer(new Duration(milliseconds: 300 + (waitfor*2000)), () => view.markAIAttack(actors[0].id));
           new Timer(new Duration(milliseconds: 500+ (waitfor*2000)), () => view.markAIAttack(actors[1].id));
-          new Timer(new Duration(milliseconds: 1000+ (waitfor*2000)), () => view.displayAttack(attack, actors[0].ownerRef.id, actors[1].ownerRef.id));
+          new Timer(new Duration(milliseconds: 1000+ (waitfor*2000)), () => view.displayAttack(attack, actors[0].ownerRef.id, defender));
           List<Territory> toupdate = new List();
           toupdate.add(game._arena.territories[
               actors[0].id]); //grab the two actual elements out of the arena
