@@ -83,12 +83,25 @@ class Arena {
   int _ySize;
   Map<String, Tile> field;
   Map<String, Territory> territories;
+  int visited;
+  int playerFields;
 
   Arena(this._xSize, this._ySize, int playersCnt, int whitefields,
       int playerhandycap, List<Player> players) {
+    visited = 0;
+    while(visited != playerFields){
+      players.forEach((p){
+        p.territories.clear();
+      });
+      this.field = null;
+      this.territories = null;
     this.field = new Map<String, Tile>.from(initializeArena(_xSize, _ySize));
     this.territories = new Map<String, Territory>();
     territories.addAll(initializeTerritories(playersCnt, whitefields, players));
+    List<Territory> temp = new List<Territory>();
+    visited = allVisited(players[1].territories[0], temp);
+    print("WhiteFields: $whitefields \nPlayerFields: $playerFields \n Visited: $visited \n TmpLänge: ${temp.length}");
+    }
   }
 
   Map<String, Tile> initializeArena(int x, int y) {
@@ -193,10 +206,7 @@ class Arena {
 
   Map<String, Territory> initializeTerritories(
       int playersCnt, int whiteFields, List<Player> players) {
-    int visited = 0;
     Map<String, Territory> ret;
-    int playerFields;
-    while (visited != playerFields) {
       ret = new Map<String, Territory>();
       //--------------initialize vars for calculation------------
       int maxFields = (((48 - whiteFields) / (playersCnt)).floor() *
@@ -271,11 +281,7 @@ class Arena {
         });
       }
       assignTerritories(ret, players, whiteFields, playerFields);
-      List<Territory> temp = new List<Territory>();
-      visited = allVisited(players[1].territories[0], temp);
-      print(
-          "WhiteFields: $whiteFields \nPlayerFields: $playerFields \n Visited: $visited \n TmpLänge: ${temp.length}");
-    }
+      
 
     return ret;
   }
@@ -303,6 +309,7 @@ class Arena {
 
   void assignTerritories(Map<String, Territory> newTs, List<Player> players,
       int whiteFields, int playerFields) {
+    
     var rng = new Math.Random();
     List<Territory> toAssign = new List<Territory>();
     toAssign.addAll(newTs.values);
