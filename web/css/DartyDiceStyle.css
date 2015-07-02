@@ -4,7 +4,7 @@ body{
 }
 
 #content{
-    position:left;
+    clear:left;
     left:50%;
     text-align:left;
 }
@@ -15,18 +15,21 @@ body{
 
 }
 
-#start{
-    position:absolute;
-    top: 50%;
-    left:50%;
-    padding: 5px 20px 5px 20px;
-    font-style: normal;
-    font-size: 2rem;
-    text-decoration: none;
-    color: black;
-    background: lightgray;
-    border: 3px solid black;
-    border-radius: 5px;
+#start,
+#endTurn{
+    clear:left;
+    heigth:40px;
+    width:120px;
+    padding:5px 20px 5px 20px;
+    margin-top:5px;
+    font-style:normal;
+    font-size:2rem;
+    text-decoration:none;
+    text-align:center;
+    color:black;
+    background:lightgray;
+    border:3px solid black;
+    border-radius:5px;
 }
 
 #sidebar{
@@ -37,58 +40,43 @@ body{
     float:left;
 }
 
-.col div{
+.player{
     margin-left:5px;
     margin-top:5px;
     height:80px;
     width:95px;
-    border: 3px solid black;
+    border:3px solid black;
     border-radius:5px
 }
 
-#footer{
-    clear: left;
-}
-#messagebar{
-    float: left;
+
+.messagebar{
+    clear:left;
     height:40px;
-    width:600px;
-    font-style: normal;
-    font-size: 2rem;
-    text-decoration: none;
-    color: black;
-    border: 3px solid black;
-    border-radius: 5px;
+    width:900px;
+    margin-top:15px;
+    font-style:normal;
+    font-size:2rem;
+    text-decoration:none;
+    text-align:center;
+    color:black;
+    border:3px solid black;
+    border-radius:5px;
 }
 
 #defender{
     clear:left;
-    float: left;
+    float:left;
     height:40px;
     width:600px;
-    font-style: normal;
-    font-size: 2rem;
-    text-decoration: none;
-    color: black;
-    border: 3px solid black;
-    border-radius: 5px;
+    font-style:normal;
+    font-size:2rem;
+    text-decoration:none;
+    color:black;
+    border:3px solid black;
+    border-radius:5px;
 }
 
-
-
-#endTurn{
-    float: left;
-    top: 50%;
-    left:50%;
-    padding: 5px 20px 5px 20px;
-    font-style: normal;
-    font-size: 2rem;
-    text-decoration: none;
-    color: black;
-    background: lightgray;
-    border: 3px solid black;
-    border-radius: 5px;
-}
 
 h1,
 h2,
@@ -142,7 +130,7 @@ h6{
     left:0;
     width:100%;
     height:100%;
-    background:inherit; 
+    background:inherit;
     overflow:hidden;
     backface-visibility:hidden;
 }
@@ -154,12 +142,12 @@ h6{
 
 .hex .corner-2{
     transform:rotate(-60deg);
- 
+
 }
 
 .hex-row{
     clear:left;
-    
+
 }
 
 .hex-row.even .hex{
@@ -218,24 +206,150 @@ h6{
 
 
 .hex.selected{
-  opacity: 0.7;
+    opacity:0.7;
 }
- 
+
 .hex.hover{
-  opacity: 0.9;
+    opacity:0.9;
 }
 
 .root{
-    zoom: 10;
+    zoom:10;
     height:20px;
     width:20px;
-    border: 1px solid black;
-    z-index: 10;
-    background-color: grey;
-    position: fixed;
+    border:1px solid black;
+    z-index:10;
+    background-color:grey;
+    position:fixed;
+}
+
+.attacker{
+    border-color:yellow;
 }
 
 .winner{
+    border-collor:lime;
+}
+
+.looser{
+    border-color:red;
+}
+
+#loadinganim{
+    height:200px;
+    clear:left;
+    zoom:0.2;
+    margin-top:200px;
+}
+
+#loadinganim div{
+    border-radius:50%;
+    position:fixed;
     
-    background-color: lime;
+    left:50%;
+}
+#loadinganim div:nth-of-type(odd){
+    background:black;
+}
+#loadinganim div:nth-of-type(even){
+    background:white;
+    border:2px solid black;
+}
+#loadinganim div:nth-of-type(11){
+    height:10px;
+    width:10px;
+    margin-top:-5px;
+    margin-left:-5px;
+    -webkit-animation:slide 3s ease-in-out infinite;
+    animation:slide 3s ease-in-out infinite;
+}
+#loadinganim div:nth-of-type(10){
+    height:20px;
+    width:20px;
+    margin-top:-12px;
+    margin-left:-12px;
+    -webkit-animation:slide 3s -2.7s ease-in-out infinite;
+    animation:slide 3s -2.7s ease-in-out infinite;
+}
+#loadinganim div:nth-of-type(9){
+    height:40px;
+    width:40px;
+    margin-top:-20px;
+    margin-left:-20px;
+    -webkit-animation:slide 3s -2.4s ease-in-out infinite;
+    animation:slide 3s -2.4s ease-in-out infinite;
+}
+#loadinganim div:nth-of-type(8){
+    height:60px;
+    width:60px;
+    margin-top:-32px;
+    margin-left:-32px;
+    -webkit-animation:slide 3s -2.1s ease-in-out infinite;
+    animation:slide 3s -2.1s ease-in-out infinite;
+}
+#loadinganim div:nth-of-type(7){
+    height:80px;
+    width:80px;
+    margin-top:-40px;
+    margin-left:-40px;
+    -webkit-animation:slide 3s -1.8s ease-in-out infinite;
+    animation:slide 3s -1.8s ease-in-out infinite;
+}
+#loadinganim div:nth-of-type(6){
+    height:100px;
+    width:100px;
+    margin-top:-52px;
+    margin-left:-52px;
+    -webkit-animation:slide 3s -1.5s ease-in-out infinite;
+    animation:slide 3s -1.5s ease-in-out infinite;
+}
+#loadinganim div:nth-of-type(5){
+    height:120px;
+    width:120px;
+    margin-top:-60px;
+    margin-left:-60px;
+    -webkit-animation:slide 3s -1.2s ease-in-out infinite;
+    animation:slide 3s -1.2s ease-in-out infinite;
+}
+#loadinganim div:nth-of-type(4){
+    height:140px;
+    width:140px;
+    margin-top:-72px;
+    margin-left:-72px;
+    -webkit-animation:slide 3s -0.9s ease-in-out infinite;
+    animation:slide 3s -0.9s ease-in-out infinite;
+}
+#loadinganim div:nth-of-type(3){
+    height:160px;
+    width:160px;
+    margin-top:-80px;
+    margin-left:-80px;
+    -webkit-animation:slide 3s -0.6s ease-in-out infinite;
+    animation:slide 3s -0.6s ease-in-out infinite;
+}
+#loadinganim div:nth-of-type(2){
+    height:180px;
+    width:180px;
+    margin-top:-92px;
+    margin-left:-92px;
+    -webkit-animation:slide 3s -0.3s ease-in-out infinite;
+    animation:slide 3s -0.3s ease-in-out infinite;
+}
+#loadinganim div:nth-of-type(1){
+    height:200px;
+    width:200px;
+    margin-top:-100px;
+    margin-left:-100px;
+    -webkit-animation:slide 3s ease-in-out infinite;
+    animation:slide 3s ease-in-out infinite;
+}
+@keyframes slide {
+  0% { left:50%; }
+  50% { left:10%; }
+  100% { left:50%; }
+}
+@-webkit-keyframes slide {
+  0% { left:50%; }
+  50% { left:10%; }
+  100% { left:50%; }
 }

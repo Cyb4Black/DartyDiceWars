@@ -3,15 +3,23 @@ part of DartyDiceWars;
 class DiceView {
   HtmlElement get startButton => querySelector('#start');
   HtmlElement get endTurn => querySelector('#endTurn');
-  HtmlElement get playerbar => querySelector('#playerbar');
-  HtmlElement get attackResult => querySelector("#attackRes");
-  HtmlElement get defender => querySelector('#defender');
+  HtmlElement get messageBar => querySelector('#messagebar');
+  HtmlElement get sideBar => querySelector("#sidebar");
+  HtmlElement get titleBar => querySelector('#titlebar');
+  HtmlElement get loadingAnim => querySelector('#loadinganim');
   final arena = querySelector('#arena');
   var territories;
 
   DiceView() {}
+  void showAnim(){
+    loadingAnim.style.display = "";
+  }
+  
+  void hideAnim(){
+    loadingAnim.style.display = "none";
+  }
 
-  void initializeViewField(DiceGame model) {
+  void initializeViewField(DiceGame model, int maxLevel) {
     var field = model._arena;
     String htmlField = "";
     for (int iy = 1; iy <= field._ySize; iy++) {
@@ -29,6 +37,11 @@ class DiceView {
       }
       htmlField += (rowA + '</div>' + rowB + '</div>');
     }
+    
+    model.players.forEach((pl){
+      sideBar.querySelector("." + pl.id).style.display = "";
+    });
+    titleBar.text = "You're fighting in level ${model.level.attributes[0]} of $maxLevel private!";
 
     endTurn.style.display = "";
     arena.innerHtml = htmlField;
@@ -82,21 +95,29 @@ class DiceView {
   }
 
   displayPlayer(String player) {
-    playerbar.text = player;
-    playerbar.style.display = "";
+    sideBar.querySelector("." + player).classes.add("attacker");
   }
 
-  clearFooter(String player) {
-    playerbar.text = player;
-    playerbar.classes.clear();
-    defender.classes.clear();
-    defender.text = "";
-    defender.style.display = "none";
+  undisplayPlayer(String player) {
+    sideBar.querySelector("." + player).classes.remove("attacker");
+  }
+
+  clearSidebar(String atk, String def) {
+    HtmlElement divAtk = sideBar.querySelector("." + atk);
+    HtmlElement divDef = sideBar.querySelector("." + def);
+    divAtk.attributes["class"] = "player $atk attacker";
+    divDef.attributes["class"] = "player $def";
+    
+    divAtk.querySelector(".attackbar").text = "";
+    divDef.querySelector(".attackbar").text = "";
   }
 
   //display all the dies etc. WIP
   displayAttack(List<List<int>> attack, String atckr, String dfndr) {
     print("Shouldve waited #shrug");
+    
+    HtmlElement divAtk = sideBar.querySelector("." + atckr);
+    HtmlElement divDef = sideBar.querySelector("." + dfndr);
 
     //attackbar.innerHtml = ;
 
@@ -108,25 +129,18 @@ class DiceView {
     attack[1].forEach((f) {
       sum2 += f;
     });
-    playerbar.text = "$atckr: ATTACKER DICE: " +
-        attack[0].toString() +
-        " " +
-        sum1.toString();
-    defender.text = "$dfndr: DEFENDER DICE: " +
-        attack[1].toString() +
-        " " +
-        sum2.toString();
-    defender.style.display = "";
+    divAtk.querySelector(".attackbar").text = "$atckr: ATK: " + attack[0].toString() + " " + sum1.toString();
+    divDef.querySelector(".attackbar").text = "$dfndr: DEFENDER DICE: " + attack[1].toString() + " " + sum2.toString();
     if (sum1 > sum2) {
-      playerbar.classes.add("winner");
+      divAtk.classes.add("winner");
     } else {
-      defender.classes.add("winner");
+      divDef.classes.add("winner");
     }
     List<Element> tiles = querySelectorAll(".selected");
     for (HtmlElement t in tiles) {
       t.classes.toggle('selected');
     }
-    new Timer(new Duration(milliseconds: 1000), () => this.clearFooter(atckr));
+    new Timer(new Duration(milliseconds: 750), () => this.clearSidebar(atckr, dfndr));
   }
 
   updateSelectedTerritories(List<Territory> ters) {
@@ -149,8 +163,11 @@ class DiceView {
   }
 
   updateAfterAttack(String center1, String center2, List<String> tiles1,
-      List<String> tiles2, int dice1, int dice2, String owner1, String owner2, int ownLongestRoute, int enemyLongestRoute) {
-    print(ownLongestRoute.toString() + " BUT ERRYONE ALREADY KNOWS THE REAL MVP IS " + enemyLongestRoute.toString());
+      List<String> tiles2, int dice1, int dice2, String owner1, String owner2,
+      int ownLongestRoute, int enemyLongestRoute) {
+    print(ownLongestRoute.toString() +
+        " BUT ERRYONE ALREADY KNOWS THE REAL MVP IS " +
+        enemyLongestRoute.toString());
     for (String ti in tiles1) {
       HtmlElement change = arena.querySelector("#" + ti);
 
@@ -173,7 +190,7 @@ class DiceView {
       change.setAttribute("class", "hex $owner2");
       change.setAttribute("owner", owner2);
     }
-    
+
     //UPDATE THE PLAYERBAR WITH INFO ON THE MAX CONNECTED TILES
   }
 

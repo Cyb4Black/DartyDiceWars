@@ -69,9 +69,7 @@ class DiceController {
                 String defender = game.secondTerritory.ownerRef.id;
                 Player attackedPlayer = game.secondTerritory.ownerRef;
                 List<List<int>> attack =
-                    game.firstTerritory.attackTerritory(game.secondTerritory);
-
-                //   new Timer(new Duration(milliseconds: 1000), () => view.displayAttack(attack, attacker, defender));
+                game.firstTerritory.attackTerritory(game.secondTerritory);
                 view.displayAttack(attack, attacker, defender);
 //save all the content that is needed for the viewupdate so that it can get updated after the given delay
                 String center1 = "ID" +
@@ -133,7 +131,7 @@ class DiceController {
                 game.secondTerritory = null;
                 parent = "";
                 new Timer(new Duration(milliseconds: 1000),
-                    () => view.clearFooter(game.currentPlayer.id.toString()));
+                    () => view.clearSidebar(game.currentPlayer.id.toString()));
 
                 if (!(game.players.length > 2)) {
                   this.nextTurn();
@@ -160,8 +158,10 @@ class DiceController {
   }
 
   startGame(int levelnr) async {
+    view.showAnim();
     await this.loadLevelData(levelnr);
     game = new DiceGame(60, 32, level);
+    view.hideAnim();
 
     view.initializeViewField(game);
     view.updateFieldWithTerritories(game);
@@ -182,11 +182,12 @@ class DiceController {
     }
     List<Territory> toUpdate = game.currentPlayer.territories;
     //CLEAR FOOTER
+    view.undisplayPlayer(game.currentPlayer.id);
     game.nextPlayer();
     view.updateSelectedTerritories(toUpdate);
     //resupply n stuff, ALSO ASSIGN NEW CURRENT PLAYER
-    view.displayPlayer(game.currentPlayer.id.toString());
-    print("Next Player: " + game.currentPlayer.id.toString());
+    view.displayPlayer(game.currentPlayer.id);
+    print("Next Player: " + game.currentPlayer.id);
     if (game.currentPlayer.id != "human") {
       this.onTurn();
     }
@@ -264,12 +265,9 @@ class DiceController {
           }
         }
       }
-      //new Timer(new Duration(milliseconds: 100), () => view.clearFooter(game.currentPlayer.id.toString()));
     }
-    if (game.currentPlayer.id != "whitefield") {
-      new Timer(new Duration(milliseconds: 1000 + (waitfor * 2000)),
-          () => this.nextTurn());
-    } else this.nextTurn();
+    new Timer(new Duration(milliseconds: 500 + (waitfor * 2000)), () => view.clearSidebar(game.currentPlayer.id.toString()));
+    new Timer(new Duration(milliseconds: 1000 + (waitfor * 2000)),() => this.nextTurn());
   }
 
   loadLevelData(int levelnr) async {
