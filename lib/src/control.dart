@@ -127,8 +127,6 @@ class DiceController {
                 game.firstTerritory = null;
                 game.secondTerritory = null;
                 parent = "";
-                new Timer(new Duration(milliseconds: 1000),
-                    () => view.clearFooter(game.currentPlayer.id.toString()));
 
                 if (!(game.players.length > 2)) {
                   this.nextTurn();
@@ -197,10 +195,8 @@ class DiceController {
       
     }
     Player oldPlayer = game.currentPlayer;
-
     view.undisplayPlayer(oldPlayer.id);
     List<Territory> toUpdate = game.currentPlayer.territories;
-    //CLEAR FOOTER
     game.nextPlayer();
     view.updateSelectedTerritories(toUpdate);
     //resupply n stuff, ALSO ASSIGN NEW CURRENT PLAYER
