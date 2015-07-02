@@ -43,7 +43,7 @@ class DiceView {
       });
       pl.style.display = "none";
     });
-    for(int i = 1; i < model.players.length; i++){
+    for(int i = 1; i < model.players.length -1 ; i++){
       sideBar.querySelector("." + model.players[i].id).style.display = "";
       sideBar.querySelector("." + model.players[i].id).querySelector(".plSupply").text = "MaxChain: ${pools[i]}";
       sideBar.querySelector("." + model.players[i].id).querySelector(".plPool").text = "Dice pool: 0";
