@@ -157,8 +157,21 @@ class DiceController {
   startGame(int levelnr) async {
     await this.loadLevelData(levelnr);
     game = new DiceGame(60, 32, level);
-
-    view.initializeViewField(game, maxlevel);
+    List<int> startRoutes = new List();
+    for (int j = 1; j < game.players.length; j++) {
+      int temp;
+                
+                for (int i = 0; i < game.players[j].territories.length; i++) {
+                  List<Territory> list = new List<Territory>();
+                  temp = game.players[j].longestRoute(
+                      game.players[j].territories[i], list, game.players[j].id);
+                  if (temp > startRoutes[j]) startRoutes[j] = temp;
+                }
+    }
+    
+    
+    
+    view.initializeViewField(game, maxlevel, startRoutes);
     view.updateFieldWithTerritories(game);
     print("First Player: " + game.currentPlayer.id.toString());
     if (game.currentPlayer.id != "human") {
