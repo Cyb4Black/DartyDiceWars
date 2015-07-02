@@ -194,10 +194,9 @@ class DiceController {
       }
       
     }
-    Player oldPlayer = game.nextPlayer();
+    Player oldPlayer = game.currentPlayer;
     view.undisplayPlayer(oldPlayer.id);
     List<Territory> toUpdate = game.currentPlayer.territories;
-    //CLEAR FOOTER
     game.nextPlayer();
     view.updateSelectedTerritories(toUpdate);
     //resupply n stuff, ALSO ASSIGN NEW CURRENT PLAYER
