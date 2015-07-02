@@ -49,7 +49,7 @@ class DiceView {
       sideBar.querySelector("." + model.players[i].id).querySelector(".plPool").text = "Dice pool: 0";
     }
     
-    titleBar.text = "You're fighting in level ${model.level.attributes[0]} of $maxLevel private!";
+    titleBar.text = "You're fighting in level ${model.level.attributes[0].value} of $maxLevel private!";
 
     endTurn.style.display = "";
     arena.innerHtml = htmlField;
