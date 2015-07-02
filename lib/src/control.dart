@@ -112,7 +112,7 @@ class DiceController {
                 
                 new Timer(new Duration(milliseconds: 1000), () => view
                     .updateAfterAttack(center1, center2, tiles1, tiles2, dice1,
-                        dice2, attacker, defender, ownLongestRoute, enemyLongestRoute));
+                        dice2, attacker, defender, ownLongestRoute, enemyLongestRoute, game._arena.territories[game.secondTerritory.id].ownerRef.id));
 
                 if (attackedPlayer.territories.length == 0) {
                   print(attackedPlayer.id + " WAS DEFEATED. DAMN SON.");
@@ -259,7 +259,7 @@ class DiceController {
 
           new Timer(new Duration(milliseconds: 1000 + (waitfor * 2000)),
               () => view.updateAfterAttack(center1, center2, tiles1, tiles2,
-                  dice1, dice2, owner1, owner2, ownLongestRoute, enemyLongestRoute));
+                  dice1, dice2, owner1, owner2, ownLongestRoute, enemyLongestRoute, game._arena.territories[actors[1].id].ownerRef.id));
 
           waitfor++;
 
