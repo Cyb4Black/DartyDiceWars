@@ -51,7 +51,7 @@ class DiceGame {
       int temp = list[i].territories.length * 3;
       sum += temp;
     }
-    sum = (sum / list.length - 1).round();
+    sum = (sum / (list.length - 1)).floor();
     for (int i = 1; i < list.length; i++) {
       list[i].giveDies(sum);
     }
@@ -209,12 +209,11 @@ class Arena {
     Map<String, Territory> ret;
       ret = new Map<String, Territory>();
       //--------------initialize vars for calculation------------
-      int maxFields = (((48 - whiteFields) / (playersCnt)).floor() *
-              (playersCnt)) +
-          whiteFields;
-      int yMax = Math.sqrt(maxFields).floor();
+      int maxFields = 48 - whiteFields;
+      playerFields = (maxFields / playersCnt).floor() * playersCnt;
+      int yMax = Math.sqrt(48).floor();
       int xMax = yMax + ((48 - (Math.pow(yMax, 2))).floor() / yMax).floor();
-      playerFields = yMax * xMax - whiteFields;
+      whiteFields = 48 - playerFields;
       //-----------------create/add Territories-------------------
       int n = 1;
       for (int ix = 1; ix <= xMax; ix++) {
@@ -461,6 +460,7 @@ abstract class Player {
       }
     }
   }
+  
   giveDies(int dies) {
     List<Territory> list = new List<Territory>();
     for (int i = 0; i < territories.length; i++) {
@@ -475,6 +475,8 @@ abstract class Player {
     }
     if (dies > 0) pool += dies;
   }
+  
+  
   int longestRoute(Territory current, List<Territory> visited, String owner) {
     int ret = 0;
     if (current.ownerRef.id == owner) {
