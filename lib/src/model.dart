@@ -449,8 +449,9 @@ abstract class Player {
 
     print("Resupplying with $max dies.");
     var _random = new Math.Random();
-
-    for (int i = 0; i < max + pool; i++) {
+    int oldpool = pool;
+    pool = 0;
+    for (int i = 0; i < max + oldpool; i++) {
       var random;
       if (territory.length != 0) {
         if (territory.length != 1) random =

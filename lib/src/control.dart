@@ -241,8 +241,8 @@ class DiceController {
           List<String> tiles2 = game._arena.territories[actors[1].id].tiles;
           int dice1 = game._arena.territories[actors[0].id].dice;
           int dice2 = game._arena.territories[actors[1].id].dice;
-          String owner1 = game._arena.territories[actors[0].id].ownerRef.id;
-          String owner2 = game._arena.territories[actors[1].id].ownerRef.id;
+          String owner1 = game.currentPlayer.id;
+          String owner2 = attackedPlayer.id;
 
           int ownLongestRoute = 1;
           int enemyLongestRoute = 1;
