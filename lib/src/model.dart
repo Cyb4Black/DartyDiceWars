@@ -339,7 +339,6 @@ class Arena {
  */
 class Territory {
   String id; //individual ID per territory
-  String owner = "";
   Player ownerRef;
   int x, y; //coordinates of root tile for Territory
   int dice;
@@ -375,7 +374,6 @@ class Territory {
       if (myMax > hisMax) {
         print("ATTACKER SUCCESSFUL");
         ter.ownerRef.territories.remove(ter);
-        ter.owner = owner;
         ter.ownerRef = ownerRef;
         ownerRef.territories.add(ter);
         ter.dice = this.dice - 1;
