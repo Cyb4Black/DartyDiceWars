@@ -18,6 +18,14 @@ class DiceView {
   void hideAnim(){
     loadingAnim.style.display = "none";
   }
+  
+  void showMessage(String m){
+    messageBar.text = m;
+  }
+  
+  void removeDefeatedPlayer(Player attackedPlayer){
+    sideBar.querySelector("." + attackedPlayer.id).style.display = "none";
+  }
 
   void initializeViewField(DiceGame model, int maxLevel, List<int> pools) {
     var field = model._arena;
@@ -51,6 +59,7 @@ class DiceView {
     }
     
     titleBar.text = "You're fighting in level ${model.level.attributes[0].value} of $maxLevel private!";
+    messageBar.text = "";
 
     endTurn.style.display = "";
     arena.innerHtml = htmlField;

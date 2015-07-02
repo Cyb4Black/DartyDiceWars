@@ -117,7 +117,9 @@ class DiceController {
 
                 if (attackedPlayer.territories.length == 0) {
                   print(attackedPlayer.id + " WAS DEFEATED. DAMN SON.");
+                  view.showMessage(attackedPlayer.id + " WAS DEFEATED. DAMN SON.");
                   game.players.remove(attackedPlayer);
+                  view.removeDefeatedPlayer(attackedPlayer);
                 }
 
                 game.firstTerritory = null;
@@ -170,6 +172,7 @@ class DiceController {
     view.initializeViewField(game, maxlevels, startRoutes);
     view.updateFieldWithTerritories(game);
     print("First Player: " + game.currentPlayer.id.toString());
+    view.showMessage("First Player: " + game.currentPlayer.id.toString());
     if (game.currentPlayer.id != "human") {
       this.onTurn();
     }
@@ -180,12 +183,14 @@ class DiceController {
     if (!(game.players.length > 2)) {
       if (game.currentPlayer.id == "human") {
         print("CURRENT GAME WON. DANK M8");
+        view.showMessage("CURRENT GAME WON. DANK M8");
               int nextLevel = (int.parse(game.level.attributes[0].value)) + 1;
               game = null;
               startGame(nextLevel);
               return;
       } else {
         print("DAMN SON. YOU LOST");
+        view.showMessage("DAMN SON. YOU LOST");
         game = null;
                       startGame(1);
                       return;
@@ -200,6 +205,7 @@ class DiceController {
     //resupply n stuff, ALSO ASSIGN NEW CURRENT PLAYER
     view.displayPlayer(game.currentPlayer.id, oldPlayer);
     print("Next Player: " + game.currentPlayer.id);
+    view.showMessage("Now playing: " + game.currentPlayer.id);
     if (game.currentPlayer.id != "human") {
       this.onTurn();
     }
@@ -268,7 +274,10 @@ class DiceController {
 
           if (attackedPlayer.territories.length == 0) {
             print(attackedPlayer.id + " WAS DEFEATED. DAMN SON.");
+            view.showMessage(attackedPlayer.id + " WAS DEFEATED. DAMN SON.");
             game.players.remove(attackedPlayer);
+
+            view.removeDefeatedPlayer(attackedPlayer);
           }
 
           if (!(game.players.length > 2)) {
@@ -285,7 +294,6 @@ class DiceController {
   }
 
  loadLevelData(int levelnr) async {
-    Future<XmlNode> ret = null;
     try {
       dynamic file = await HttpRequest.getString('levels.xml');
       var levels = parse(file);
