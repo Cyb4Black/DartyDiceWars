@@ -94,6 +94,7 @@ class DiceController {
                 int dice2 =
                     game._arena.territories[game.secondTerritory.id].dice;
                 int ownLongestRoute = 1;
+                String newOwner = game._arena.territories[game.secondTerritory.id].ownerRef.id;
                           int enemyLongestRoute = 1;
                           int temp;
                           for (int i = 0; i < game.currentPlayer.territories.length; i++) {
@@ -112,7 +113,7 @@ class DiceController {
                 
                 new Timer(new Duration(milliseconds: 1000), () => view
                     .updateAfterAttack(center1, center2, tiles1, tiles2, dice1,
-                        dice2, attacker, defender, ownLongestRoute, enemyLongestRoute, game._arena.territories[game.secondTerritory.id].ownerRef.id));
+                        dice2, attacker, defender, ownLongestRoute, enemyLongestRoute, newOwner));
 
                 if (attackedPlayer.territories.length == 0) {
                   print(attackedPlayer.id + " WAS DEFEATED. DAMN SON.");
@@ -238,7 +239,7 @@ class DiceController {
           int dice2 = game._arena.territories[actors[1].id].dice;
           String owner1 = game.currentPlayer.id;
           String owner2 = attackedPlayer.id;
-
+          String newOwner = game._arena.territories[actors[1].id].ownerRef.id;
           int ownLongestRoute = 1;
           int enemyLongestRoute = 1;
           int temp;
@@ -259,7 +260,7 @@ class DiceController {
 
           new Timer(new Duration(milliseconds: 1000 + (waitfor * 2000)),
               () => view.updateAfterAttack(center1, center2, tiles1, tiles2,
-                  dice1, dice2, owner1, owner2, ownLongestRoute, enemyLongestRoute, game._arena.territories[actors[1].id].ownerRef.id));
+                  dice1, dice2, owner1, owner2, ownLongestRoute, enemyLongestRoute, newOwner));
 
           waitfor++;
 
