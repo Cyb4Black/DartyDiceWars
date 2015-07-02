@@ -9,18 +9,31 @@
 </head>
 
 <body>
-    <header> 
-      <h1>DICE WARS (ver. Cokeaddicted Cucumber 0.9.3)</h1>
-    </header>
-	<div id='content'>	
+	<header>
+		<h1>DICE WARS (ver. Cokeaddicted Cucumber 0.9.3)</h1>
+	</header>
+	<div id='content'>
 		<div id="arena" style="float: left; width: 800px;"></div>
-    <div id="endTurn" style="display:none">End Turn</div>
+		<div id="sidebar">
+			<div class="col">
+				<div class="human">Human Player\nPool:\n </div>
+				<div class="cpu1">Computer 1</div>
+				<div class="cpu2">Computer 2</div>
+				<div class="cpu3">Computer 3</div>
+			</div>
+			<div class="col">
+				<div class="cpu4">Computer 4</div>
+				<div class="cpu5">Computer 5</div>
+				<div class="cpu6">Computer 6</div>
+				<div class="cpu7">Computer 7</div>
+			</div>
+		</div>
+		<div id="endTurn" style="display: none">End Turn</div>
 	</div>
-    <div id='footer'>
-      <div id="playerbar" style="display:none"></div>
-      <div id="defender" style="display:none"></div> 
-    </div>  
-	<div id="start">Start</div>
+	<div id='footer'>
+		<div id="messagebar" style="display:"></div>
+	</div>
+	<div id="start" style="display:none">Start</div>
 
 	<script type="application/dart" src="DartyDiceClient.dart"></script>
 	<script type="text/javascript" src="src/dart.js"></script>

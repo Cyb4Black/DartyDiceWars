@@ -28,10 +28,28 @@ body{
     border: 3px solid black;
     border-radius: 5px;
 }
+
+#sidebar{
+    float:left;
+}
+
+.col{
+    float:left;
+}
+
+.col div{
+    margin-left:5px;
+    margin-top:5px;
+    height:80px;
+    width:95px;
+    border: 3px solid black;
+    border-radius:5px
+}
+
 #footer{
     clear: left;
 }
-#playerbar{
+#messagebar{
     float: left;
     height:40px;
     width:600px;
@@ -161,7 +179,7 @@ h6{
 }
 
 
-.hex.human{
+.human{
     background-color:darkmagenta;
 }
 
@@ -169,32 +187,42 @@ h6{
     background-color:white;
 }
 
-.hex.cpu1{
+.cpu1{
     background-color:darkgreen;
 }
 
-.hex.cpu2{
+.cpu2{
     background-color:darkred;
 }
 
-.hex.cpu3{
-    background-color:darkblue;
+.cpu3{
+    background-color:blue;
 }
 
-.hex.cpu4{
+.cpu4{
     background-color:olive;
 }
 
-.hex.cpu5{
+.cpu5{
     background-color:teal;
 }
 
-.hex.cpu6{
+.cpu6{
     background-color:saddlebrown;
 }
 
-.hex.cpu7{
+.cpu7{
     background-color:darkorange;
+}
+
+
+
+.hex.selected{
+  opacity: 0.7;
+}
+ 
+.hex.hover{
+  opacity: 0.9;
 }
 
 .root{
@@ -205,14 +233,6 @@ h6{
     z-index: 10;
     background-color: grey;
     position: fixed;
-}
-
-.hex.selected{
-  opacity: 0.7;
-}
- 
-.hex.hover{
-  opacity: 0.9;
 }
 
 .winner{
