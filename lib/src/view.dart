@@ -147,35 +147,35 @@ class DiceView {
       });
     }
   }
-  
-  updateAfterAttack(String center1, String center2, List<String> tiles1, List<String> tiles2, int dice1, int dice2, String owner1, String owner2) {
+
+  updateAfterAttack(String center1, String center2, List<String> tiles1,
+      List<String> tiles2, int dice1, int dice2, String owner1, String owner2, int ownLongestRoute, int enemyLongestRoute) {
+    print(ownLongestRoute.toString() + " BUT ERRYONE ALREADY KNOWS THE REAL MVP IS " + enemyLongestRoute.toString());
     for (String ti in tiles1) {
-            HtmlElement change = arena.querySelector("#" + ti);
+      HtmlElement change = arena.querySelector("#" + ti);
 
+      if (center1 == ti) {
+        change.querySelector(".root").text = dice1.toString();
+      }
 
-              if (center1 == ti) {
-                change.querySelector(".root").text = dice1.toString();
-              }
-            
-            //  HtmlElement change = arena.querySelector("#" + ti);
-            change.setAttribute("class", "hex $owner1");
-            change.setAttribute("owner", owner1);
-          }
-          for (String ti in tiles2) {
-            HtmlElement change = arena.querySelector("#" + ti);
+      //  HtmlElement change = arena.querySelector("#" + ti);
+      change.setAttribute("class", "hex $owner1");
+      change.setAttribute("owner", owner1);
+    }
+    for (String ti in tiles2) {
+      HtmlElement change = arena.querySelector("#" + ti);
 
+      if (center2 == ti) {
+        change.querySelector(".root").text = dice2.toString();
+      }
 
-                         if (center2 == ti) {
-                           change.querySelector(".root").text = dice2.toString();
-                         }
-                       
-                       //  HtmlElement change = arena.querySelector("#" + ti);
-                       change.setAttribute("class", "hex $owner2");
-                       change.setAttribute("owner", owner2);
-          }
+      //  HtmlElement change = arena.querySelector("#" + ti);
+      change.setAttribute("class", "hex $owner2");
+      change.setAttribute("owner", owner2);
+    }
+    
+    //UPDATE THE PLAYERBAR WITH INFO ON THE MAX CONNECTED TILES
   }
-  
-  
 
   void updateFieldWithTerritories(DiceGame model) {
     model._arena.territories.values.forEach((t) {

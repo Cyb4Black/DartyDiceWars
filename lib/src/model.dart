@@ -70,9 +70,9 @@ class DiceGame {
         } else {
           currentPlayer = players[0];
         }
-         if (currentPlayer.id == "whitefield") {
-           nextPlayer();
-         }
+        if (currentPlayer.id == "whitefield") {
+          nextPlayer();
+        }
         break;
       }
     }
@@ -91,18 +91,20 @@ class Arena {
   Arena(this._xSize, this._ySize, int playersCnt, int whitefields,
       int playerhandycap, List<Player> players) {
     visited = 0;
-    while(visited != playerFields){
-      players.forEach((p){
+    while (visited != playerFields) {
+      players.forEach((p) {
         p.territories.clear();
       });
       this.field = null;
       this.territories = null;
-    this.field = new Map<String, Tile>.from(initializeArena(_xSize, _ySize));
-    this.territories = new Map<String, Territory>();
-    territories.addAll(initializeTerritories(playersCnt, whitefields, players));
-    List<Territory> temp = new List<Territory>();
-    visited = allVisited(players[1].territories[0], temp);
-    print("WhiteFields: $whitefields \nPlayerFields: $playerFields \n Visited: $visited \n TmpLänge: ${temp.length}");
+      this.field = new Map<String, Tile>.from(initializeArena(_xSize, _ySize));
+      this.territories = new Map<String, Territory>();
+      territories
+          .addAll(initializeTerritories(playersCnt, whitefields, players));
+      List<Territory> temp = new List<Territory>();
+      visited = allVisited(players[1].territories[0], temp);
+      print(
+          "WhiteFields: $whitefields \nPlayerFields: $playerFields \n Visited: $visited \n TmpLänge: ${temp.length}");
     }
   }
 
@@ -209,71 +211,69 @@ class Arena {
   Map<String, Territory> initializeTerritories(
       int playersCnt, int whiteFields, List<Player> players) {
     Map<String, Territory> ret;
-      ret = new Map<String, Territory>();
-      //--------------initialize vars for calculation------------
-      int maxFields = (((48 - whiteFields) / (playersCnt)).floor() *
-              (playersCnt)) +
-          whiteFields;
-      int yMax = Math.sqrt(maxFields).floor();
-      int xMax = yMax + ((48 - (Math.pow(yMax, 2))).floor() / yMax).floor();
-      playerFields = yMax * xMax - whiteFields;
-      //-----------------create/add Territories-------------------
-      int n = 1;
-      for (int ix = 1; ix <= xMax; ix++) {
-        for (int iy = 1; iy <= yMax; iy++) {
-            Territory newT = new Territory(
-                (60 / xMax * ix).floor(), (32 / yMax * iy).floor(), "terr_$n");
-            newT.tiles.add("ID${newT.x}_${newT.y}");
-            field[newT.tiles[0]].parentTerr = newT.id;
-            field[newT.tiles[0]].neighbours
-                .forEach((str) => newT.neighbourTiles[str] = field[str]);
-            ret[newT.id] = newT;
-            n++;
-          
+    ret = new Map<String, Territory>();
+    //--------------initialize vars for calculation------------
+    int maxFields = (((48 - whiteFields) / (playersCnt)).floor() *
+            (playersCnt)) +
+        whiteFields;
+    int yMax = Math.sqrt(maxFields).floor();
+    int xMax = yMax + ((48 - (Math.pow(yMax, 2))).floor() / yMax).floor();
+    playerFields = yMax * xMax - whiteFields;
+    //-----------------create/add Territories-------------------
+    int n = 1;
+    for (int ix = 1; ix <= xMax; ix++) {
+      for (int iy = 1; iy <= yMax; iy++) {
+        Territory newT = new Territory(
+            (60 / xMax * ix).floor(), (32 / yMax * iy).floor(), "terr_$n");
+        newT.tiles.add("ID${newT.x}_${newT.y}");
+        field[newT.tiles[0]].parentTerr = newT.id;
+        field[newT.tiles[0]].neighbours
+            .forEach((str) => newT.neighbourTiles[str] = field[str]);
+        ret[newT.id] = newT;
+        n++;
+      }
+    }
+    //-----------------grow Territories 1.---------------------
+    ret.values.forEach((t) {
+      field[t.tiles[0]].neighbours.forEach((ti) {
+        if (field[ti].parentTerr == null) {
+          t.tiles.add(ti);
+          field[ti].neighbours.forEach((f) {
+            t.neighbourTiles[f] = field[f];
+          });
+          t.neighbourTiles.remove(ti);
+          field[ti].parentTerr = t.id;
         }
-      }
-      //-----------------grow Territories 1.---------------------
-      ret.values.forEach((t) {
-        field[t.tiles[0]].neighbours.forEach((ti) {
-          if (field[ti].parentTerr == null) {
-            t.tiles.add(ti);
-            field[ti].neighbours.forEach((f) {
-              t.neighbourTiles[f] = field[f];
-            });
-            t.neighbourTiles.remove(ti);
-            field[ti].parentTerr = t.id;
-          }
-        });
       });
+    });
 
-      //-----------------grow Territories 2.---------------------
-      var rng = new Math.Random();
-      List<Tile> tilesLeft = new List<Tile>();
-      tilesLeft.addAll(field.values);
-      tilesLeft.removeWhere((tiL) => tiL.parentTerr != null);
+    //-----------------grow Territories 2.---------------------
+    var rng = new Math.Random();
+    List<Tile> tilesLeft = new List<Tile>();
+    tilesLeft.addAll(field.values);
+    tilesLeft.removeWhere((tiL) => tiL.parentTerr != null);
 
-      while (tilesLeft.isNotEmpty) {
-        ret.values.where((t) => t.neighbourTiles.length > 0).forEach((t) {
-          int ranD = rng.nextInt(t.neighbourTiles.length);
-          print(ranD);
-          Tile testTile = t.neighbourTiles.values.toList()[ranD];
-          if (testTile.parentTerr == null) {
-            t.tiles.add(testTile.id);
+    while (tilesLeft.isNotEmpty) {
+      ret.values.where((t) => t.neighbourTiles.length > 0).forEach((t) {
+        int ranD = rng.nextInt(t.neighbourTiles.length);
+        print(ranD);
+        Tile testTile = t.neighbourTiles.values.toList()[ranD];
+        if (testTile.parentTerr == null) {
+          t.tiles.add(testTile.id);
 
-            testTile.neighbours.forEach((n) {
-              t.neighbourTiles[n] = field[n];
-            });
-            field[testTile.id].parentTerr = t.id;
-            t.neighbourTiles.remove(testTile.id);
-            tilesLeft.remove(testTile);
-          } else {
-            t.neighbours[testTile.parentTerr] = ret[testTile.parentTerr];
-            t.neighbourTiles.remove(testTile.id);
-          }
-        });
-      }
-      assignTerritories(ret, players, whiteFields, playerFields);
-      
+          testTile.neighbours.forEach((n) {
+            t.neighbourTiles[n] = field[n];
+          });
+          field[testTile.id].parentTerr = t.id;
+          t.neighbourTiles.remove(testTile.id);
+          tilesLeft.remove(testTile);
+        } else {
+          t.neighbours[testTile.parentTerr] = ret[testTile.parentTerr];
+          t.neighbourTiles.remove(testTile.id);
+        }
+      });
+    }
+    assignTerritories(ret, players, whiteFields, playerFields);
 
     return ret;
   }
@@ -301,7 +301,6 @@ class Arena {
 
   void assignTerritories(Map<String, Territory> newTs, List<Player> players,
       int whiteFields, int playerFields) {
-    
     var rng = new Math.Random();
     List<Territory> toAssign = new List<Territory>();
     toAssign.addAll(newTs.values);
@@ -384,7 +383,6 @@ class Territory {
       print("HIS DEFENSE:" + hisList.toString());
       ret.add(myList);
       ret.add(hisList);
-      
     }
     return ret;
   }

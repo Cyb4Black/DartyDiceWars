@@ -99,19 +99,35 @@ class DiceController {
                 String owner2 = game._arena.territories[
                     game.secondTerritory.id].ownerRef.id;
 
+                int ownLongestRoute = 1;
+                          int enemyLongestRoute = 1;
+                          int temp;
+                          for (int i = 0; i < game.currentPlayer.territories.length; i++) {
+                            List<Territory> list = new List<Territory>();
+                            temp = game.currentPlayer.longestRoute(
+                                game.currentPlayer.territories[i], list, game.currentPlayer.id);
+                            if (temp > ownLongestRoute) ownLongestRoute = temp;
+                          } 
+                          for (int i = 0; i < attackedPlayer.territories.length; i++) {
+                            List<Territory> list = new List<Territory>();
+                            temp = attackedPlayer.longestRoute(
+                                attackedPlayer.territories[i], list, attackedPlayer.id);
+                            if (temp > enemyLongestRoute) enemyLongestRoute = temp;
+                          }
+
+                
                 new Timer(new Duration(milliseconds: 1000), () => view
                     .updateAfterAttack(center1, center2, tiles1, tiles2, dice1,
-                        dice2, owner1, owner2));
-              
+                        dice2, owner1, owner2, ownLongestRoute, enemyLongestRoute));
+
                 if (attackedPlayer.territories.length == 0) {
-                           print(attackedPlayer.id + " WAS DEFEATED. DAMN SON.");
-                           game.players.remove(attackedPlayer);
-                           game.firstTerritory = null;
-                                             game.secondTerritory = null;
-                                             last = "";
-                                             this.nextTurn();
-                         }
-        
+                  print(attackedPlayer.id + " WAS DEFEATED. DAMN SON.");
+                  game.players.remove(attackedPlayer);
+                  game.firstTerritory = null;
+                  game.secondTerritory = null;
+                  last = "";
+                  this.nextTurn();
+                }
 
                 game.firstTerritory = null;
                 game.secondTerritory = null;
@@ -213,15 +229,33 @@ class DiceController {
           String owner1 = game._arena.territories[actors[0].id].ownerRef.id;
           String owner2 = game._arena.territories[actors[1].id].ownerRef.id;
 
+          int ownLongestRoute = 1;
+          int enemyLongestRoute = 1;
+          int temp;
+          
+          for (int i = 0; i < game.currentPlayer.territories.length; i++) {
+            List<Territory> list = new List<Territory>();
+            temp = game.currentPlayer.longestRoute(
+                game.currentPlayer.territories[i], list, game.currentPlayer.id);
+            if (temp > ownLongestRoute) ownLongestRoute = temp;
+          }
+     
+          for (int i = 0; i < attackedPlayer.territories.length; i++) {
+            List<Territory> list = new List<Territory>();
+            temp = attackedPlayer.longestRoute(
+                attackedPlayer.territories[i], list, attackedPlayer.id);
+            if (temp > enemyLongestRoute) enemyLongestRoute = temp;
+          }
+
           new Timer(new Duration(milliseconds: 1000 + (waitfor * 2000)),
               () => view.updateAfterAttack(center1, center2, tiles1, tiles2,
-                  dice1, dice2, owner1, owner2));
+                  dice1, dice2, owner1, owner2, ownLongestRoute, enemyLongestRoute));
+
           waitfor++;
-          
-          
+
           if (attackedPlayer.territories.length == 0) {
             print(attackedPlayer.id + " WAS DEFEATED. DAMN SON.");
-            
+
             game.players.remove(attackedPlayer);
           }
 
