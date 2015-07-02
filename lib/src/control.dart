@@ -196,12 +196,14 @@ class DiceController {
       }
       
     }
+    Player oldPlayer = game.nextPlayer();
+    view.undisplayPlayer(oldPlayer.id);
     List<Territory> toUpdate = game.currentPlayer.territories;
     //CLEAR FOOTER
     game.nextPlayer();
     view.updateSelectedTerritories(toUpdate);
     //resupply n stuff, ALSO ASSIGN NEW CURRENT PLAYER
-    view.displayPlayer(game.currentPlayer.id.toString());
+    view.displayPlayer(game.currentPlayer.id, oldPlayer);
     print("Next Player: " + game.currentPlayer.id);
     if (game.currentPlayer.id != "human") {
       this.onTurn();
