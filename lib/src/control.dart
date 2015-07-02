@@ -4,7 +4,7 @@ class DiceController {
   final view = new DiceView();
   DiceGame game;
   XmlNode level;
-  int maxlevel;
+  int maxlevels;
   String last = "";
 
   DiceController() {
@@ -171,7 +171,7 @@ class DiceController {
     
     
     
-    view.initializeViewField(game, maxlevel, startRoutes);
+    view.initializeViewField(game, maxlevels, startRoutes);
     view.updateFieldWithTerritories(game);
     print("First Player: " + game.currentPlayer.id.toString());
     if (game.currentPlayer.id != "human") {
@@ -289,13 +289,14 @@ class DiceController {
     } else this.nextTurn();
   }
 
-  loadLevelData(int levelnr) async {
+ loadLevelData(int levelnr) async {
     Future<XmlNode> ret = null;
     try {
       dynamic file = await HttpRequest.getString('levels.xml');
       var levels = parse(file);
       print(file);
-      int maxlevels = levels.firstChild.children.length;
+      maxlevels = levels.firstChild.children.length;
+      
       for (XmlNode x in levels.firstChild.children) {
         if (x.attributes[0].value == levelnr.toString()) {
           level = x;
@@ -304,6 +305,8 @@ class DiceController {
     } catch (e) {
       print("How did you even get here?! oh also: " + e.toString());
     }
+    
+    
   }
   
 }
