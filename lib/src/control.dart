@@ -160,12 +160,12 @@ class DiceController {
     List<int> startRoutes = new List();
     for (int j = 1; j < game.players.length; j++) {
       int temp;
-                
+                startRoutes.add(1);
                 for (int i = 0; i < game.players[j].territories.length; i++) {
                   List<Territory> list = new List<Territory>();
                   temp = game.players[j].longestRoute(
                       game.players[j].territories[i], list, game.players[j].id);
-                  if (temp > startRoutes[j]) startRoutes[j] = temp;
+                  if (temp > startRoutes[j-1]) startRoutes[j-1] = temp;
                 }
     }
     
