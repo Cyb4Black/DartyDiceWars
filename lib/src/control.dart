@@ -111,7 +111,7 @@ class DiceController {
                           }
 
                 
-                new Timer(new Duration(milliseconds: 1000), () => view
+                new Timer(new Duration(milliseconds: 2000), () => view
                     .updateAfterAttack(center1, center2, tiles1, tiles2, dice1,
                         dice2, attacker, defender, ownLongestRoute, enemyLongestRoute, newOwner));
 
@@ -136,7 +136,7 @@ class DiceController {
     });
 
     view.endTurn.onClick.listen((_) {
-      if (game != null) {
+      if (game != null && game.currentPlayer.id == "human") {
         if (game.firstTerritory != null) {
           view.markTerritory(game.firstTerritory.id);
         }

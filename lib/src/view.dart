@@ -139,8 +139,8 @@ class DiceView {
     attack[1].forEach((f) {
       sum2 += f;
     });
-    divAtk.querySelector(".attackbar").text = "$atckr: ATK: " + attack[0].toString() + " " + sum1.toString();
-    divDef.querySelector(".attackbar").text = "$dfndr: DEF: " + attack[1].toString() + " " + sum2.toString();
+    divAtk.querySelector(".attackbar").text = "ATK: " + attack[0].toString() + " " + sum1.toString();
+    divDef.querySelector(".attackbar").text = "DEF: " + attack[1].toString() + " " + sum2.toString();
     if (sum1 > sum2) {
       divAtk.classes.add("winner");
     } else {
@@ -150,7 +150,7 @@ class DiceView {
     for (HtmlElement t in tiles) {
       t.classes.toggle('selected');
     }
-    new Timer(new Duration(milliseconds: 750), () => this.clearSidebar(atckr, dfndr));
+    new Timer(new Duration(milliseconds: 1000), () => this.clearSidebar(atckr, dfndr));
   }
 
   updateSelectedTerritories(List<Territory> ters) {
