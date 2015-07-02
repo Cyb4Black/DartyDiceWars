@@ -219,7 +219,7 @@ class Arena {
       for (int ix = 1; ix <= xMax; ix++) {
         for (int iy = 1; iy <= yMax; iy++) {
             Territory newT = new Territory(
-                (60 / xMax * ix).floor(), (32 / yMax * iy).floor(), "terr_$n");
+                (60 / xMax * (ix - 2)).floor(), (32 / yMax * (iy - 2)).floor(), "terr_$n");
             newT.tiles.add("ID${newT.x}_${newT.y}");
             field[newT.tiles[0]].parentTerr = newT.id;
             field[newT.tiles[0]].neighbours
@@ -415,7 +415,7 @@ class Tile {
 abstract class Player {
   String id;
   List<Territory> territories;
-  var pool;
+  int pool;
   /**
    * Constructor-class for player-object
    * 

@@ -19,7 +19,7 @@ class DiceView {
     loadingAnim.style.display = "none";
   }
 
-  void initializeViewField(DiceGame model, int maxLevel) {
+  void initializeViewField(DiceGame model, int maxLevel, List<int> pools) {
     var field = model._arena;
     String htmlField = "";
     for (int iy = 1; iy <= field._ySize; iy++) {
@@ -37,10 +37,18 @@ class DiceView {
       }
       htmlField += (rowA + '</div>' + rowB + '</div>');
     }
-    
-    model.players.forEach((pl){
-      sideBar.querySelector("." + pl.id).style.display = "";
+    sideBar.querySelectorAll(".player").forEach((pl){
+      pl.querySelectorAll("div").forEach((d){
+        d.text = "";
+      });
+      pl.style.display = "none";
     });
+    for(int i = 1; i < model.players.length; i++){
+      sideBar.querySelector("." + model.players[i].id).style.display = "";
+      sideBar.querySelector("." + model.players[i].id).querySelector(".plSupply").text = "MaxChain: ${pools[i]}";
+      sideBar.querySelector("." + model.players[i].id).querySelector(".plPool").text = "Dice pool: 0";
+    }
+    
     titleBar.text = "You're fighting in level ${model.level.attributes[0]} of $maxLevel private!";
 
     endTurn.style.display = "";
@@ -94,8 +102,9 @@ class DiceView {
     }
   }
 
-  displayPlayer(String player) {
-    sideBar.querySelector("." + player).classes.add("attacker");
+  displayPlayer(String newPlayer, Player oldPlayer) {
+    sideBar.querySelector("." + oldPlayer.id).querySelector(".plPool").text = "DicePool: ${oldPlayer.pool}";
+    sideBar.querySelector("." + newPlayer).classes.add("attacker");
   }
 
   undisplayPlayer(String player) {
@@ -130,7 +139,7 @@ class DiceView {
       sum2 += f;
     });
     divAtk.querySelector(".attackbar").text = "$atckr: ATK: " + attack[0].toString() + " " + sum1.toString();
-    divDef.querySelector(".attackbar").text = "$dfndr: DEFENDER DICE: " + attack[1].toString() + " " + sum2.toString();
+    divDef.querySelector(".attackbar").text = "$dfndr: DEF: " + attack[1].toString() + " " + sum2.toString();
     if (sum1 > sum2) {
       divAtk.classes.add("winner");
     } else {
@@ -192,6 +201,10 @@ class DiceView {
     }
 
     //UPDATE THE PLAYERBAR WITH INFO ON THE MAX CONNECTED TILES
+    HtmlElement divOwn1 = sideBar.querySelector("." + owner1);
+    HtmlElement divOwn2 = sideBar.querySelector("." + owner2);
+    divOwn1.querySelector(".plSupply").text = "MaxChain: $ownLongestRoute";
+    divOwn2.querySelector(".plSupply").text = "MaxChain: $enemyLongestRoute";
   }
 
   void updateFieldWithTerritories(DiceGame model) {

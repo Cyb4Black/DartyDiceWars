@@ -130,8 +130,6 @@ class DiceController {
                 game.firstTerritory = null;
                 game.secondTerritory = null;
                 parent = "";
-                new Timer(new Duration(milliseconds: 1000),
-                    () => view.clearSidebar(game.currentPlayer.id.toString()));
 
                 if (!(game.players.length > 2)) {
                   this.nextTurn();
@@ -183,10 +181,11 @@ class DiceController {
     List<Territory> toUpdate = game.currentPlayer.territories;
     //CLEAR FOOTER
     view.undisplayPlayer(game.currentPlayer.id);
+    Player tempCurrPl = game.currentPlayer;
     game.nextPlayer();
     view.updateSelectedTerritories(toUpdate);
     //resupply n stuff, ALSO ASSIGN NEW CURRENT PLAYER
-    view.displayPlayer(game.currentPlayer.id);
+    view.displayPlayer(game.currentPlayer.id, tempCurrPl);
     print("Next Player: " + game.currentPlayer.id);
     if (game.currentPlayer.id != "human") {
       this.onTurn();
@@ -266,7 +265,6 @@ class DiceController {
         }
       }
     }
-    new Timer(new Duration(milliseconds: 500 + (waitfor * 2000)), () => view.clearSidebar(game.currentPlayer.id.toString()));
     new Timer(new Duration(milliseconds: 1000 + (waitfor * 2000)),() => this.nextTurn());
   }
 
