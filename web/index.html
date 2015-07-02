@@ -12,32 +12,83 @@
 	<header>
 		<h1>DICE WARS (ver. Cokeaddicted Cucumber 0.9.3)</h1>
 	</header>
+	<div id="titlebar" class="messagebar">You should probably start a
+		game fag..!</div>
 	<div id='content'>
 		<div id="arena" style="float: left; width: 800px;"></div>
 		<div id="sidebar">
 			<div class="col">
-				<div class="human">
-				<div class="plName"></div>
-				<div class="plSupply"></div>
-				<div class="plTerrCnt"></div>
+				<div class="player human" style="display: none">
+					<div class="plName"></div>
+					<div class="plSupply"></div>
+					<div class="plPool"></div>
+					<div class="attackbar"></div>
 				</div>
-				<div class="cpu1">Computer 1</div>
-				<div class="cpu2">Computer 2</div>
-				<div class="cpu3">Computer 3</div>
+				<div class="player cpu1" style="display: none">
+					<div class="plName"></div>
+					<div class="plSupply"></div>
+					<div class="plPool"></div>
+					<div class="attackbar"></div>
+				</div>
+				<div class="player cpu2" style="display: none">
+					<div class="plName"></div>
+					<div class="plSupply"></div>
+					<div class="plPool"></div>
+					<div class="attackbar"></div>
+				</div>
+				<div class="player cpu3" style="display: none">
+					<div class="plName"></div>
+					<div class="plSupply"></div>
+					<div class="plPool"></div>
+					<div class="attackbar"></div>
+				</div>
 			</div>
-			<div class="col">
-				<div class="cpu4">Computer 4</div>
-				<div class="cpu5">Computer 5</div>
-				<div class="cpu6">Computer 6</div>
-				<div class="cpu7">Computer 7</div>
+			<div class="col" style="display: none">
+				<div class="player cpu4">
+					<div class="plName"></div>
+					<div class="plSupply"></div>
+					<div class="plPool"></div>
+					<div class="attackbar"></div>
+				</div>
+				<div class="player cpu5" style="display: none">
+					<div class="plName"></div>
+					<div class="plSupply"></div>
+					<div class="plPool"></div>
+					<div class="attackbar"></div>
+				</div>
+				<div class="player cpu6" style="display: none">
+					<div class="plName"></div>
+					<div class="plSupply"></div>
+					<div class="plPool"></div>
+					<div class="attackbar"></div>
+				</div>
+				<div class="player cpu7" style="display: none">
+					<div class="plName"></div>
+					<div class="plSupply"></div>
+					<div class="plPool"></div>
+					<div class="attackbar"></div>
+
+				</div>
 			</div>
 		</div>
+		<div id="loadinganim" style="display:none">
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+		<div id="messagebar" class="messagebar" style="display:"></div>
+		<div id="start" style="display:">Start</div>
 		<div id="endTurn" style="display: none">End Turn</div>
 	</div>
-	<div id='footer'>
-		<div id="messagebar" style="display:"></div>
-	</div>
-	<div id="start" style="display:none">Start</div>
+
 
 	<script type="application/dart" src="DartyDiceClient.dart"></script>
 	<script type="text/javascript" src="src/dart.js"></script>
