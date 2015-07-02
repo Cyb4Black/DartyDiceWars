@@ -462,7 +462,7 @@ abstract class Player {
         if (territory[random].dice == 8) territory.removeAt(random);
       } else {
         if (i < max) pool += max - (i);
-        if (pool > 20) pool = 20;
+        if (pool > 60) pool = 60;
         break;
       }
     }
