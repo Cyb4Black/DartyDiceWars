@@ -58,7 +58,7 @@ class DiceView {
       sideBar.querySelector("." + model.players[i].id).querySelector(".plName").text = "${model.players[i].id}";
     }
     
-    titleBar.text = "You're fighting in level ${model.level.attributes[0].value} of $maxLevel private!";
+    titleBar.text = "You're fighting in level ${model.level.attributes[0].value} of $maxLevel, private!";
     messageBar.text = "";
 
     endTurn.style.display = "";

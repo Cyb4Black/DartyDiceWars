@@ -186,7 +186,7 @@ class DiceController {
         view.showMessage("CURRENT GAME WON. DANK M8");
               int nextLevel = (int.parse(game.level.attributes[0].value)) + 1;
               game = null;
-              startGame(nextLevel);
+              new Timer(new Duration(milliseconds: 5000), () => startGame(nextLevel));
               return;
       } else {
         print("DAMN SON. YOU LOST");
