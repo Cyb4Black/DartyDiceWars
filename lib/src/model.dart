@@ -32,28 +32,36 @@ class DiceGame {
     playercount = players.length - 1;
     //--------------------Build Arena--------------------------
     this._arena = new Arena(xSize, ySize, int.parse(level.children[2].text),
-        int.parse(level.children[6].text), int.parse(level.children[0].text),
+        int.parse(level.children[6].text), 
         players);
 
     //select first player based on startposition in levels.xml
     int order = players.length - int.parse(level.children[1].text);
     if (order == players.length) {
-      order = 0;
+      order = 1;
     }
     currentPlayer = players[order];
 
-    initDies(players);
+    initDies(players, int.parse(level.children[0].text));
   }
 
-  initDies(List<Player> list) {
+  initDies(List<Player> list, int handycap) {
     int sum = 0;
     for (int i = 1; i < list.length; i++) {
       int temp = list[i].territories.length * 3;
       sum += temp;
     }
+    
+    
     sum = (sum / (list.length - 1)).floor();
     for (int i = 1; i < list.length; i++) {
-      list[i].giveDies(sum);
+      if (list[i].id == "human") {
+        list[i].giveDice(sum + handycap);
+      } else {
+        list[i].giveDice(sum);
+      }
+      
+      
     }
   }
 
@@ -68,9 +76,8 @@ class DiceGame {
         if (i < players.length - 1) {
           currentPlayer = players[i + 1];
         } else {
-          currentPlayer = players[0];
+          currentPlayer = players[1];
         }
-
         break;
       }
     }
@@ -87,7 +94,7 @@ class Arena {
   int playerFields;
 
   Arena(this._xSize, this._ySize, int playersCnt, int whitefields,
-      int playerhandycap, List<Player> players) {
+      List<Player> players) {
     visited = 0;
     while(visited != playerFields){
       players.forEach((p){
@@ -455,13 +462,13 @@ abstract class Player {
         if (territory[random].dice == 8) territory.removeAt(random);
       } else {
         if (i < max) pool += max - (i);
-        if (pool > 20) pool = 20;
+        if (pool > 60) pool = 60;
         break;
       }
     }
   }
   
-  giveDies(int dies) {
+  giveDice(int dies) {
     List<Territory> list = new List<Territory>();
     for (int i = 0; i < territories.length; i++) {
       if (territories[i].dice < 8) list.add(territories[i]);

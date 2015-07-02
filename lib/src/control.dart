@@ -4,6 +4,7 @@ class DiceController {
   final view = new DiceView();
   DiceGame game;
   XmlNode level;
+  int maxlevel;
   String last = "";
 
   DiceController() {
@@ -30,19 +31,17 @@ class DiceController {
       }
     });
 
-    view.arena.onMouseEnter.listen((ev) {
-      querySelectorAll('.hex').onClick.listen((_) {
-        if (last != _.currentTarget.id) {
+    view.arena.onMouseEnter.listen((ev) {                 //Listen only when mouse is in Field
+      querySelectorAll('.hex').onClick.listen((_) {       //get all hex elements
+        if (last != _.currentTarget.id) {                          //only way to prevent multiclick due to 
           if (!_.currentTarget.classes.contains('.corner-1') &&
               !_.currentTarget.classes.contains('.corner-2')) {
             if (game != null && game.currentPlayer.id == "human") {
-              //&&
+              
               String parent = _.currentTarget.getAttribute("parent");
               String owner = _.currentTarget.getAttribute("owner");
               last = _.currentTarget.id;
-              //INSERT STUFF YOU DO WITH SELECTED 1st and 2nd HERE
 
-              //TO BE COPYPASTED INTO ALL THREE CASES
               print(game._arena.territories[parent].dice);
               if (game.firstTerritory == null &&
                   owner == "human" &&
@@ -69,7 +68,9 @@ class DiceController {
                 String defender = game.secondTerritory.ownerRef.id;
                 Player attackedPlayer = game.secondTerritory.ownerRef;
                 List<List<int>> attack =
-                game.firstTerritory.attackTerritory(game.secondTerritory);
+                    game.firstTerritory.attackTerritory(game.secondTerritory);
+
+                //   new Timer(new Duration(milliseconds: 1000), () => view.displayAttack(attack, attacker, defender));
                 view.displayAttack(attack, attacker, defender);
 //save all the content that is needed for the viewupdate so that it can get updated after the given delay
                 String center1 = "ID" +
@@ -121,15 +122,13 @@ class DiceController {
                 if (attackedPlayer.territories.length == 0) {
                   print(attackedPlayer.id + " WAS DEFEATED. DAMN SON.");
                   game.players.remove(attackedPlayer);
-                  game.firstTerritory = null;
-                  game.secondTerritory = null;
-                  last = "";
-                  this.nextTurn();
                 }
 
                 game.firstTerritory = null;
                 game.secondTerritory = null;
                 parent = "";
+                new Timer(new Duration(milliseconds: 1000),
+                    () => view.clearFooter(game.currentPlayer.id.toString()));
 
                 if (!(game.players.length > 2)) {
                   this.nextTurn();
@@ -156,12 +155,10 @@ class DiceController {
   }
 
   startGame(int levelnr) async {
-    view.showAnim();
     await this.loadLevelData(levelnr);
     game = new DiceGame(60, 32, level);
-    view.hideAnim();
 
-    view.initializeViewField(game);
+    view.initializeViewField(game, maxlevel);
     view.updateFieldWithTerritories(game);
     print("First Player: " + game.currentPlayer.id.toString());
     if (game.currentPlayer.id != "human") {
@@ -172,20 +169,26 @@ class DiceController {
   //gets the next player and
   nextTurn() {
     if (!(game.players.length > 2)) {
-      print("CURRENT GAME OVER TOO HARD M8");
-      int nextLevel = (int.parse(game.level.attributes[0].value)) + 1;
-      game = null;
-      startGame(nextLevel);
-      return;
+      if (game.currentPlayer.id == "human") {
+        print("CURRENT GAME WON. DANK M8");
+              int nextLevel = (int.parse(game.level.attributes[0].value)) + 1;
+              game = null;
+              startGame(nextLevel);
+              return;
+      } else {
+        print("DAMN SON. YOU LOST");
+        game = null;
+                      startGame(1);
+                      return;
+      }
+      
     }
     List<Territory> toUpdate = game.currentPlayer.territories;
     //CLEAR FOOTER
-    view.undisplayPlayer(game.currentPlayer.id);
-    Player tempCurrPl = game.currentPlayer;
     game.nextPlayer();
     view.updateSelectedTerritories(toUpdate);
     //resupply n stuff, ALSO ASSIGN NEW CURRENT PLAYER
-    view.displayPlayer(game.currentPlayer.id, tempCurrPl);
+    view.displayPlayer(game.currentPlayer.id.toString());
     print("Next Player: " + game.currentPlayer.id);
     if (game.currentPlayer.id != "human") {
       this.onTurn();
@@ -255,7 +258,6 @@ class DiceController {
 
           if (attackedPlayer.territories.length == 0) {
             print(attackedPlayer.id + " WAS DEFEATED. DAMN SON.");
-
             game.players.remove(attackedPlayer);
           }
 
@@ -264,8 +266,12 @@ class DiceController {
           }
         }
       }
+      //new Timer(new Duration(milliseconds: 100), () => view.clearFooter(game.currentPlayer.id.toString()));
     }
-    new Timer(new Duration(milliseconds: 1000 + (waitfor * 2000)),() => this.nextTurn());
+    if (game.currentPlayer.id != "whitefield") {
+      new Timer(new Duration(milliseconds: 1000 + (waitfor * 2000)),
+          () => this.nextTurn());
+    } else this.nextTurn();
   }
 
   loadLevelData(int levelnr) async {
@@ -274,6 +280,7 @@ class DiceController {
       dynamic file = await HttpRequest.getString('levels.xml');
       var levels = parse(file);
       print(file);
+      int maxlevels = levels.firstChild.children.length;
       for (XmlNode x in levels.firstChild.children) {
         if (x.attributes[0].value == levelnr.toString()) {
           level = x;
@@ -283,4 +290,5 @@ class DiceController {
       print("How did you even get here?! oh also: " + e.toString());
     }
   }
+  
 }
