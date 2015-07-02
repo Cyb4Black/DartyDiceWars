@@ -172,8 +172,8 @@ class DiceView {
   }
 
   updateAfterAttack(String center1, String center2, List<String> tiles1,
-      List<String> tiles2, int dice1, int dice2, String owner1, String owner2,
-      int ownLongestRoute, int enemyLongestRoute) {
+      List<String> tiles2, int dice1, int dice2, String attacker, String defender,
+      int ownLongestRoute, int enemyLongestRoute, String newOwner) {
     print(ownLongestRoute.toString() +
         " BUT ERRYONE ALREADY KNOWS THE REAL MVP IS " +
         enemyLongestRoute.toString());
@@ -185,8 +185,8 @@ class DiceView {
       }
 
       //  HtmlElement change = arena.querySelector("#" + ti);
-      change.setAttribute("class", "hex $owner1");
-      change.setAttribute("owner", owner1);
+      change.setAttribute("class", "hex $attacker");
+      change.setAttribute("owner", attacker);
     }
     for (String ti in tiles2) {
       HtmlElement change = arena.querySelector("#" + ti);
@@ -196,13 +196,13 @@ class DiceView {
       }
 
       //  HtmlElement change = arena.querySelector("#" + ti);
-      change.setAttribute("class", "hex $owner2");
-      change.setAttribute("owner", owner2);
+      change.setAttribute("class", "hex $newOwner");
+      change.setAttribute("owner", newOwner);
     }
 
     //UPDATE THE PLAYERBAR WITH INFO ON THE MAX CONNECTED TILES
-    HtmlElement divOwn1 = sideBar.querySelector("." + owner1);
-    HtmlElement divOwn2 = sideBar.querySelector("." + owner2);
+    HtmlElement divOwn1 = sideBar.querySelector("." + attacker);
+    HtmlElement divOwn2 = sideBar.querySelector("." + defender);
     divOwn1.querySelector(".plSupply").text = "MaxChain: $ownLongestRoute";
     divOwn2.querySelector(".plSupply").text = "MaxChain: $enemyLongestRoute";
   }
