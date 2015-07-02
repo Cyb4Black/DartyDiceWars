@@ -226,7 +226,7 @@ class Arena {
       for (int ix = 1; ix <= xMax; ix++) {
         for (int iy = 1; iy <= yMax; iy++) {
             Territory newT = new Territory(
-                (60 / xMax * (ix - 2)).floor(), (32 / yMax * (iy - 2)).floor(), "terr_$n");
+                (60 / xMax * ix).floor() - 2, (32 / yMax * iy).floor() - 2, "terr_$n");
             newT.tiles.add("ID${newT.x}_${newT.y}");
             field[newT.tiles[0]].parentTerr = newT.id;
             field[newT.tiles[0]].neighbours
