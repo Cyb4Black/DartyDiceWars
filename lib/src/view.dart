@@ -47,7 +47,7 @@ class DiceView {
       sideBar.querySelector("." + model.players[i].id).style.display = "";
       sideBar.querySelector("." + model.players[i].id).querySelector(".plSupply").text = "MaxChain: ${pools[i - 1]}";
       sideBar.querySelector("." + model.players[i].id).querySelector(".plPool").text = "Dice pool: 0";
-      sideBar.querySelector("." + model.players[i].id).querySelector(".plName").text = "${model.players.id}";
+      sideBar.querySelector("." + model.players[i].id).querySelector(".plName").text = "${model.players[i].id}";
     }
     
     titleBar.text = "You're fighting in level ${model.level.attributes[0].value} of $maxLevel private!";
