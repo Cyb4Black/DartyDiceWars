@@ -150,7 +150,9 @@ class DiceController {
 
   startGame(int levelnr) async {
     await this.loadLevelData(levelnr);
+    view.showAnim();
     game = new DiceGame(60, 32, level);
+    view.hideAnim();
     List<int> startRoutes = new List();
     for (int j = 1; j < game.players.length; j++) {
       int temp;

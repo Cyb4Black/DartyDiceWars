@@ -259,7 +259,7 @@ class Arena {
       while (tilesLeft.isNotEmpty) {
         ret.values.where((t) => t.neighbourTiles.length > 0).forEach((t) {
           int ranD = rng.nextInt(t.neighbourTiles.length);
-          print(ranD);
+          //print(ranD);
           Tile testTile = t.neighbourTiles.values.toList()[ranD];
           if (testTile.parentTerr == null) {
             t.tiles.add(testTile.id);
