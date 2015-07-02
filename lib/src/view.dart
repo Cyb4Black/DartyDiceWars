@@ -159,7 +159,12 @@ class DiceView {
     for (HtmlElement t in tiles) {
       t.classes.toggle('selected');
     }
-    new Timer(new Duration(milliseconds: 1000), () => this.clearSidebar(atckr, dfndr));
+    if (atckr == "human") {
+      new Timer(new Duration(milliseconds: 2000), () => this.clearSidebar(atckr, dfndr));
+    } else {
+      new Timer(new Duration(milliseconds: 1000), () => this.clearSidebar(atckr, dfndr));
+    }
+   
   }
 
   updateSelectedTerritories(List<Territory> ters) {
