@@ -363,16 +363,15 @@ class Territory {
       int temp;
       List<int> myList = new List();
       List<int> hisList = new List();
-      if (emperorDice == true) {
-        print("OH DANG, EMPEROR DIE GONNA BE USED SO HARD");
-        if (this.dice >= ter.dice) {
-          print("AND THE MAD TACTIX WORK! CREEEEEEEEED");
+      if (emperorDice == true && this.dice >= ter.dice) {
+          print("AND THE MAD EMPEROR TACTIX WORK! CREEEEEEEEED");
           myMax = 9999;
           hisMax = 1;
           myList.add(9999);
           hisList.add(1);
           emperorDice = false;
-        }
+          ter.ownerRef.hasEmperor = false;
+        
       } else {
       for (int i = 0; i < this.dice; i++) {
         temp = 1 + _random.nextInt(5);
@@ -383,9 +382,13 @@ class Territory {
         temp = 1 + _random.nextInt(5);
         hisMax += temp;
         hisList.add(temp);
-      }}
+      }
+      }
       if (myMax > hisMax) {
         print("ATTACKER SUCCESSFUL");
+        if (ter.emperorDice == true) {
+          print("THE EMPEROR DICE GOT STOOOOOOLEN");
+        }
         ter.ownerRef.territories.remove(ter);
         ter.ownerRef = ownerRef;
         ownerRef.territories.add(ter);
@@ -432,6 +435,7 @@ class Tile {
  */
 abstract class Player {
   String id;
+  bool hasEmperor = false;
   List<Territory> territories;
   int pool;
   /**
@@ -463,7 +467,7 @@ abstract class Player {
     print("Resupplying with $max dies.");
     var _random = new Math.Random();
     bool giveEmperor = false;
-    if (id == "human") {
+    if (id == "human" && hasEmperor == false) {
               int giveEmperorRand = _random.nextInt(100);
               if (giveEmperorRand > 40) { //for a 20% chance use 80
                 giveEmperor = true;
@@ -482,6 +486,7 @@ abstract class Player {
         if (giveEmperor) {
           print("GOT DAT EMPEROR BOOTY, AWWWWYUS");
           territory[random].emperorDice = true;
+          hasEmperor = true;
           giveEmperor = false;
         }
         

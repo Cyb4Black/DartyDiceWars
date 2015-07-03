@@ -91,6 +91,7 @@ class DiceView {
   markTerritory(String ter) {
     showHover("");
     List<Element> tiles = querySelectorAll("[parent = '$ter']");
+   
     for (HtmlElement t in tiles) {
       t.classes.toggle('selected');
     }
@@ -139,7 +140,11 @@ class DiceView {
     HtmlElement divDef = sideBar.querySelector("." + dfndr);
 
     //attackbar.innerHtml = ;
-
+    if (attack[0][0] == 9999) {
+      print("Dayum, did i just witness an emperor die being all swaggy?");
+    }
+    
+    
     int sum1 = 0;
     int sum2 = 0;
     attack[0].forEach((f) {
@@ -173,7 +178,7 @@ class DiceView {
         HtmlElement change = arena.querySelector("#" + ti);
         if (t.emperorDice == true) {
           print("AND ASSIGNED TO " + t.id);
-          change.classes.toggle('emperorDiceOwner');
+          change.classes.add('selected');
         }
         if (!(t.ownerRef.id == "whitefield")) {
           String mid = "ID" + t.x.toString() + "_" + t.y.toString();

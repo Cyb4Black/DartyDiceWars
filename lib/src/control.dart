@@ -26,6 +26,7 @@ class DiceController {
             view.showHover("");
           } else {
             view.showHover(_.currentTarget.getAttribute("parent"));
+            print(_.currentTarget.getAttribute("parent"));
           }
         });
       }
@@ -231,7 +232,12 @@ class DiceController {
               () => view.markAIAttack(actors[1].id));
           new Timer(new Duration(milliseconds: 1000 + (waitfor * 2000)), () =>
               view.displayAttack(attack, actors[0].ownerRef.id, defender));
-
+          if (actors[0].ownerRef.id == actors[1].ownerRef.id && actors[1].emperorDice == true) {
+            view.showMessage("The Emperor Die just got ST-ST-ST-STOLEN!");
+          }
+          
+          
+          
           //save all the content that is needed for the viewupdate so that it can get updated after the given delay
           String center1 = "ID" +
               game._arena.territories[actors[0].id].x.toString() +
