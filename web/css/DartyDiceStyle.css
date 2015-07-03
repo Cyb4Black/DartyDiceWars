@@ -223,6 +223,10 @@ h6{
     position:absolute;
 }
 
+.emperorDiceOwner{
+     background-color: gold;
+}
+
 .attacker{
     border-color:yellow;
 }

@@ -340,6 +340,7 @@ class Arena {
 class Territory {
   String id; //individual ID per territory
   Player ownerRef;
+  bool emperorDice = false;
   int x, y; //coordinates of root tile for Territory
   int dice;
   List<String> tiles;
@@ -351,6 +352,7 @@ class Territory {
     this.neighbourTiles = new Map<String, Tile>();
     this.neighbours = new Map<String, Territory>();
     dice = 1;
+    emperorDice = false;
   }
   List<List<int>> attackTerritory(Territory ter) {
     List<List<int>> ret = new List();
@@ -361,6 +363,17 @@ class Territory {
       int temp;
       List<int> myList = new List();
       List<int> hisList = new List();
+      if (emperorDice == true) {
+        print("OH DANG, EMPEROR DIE GONNA BE USED SO HARD");
+        if (this.dice >= ter.dice) {
+          print("AND THE MAD TACTIX WORK! CREEEEEEEEED");
+          myMax = 9999;
+          hisMax = 1;
+          myList.add(9999);
+          hisList.add(1);
+          emperorDice = false;
+        }
+      } else {
       for (int i = 0; i < this.dice; i++) {
         temp = 1 + _random.nextInt(5);
         myMax += temp;
@@ -370,7 +383,7 @@ class Territory {
         temp = 1 + _random.nextInt(5);
         hisMax += temp;
         hisList.add(temp);
-      }
+      }}
       if (myMax > hisMax) {
         print("ATTACKER SUCCESSFUL");
         ter.ownerRef.territories.remove(ter);
@@ -449,14 +462,29 @@ abstract class Player {
 
     print("Resupplying with $max dies.");
     var _random = new Math.Random();
+    bool giveEmperor = false;
+    if (id == "human") {
+              int giveEmperorRand = _random.nextInt(100);
+              if (giveEmperorRand > 40) { //for a 20% chance use 80
+                giveEmperor = true;
+              }
+            }
+  
     int oldpool = pool;
     pool = 0;
     for (int i = 0; i < max + oldpool; i++) {
       var random;
       if (territory.length != 0) {
+        
         if (territory.length != 1) random =
             _random.nextInt(territory.length - 1);
         else random = 0;
+        if (giveEmperor) {
+          print("GOT DAT EMPEROR BOOTY, AWWWWYUS");
+          territory[random].emperorDice = true;
+          giveEmperor = false;
+        }
+        
         territory[random].dice++;
         if (territory[random].dice == 8) territory.removeAt(random);
       } else {

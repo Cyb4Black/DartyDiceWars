@@ -171,7 +171,10 @@ class DiceView {
     for (Territory t in ters) {
       t.tiles.forEach((ti) {
         HtmlElement change = arena.querySelector("#" + ti);
-
+        if (t.emperorDice == true) {
+          print("AND ASSIGNED TO " + t.id);
+          change.classes.toggle('emperorDiceOwner');
+        }
         if (!(t.ownerRef.id == "whitefield")) {
           String mid = "ID" + t.x.toString() + "_" + t.y.toString();
           if (mid == ti) {
