@@ -89,14 +89,13 @@ h6{
 
 .hex{
     float:left;
-    margin-top:-75px;
-    margin-left:172.904px;
-    width:86px;
-    height:150px;
+    margin-top:-7.5px;
+    margin-left:17.2904px;
+    width:8.6px;
+    height:15.0px;
     position:relative;
     float:left;
     text-align:center;
-    zoom:0.1;
 
 }
 
@@ -105,10 +104,10 @@ h6{
 .hex-row:first-child .hex{
     float:left;
     margin-top:0px;
-    margin-bottom:-50px;
-    margin-left:172.904px;
-    width:86px;
-    height:150px;
+    margin-bottom:-5.0px;
+    margin-left:17.2904px;
+    width:8.6px;
+    height:15.0px;
     position:relative;
     float:left;
     text-align:center;
@@ -117,7 +116,7 @@ h6{
 
 
 .hex-row .hex:first-child{
-    margin-left:40px;
+    margin-left:4.0px;
 }
 
 
@@ -150,19 +149,19 @@ h6{
 }
 
 .hex-row.even .hex{
-    margin-left:172.904px;
+    margin-left:17.2904px;
     margin-bottom:0px;
-    margin-top:-75px;
+    margin-top:-7.5px;
 }
 
 .hex-row.even .hex:first-child{
-    margin-left:170px;
+    margin-left:17.0px;
 }
 
 .hex-row:nth-child(2) .hex{
-    margin-left:172.904px;
+    margin-left:17.2904px;
     margin-bottom:0px;
-    margin-top:-25px;
+    margin-top:-2.5px;
 }
 
 
@@ -213,7 +212,6 @@ h6{
 }
 
 .root{
-    zoom:10;
     height:20px;
     width:20px;
     margin-top:-9px;
@@ -229,7 +227,7 @@ h6{
 }
 
 .winner{
-    border-collor:lime;
+    border-color:lime;
 }
 
 .looser{
