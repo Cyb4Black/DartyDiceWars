@@ -180,7 +180,7 @@ class Arena {
     //---------------------------------------------------------
     //----------------------initialize inner field-------------
     for (int ix = 2; ix < x; ix++) {
-      if (x % 2 == 0) {
+      if (ix % 2 == 0) {
         for (int iy = 2; iy < y; iy++) {
           Tile n = new Tile(ix, iy);
           n.neighbours.add("ID" + ix.toString() + "_" + (iy - 1).toString());
