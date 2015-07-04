@@ -9,30 +9,20 @@
 # > docker build -t containerdart github.com/nkratzke/containerdart
 # > docker run -p 8888:8080 -d containerdart
 
-FROM google/dart-runtime
-#MAINTAINER Hex-3-En <pwillnow@gmail.com>
+FROM stackbrew/ubuntu:14.04
+MAINTAINER Hex-3-En <pwillnow@gmail.com>
 
-#WORKDIR /container
-#ADD pubspec.yaml  /container/
+ADD pubspec.yaml  /container/pubspec.yaml
+ADD lib /container/lib
+ADD bin /conatiner/bin
+ADD web /container/web
 
-#RUN pub get    
+WORKDIR /container
+RUN pub build
 
-# comment in if you need lib to run pub build
-#ADD lib         /container/lib
+EXPOSE 8080
 
-#ADD bin          /container/bin       
+WORKDIR /container/bin
+ENTRYPOINT ["dart"]
 
-# comment out if you do not need web for working app
-#ADD web          /container/web
-
-#RUN pub get --offline
-# Expose port 8080. You should change it to the port(s) your app is serving on.
-#EXPOSE 8080
-
-# Entrypoint. Whenever the container is started the following command is executed in your container.
-# In most cases it simply starts your app.
-#WORKDIR /container/bin
-#ENTRYPOINT ["/container/bin", "server.dart"]
-
-# Change this to your starting dart.
-#CMD ["server.dart"]
+CMD["server.dart"]
