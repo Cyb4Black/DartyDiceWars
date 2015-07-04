@@ -16,17 +16,21 @@ WORKDIR /container
 
 ADD pubspec.yaml  /container/pubspec.yaml
 ADD lib /container/lib
+
+ADD bin /conatiner/bin
+
+ADD web /container/web
+
+RUN pub get
+ADD . /container/
+RUN pub get --offline
+
 RUN chmod +x /container/lib/DartyDiceWars.dart
 RUN chmod +x /container/lib/src/model.dart
 RUN chmod +x /container/lib/src/view.dart
 RUN chmod +x /container/lib/src/control.dart
-ADD bin /conatiner/bin
 RUN chmod +x /container/bin/server.dart
-ADD web /container/web
 RUN chmod +x /container/web/DartyDiceClient.dart
-RUN pub get
-ADD . /container/
-RUN pub get --offline
 
 #EXPOSE 8080
 
