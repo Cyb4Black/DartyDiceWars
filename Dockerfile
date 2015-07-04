@@ -17,9 +17,9 @@ MAINTAINER Hex-3-En <pwillnow@gmail.com>
 # See: http://askubuntu.com/questions/377233/how-to-install-google-dart-in-ubuntu
 #RUN apt-get update
 #RUN apt-get install -y software-properties-common python-software-properties
-RUN apt-add-repository ppa:hachre/dart
-RUN apt-get -y update
-RUN apt-get install -y dartsdk
+#RUN apt-add-repository ppa:hachre/dart
+#RUN apt-get -y update
+#RUN apt-get install -y dartsdk
 
 # Install the dart server app. 
 # Comment in necessary parts of your dart package necessary to run "pub build"
