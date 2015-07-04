@@ -25,6 +25,6 @@ RUN pub get --offline
 #EXPOSE 8080
 
 #WORKDIR /container/bin
-ENTRYPOINT ["/usr/container/bin", "server.dart"]
+ENTRYPOINT ["/container/bin", "server.dart"]
 
 #CMD["server.dart"]
