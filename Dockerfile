@@ -12,42 +12,8 @@
 FROM google/dart-runtime
 MAINTAINER Hex-3-En <pwillnow@gmail.com>
 
-# Install Dart SDK. Do not touch this until you know what you are doing.
-# We do not install darteditor nor dartium because this is a server container.
-# See: http://askubuntu.com/questions/377233/how-to-install-google-dart-in-ubuntu
-#RUN apt-get update
-#RUN apt-get install -y software-properties-common python-software-properties
-#RUN apt-add-repository ppa:hachre/dart
-#RUN apt-get -y update
-#RUN apt-get install -y dartsdk
-
-# Install the dart server app. 
-# Comment in necessary parts of your dart package necessary to run "pub build"
-# and necessary for your working app.
-# Please check the following links to learn more about pub and build dart apps
-# automatically.
-# - https://www.dartlang.org/tools/pub/
-# - https://www.dartlang.org/tools/pub/package-layout.html
-# - https://www.dartlang.org/tools/pub/transformers
 ADD pubspec.yaml  /container/pubspec.yaml
-
-# comment in if you need assets for working app
-# ADD asset       /container/asset
-
-# comment in if you need benchmarks to run pub build
-# ADD benchmark   /container/benchmark
-
-# comment in if you need docs to run pub build
-# ADD doc         /container/doc
-
-# comment in if you need examples to run pub build
-# ADD example     /container/example
-
-# comment in if you need test to run pub build
-# ADD test        /container/test
-
-# comment in if you need tool to run pub build      
-# ADD tool        /container/tool
+    
 
 # comment in if you need lib to run pub build
 ADD lib         /container/lib
@@ -59,8 +25,8 @@ ADD web          /container/web
 
 # Build the app. Do not touch this.
 WORKDIR /container
-RUN pub build
-
+RUN pub get
+RUN pub get --offline
 # Expose port 8080. You should change it to the port(s) your app is serving on.
 EXPOSE 8080
 
@@ -70,4 +36,4 @@ WORKDIR /container/bin
 ENTRYPOINT ["server.dart"]
 
 # Change this to your starting dart.
-CMD ["server.dart"]
+#CMD ["server.dart"]
