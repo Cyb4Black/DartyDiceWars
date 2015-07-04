@@ -9,7 +9,7 @@
 # > docker build -t containerdart github.com/nkratzke/containerdart
 # > docker run -p 8888:8080 -d containerdart
 
-FROM google/dart
+FROM google/dart-runtime
 MAINTAINER Hex-3-En <pwillnow@gmail.com>
 
 WORKDIR /container
