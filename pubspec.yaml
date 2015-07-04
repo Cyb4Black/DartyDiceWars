@@ -1,5 +1,5 @@
 name: DartyDiceWars
-version: 0.0.1
+version: 0.9.4
 description: A sample command-line application.
 environment:
   sdk: '>=1.0.0 <2.0.0'

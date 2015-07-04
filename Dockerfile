@@ -9,7 +9,7 @@
 # > docker build -t containerdart github.com/nkratzke/containerdart
 # > docker run -p 8888:8080 -d containerdart
 
-FROM stackbrew/ubuntu:13.10
+FROM google/dart-runtime
 MAINTAINER Hex-3-En <pwillnow@gmail.com>
 
 # Install Dart SDK. Do not touch this until you know what you are doing.
