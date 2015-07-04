@@ -16,7 +16,7 @@ MAINTAINER Hex-3-En <pwillnow@gmail.com>
 # We do not install darteditor nor dartium because this is a server container.
 # See: http://askubuntu.com/questions/377233/how-to-install-google-dart-in-ubuntu
 #RUN apt-get update
-RUN apt-get install -y software-properties-common python-software-properties
+#RUN apt-get install -y software-properties-common python-software-properties
 RUN apt-add-repository ppa:hachre/dart
 RUN apt-get -y update
 RUN apt-get install -y dartsdk
