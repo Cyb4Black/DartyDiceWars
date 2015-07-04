@@ -31,7 +31,8 @@ RUN chmod +x /container/lib/src/view.dart
 RUN chmod +x /container/lib/src/control.dart
 RUN chmod +x /container/bin/server.dart
 RUN chmod +x /container/web/DartyDiceClient.dart
-
+RUN chmod +x /container/bin
+RUN chmod +x /container
 #EXPOSE 8080
 
 #WORKDIR /container/bin
