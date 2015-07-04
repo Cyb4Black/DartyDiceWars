@@ -12,17 +12,19 @@
 FROM google/dart
 MAINTAINER Hex-3-En <pwillnow@gmail.com>
 
+WORKDIR /container
+
 ADD pubspec.yaml  /container/pubspec.yaml
 ADD lib /container/lib
 ADD bin /conatiner/bin
 ADD web /container/web
+RUN pub get
+ADD . /container/
+RUN pub get --offline
 
-WORKDIR /container
-RUN pub build
-
-EXPOSE 8080
+#EXPOSE 8080
 
 #WORKDIR /container/bin
-ENTRYPOINT ["/container/bin", "server.dart"]
+ENTRYPOINT ["usr/container/bin", "server.dart"]
 
 #CMD["server.dart"]
