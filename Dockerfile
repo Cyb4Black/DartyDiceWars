@@ -9,7 +9,7 @@
 # > docker build -t containerdart github.com/nkratzke/containerdart
 # > docker run -p 8888:8080 -d containerdart
 
-FROM stackbrew/ubuntu:14.04
+FROM google/dart
 MAINTAINER Hex-3-En <pwillnow@gmail.com>
 
 ADD pubspec.yaml  /container/pubspec.yaml
