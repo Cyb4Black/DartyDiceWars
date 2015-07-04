@@ -35,7 +35,7 @@ RUN chmod +x /container/bin
 RUN chmod +x /container
 #EXPOSE 8080
 
-#WORKDIR /container/bin
-ENTRYPOINT ["/container/bin/dart", "server.dart"]
+WORKDIR /container/bin
+ENTRYPOINT ["dart"]
 
-#CMD["server.dart"]
+CMD["server.dart"]
