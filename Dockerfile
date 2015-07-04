@@ -22,7 +22,7 @@ RUN pub build
 
 EXPOSE 8080
 
-WORKDIR /container/bin
-ENTRYPOINT ["server.dart"]
+#WORKDIR /container/bin
+ENTRYPOINT ["/container/bin", "server.dart"]
 
 #CMD["server.dart"]
