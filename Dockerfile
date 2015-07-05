@@ -19,6 +19,8 @@ ADD lib /container/lib
 
 ADD bin /conatiner/bin
 
+ADD build /container/build
+
 ADD web /container/web
 
 RUN pub get
