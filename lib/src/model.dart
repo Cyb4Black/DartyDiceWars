@@ -370,8 +370,7 @@ class Territory {
           myList.add(9999);
           hisList.add(1);
           emperorDice = false;
-          ter.ownerRef.hasEmperor = false;
-        
+          ter.emperorDice = true;
       } else {
       for (int i = 0; i < this.dice; i++) {
         temp = 1 + _random.nextInt(5);
@@ -386,17 +385,28 @@ class Territory {
       }
       if (myMax > hisMax) {
         print("ATTACKER SUCCESSFUL");
-        if (ter.emperorDice == true) {
-          print("THE EMPEROR DICE GOT STOOOOOOLEN");
-        }
         ter.ownerRef.territories.remove(ter);
         ter.ownerRef = ownerRef;
         ownerRef.territories.add(ter);
+        if (ter.emperorDice == true) {
+          this.ownerRef.hasEmperor = true;
+          ter.ownerRef.hasEmperor = false;
+          ter.ownerRef.territories.forEach((t){
+            if(t.emperorDice){
+              ter.ownerRef.hasEmperor = true;
+            }
+          });
+          print("THE EMPEROR DICE GOT STOOOOOOLEN");
+        }
         ter.dice = this.dice - 1;
         this.dice = 1;
       } else {
         print("ATTACKER GOT PWNED KEK");
         this.dice = 1;
+        if(emperorDice){
+          emperorDice = false;
+          print("Damn boon just wasted his emperor...!");
+        }
       }
       print("MY ATTACKS:" + myList.toString());
       print("HIS DEFENSE:" + hisList.toString());

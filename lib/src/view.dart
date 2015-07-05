@@ -176,14 +176,17 @@ class DiceView {
     for (Territory t in ters) {
       t.tiles.forEach((ti) {
         HtmlElement change = arena.querySelector("#" + ti);
-        if (t.emperorDice == true) {
-          print("AND ASSIGNED TO " + t.id);
-          change.classes.add('selected');
-        }
+        
         if (!(t.ownerRef.id == "whitefield")) {
           String mid = "ID" + t.x.toString() + "_" + t.y.toString();
           if (mid == ti) {
             change.querySelector(".root").text = t.dice.toString();
+            if (t.emperorDice == true) {
+              print("AND ASSIGNED TO " + t.id);
+              change.querySelector(".root").classes.toggle("emperor", true);
+            }else{
+              change.querySelector(".root").classes.toggle("emperor", false);
+            }
           }
         }
         //  HtmlElement change = arena.querySelector("#" + ti);
@@ -196,7 +199,7 @@ class DiceView {
 
   updateAfterAttack(String center1, String center2, List<String> tiles1,
       List<String> tiles2, int dice1, int dice2, String attacker, String defender,
-      int ownLongestRoute, int enemyLongestRoute, String newOwner) {
+      int ownLongestRoute, int enemyLongestRoute, String newOwner, bool Flag1, bool Flag2) {
     print(ownLongestRoute.toString() +
         " BUT ERRYONE ALREADY KNOWS THE REAL MVP IS " +
         enemyLongestRoute.toString());
@@ -205,6 +208,11 @@ class DiceView {
 
       if (center1 == ti) {
         change.querySelector(".root").text = dice1.toString();
+        if(Flag1){
+          change.querySelector(".root").classes.toggle("emperor", true);
+        }else{
+          change.querySelector(".root").classes.toggle("emperor", false);
+        }
       }
 
       //  HtmlElement change = arena.querySelector("#" + ti);
@@ -216,12 +224,18 @@ class DiceView {
 
       if (center2 == ti) {
         change.querySelector(".root").text = dice2.toString();
+        if(Flag2){
+          change.querySelector(".root").classes.toggle("emperor", true);
+        }else{
+          change.querySelector(".root").classes.toggle("emperor", false);
+        }
       }
 
       //  HtmlElement change = arena.querySelector("#" + ti);
       change.setAttribute("class", "hex $newOwner");
       change.setAttribute("owner", newOwner);
     }
+    
 
     //UPDATE THE PLAYERBAR WITH INFO ON THE MAX CONNECTED TILES
     HtmlElement divOwn1 = sideBar.querySelector("." + attacker);
