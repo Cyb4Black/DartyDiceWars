@@ -12,7 +12,7 @@ class DiceGame {
     //-----Add Players (and whitefielddummy) to playerlist-----
     players = new List<Player>();
     players.add(new Whitefield('whitefield'));
-    players.add(new Human('human'));
+    players.add(new Human('human', int.parse(level.children[7].text)));
     int aggressiveAIs = int.parse(level.children[3].text);
     int defensiveAIs = int.parse(level.children[4].text);
     int smartAIs = int.parse(level.children[5].text);
@@ -448,6 +448,7 @@ abstract class Player {
   bool hasEmperor = false;
   List<Territory> territories;
   int pool;
+  int empChance;
   /**
    * Constructor-class for player-object
    * 
@@ -455,7 +456,7 @@ abstract class Player {
    * whereas #whitefields exists for managing free tiles on battlefield
    * @param num, number for creating id, in case of cpu-type
    */
-  Player(this.id) {
+  Player(this.id, this.empChance) {
     territories = new List<Territory>();
     pool = 0;
   }
@@ -479,7 +480,7 @@ abstract class Player {
     bool giveEmperor = false;
     if (id == "human" && hasEmperor == false) {
               int giveEmperorRand = _random.nextInt(100);
-              if (giveEmperorRand > 40) { //for a 20% chance use 80
+              if (giveEmperorRand > (100 - this.empChance)) { //Chance of 60% means Rand above 40 (100-60)
                 giveEmperor = true;
               }
             }
@@ -544,7 +545,7 @@ abstract class Player {
 }
 
 class Ai_agg extends Player {
-  Ai_agg(id) : super(id);
+  Ai_agg(id) : super(id, 0);
   List<Territory> turn() {
     List<Territory> list = new List<Territory>();
     for (int i = 0; i < territories.length; i++) {
@@ -563,7 +564,7 @@ class Ai_agg extends Player {
   }
 }
 class Ai_deff extends Player {
-  Ai_deff(id) : super(id);
+  Ai_deff(id) : super(id, 0);
   List<Territory> turn() {
     List<Territory> list = new List<Territory>();
     for (int i = 0; i < territories.length; i++) {
@@ -584,7 +585,7 @@ class Ai_deff extends Player {
   }
 }
 class Ai_smart extends Player {
-  Ai_smart(id) : super(id);
+  Ai_smart(id) : super(id, 0);
   List<Territory> turn() {
     List<Territory> list = new List<Territory>();
     for (int i = 0; i < territories.length; i++) {
@@ -605,10 +606,10 @@ class Ai_smart extends Player {
   }
 }
 class Human extends Player {
-  Human(id) : super(id);
+  Human(id, empChance) : super(id, empChance);
   List<Territory> turn() => null;
 }
 class Whitefield extends Player {
-  Whitefield(id) : super(id);
+  Whitefield(id) : super(id, 0);
   List<Territory> turn() => null;
 }
