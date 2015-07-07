@@ -26,9 +26,25 @@ class DiceView {
   
   void gameOver(bool won) {
     if (won) {
-      //you won the last level, display button for replay 
-    } else {
+      endTurn.style.display = "none";
+      sideBar.style.display = "none";
+      arena.innerHtml = "";
       
+      titleBar.text = "You won! Congratulations for beating all levels!";
+      showMessage("The game is over, but do you want to restart at Level 1?");
+      startButton.innerHtml = "Restart";
+      startButton.style.display = "";
+      showAnim();
+    } else {
+      endTurn.style.display = "none";
+      sideBar.style.display = "none";
+      arena.innerHtml = "";
+      
+      titleBar.text = "You lost! Better luck next time!";
+      showMessage("The game is over, but do you want to restart at Level 1?");
+      startButton.innerHtml = "Restart";
+      startButton.style.display = "";
+      showAnim();
     }
   }
   
@@ -37,6 +53,7 @@ class DiceView {
   }
 
   void initializeViewField(DiceGame model, int maxLevel, List<int> pools) {
+    sideBar.style.display = "";
     var field = model._arena;
     String htmlField = "";
     for (int iy = 1; iy <= field._ySize; iy++) {

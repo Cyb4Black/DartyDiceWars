@@ -187,6 +187,8 @@ class DiceController {
         game.firstTerritory = null;
         game.secondTerritory = null;
         last = "";
+        
+        
         this.nextTurn();
       }
     });
@@ -233,8 +235,12 @@ class DiceController {
       if (game.currentPlayer.id == "human") {
         view.showMessage("You won the game!");
         int nextLevel = (int.parse(game.level.attributes[0].value)) + 1;
+        view.showMessage("You won the game!");
         if (nextLevel == maxlevels ) {
+          game = null;
+          level = null;
           new Timer(new Duration(milliseconds: 5000), () => view.gameOver(false));
+          return;
         } else {
 
                         new Timer(new Duration(milliseconds: 5000), () => startGame(nextLevel));
@@ -242,10 +248,10 @@ class DiceController {
                         return;
         }      
       } else {
-        view.showMessage("You lost the game! :( Restarting at level 1!");
+        view.showMessage("You lost the game!");
         game = null;
+        level = null;
         new Timer(new Duration(milliseconds: 5000), () => view.gameOver(true));
-      //  new Timer(new Duration(milliseconds: 5000), () => startGame(1));
         return;
       }
       
