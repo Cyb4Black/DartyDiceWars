@@ -225,23 +225,28 @@ class DiceController {
   }
 
   /*
-   * Selects the next player and ends the game if there is only one player left
-   * 
+   * Selects the next player and ends the game if there is only one player left.
+   * Also decides what to do when the game is over.
    */
   nextTurn() {
     if (!(game.players.length > 2)) {
       if (game.currentPlayer.id == "human") {
         view.showMessage("You won the game!");
-              int nextLevel = (int.parse(game.level.attributes[0].value)) + 1;
-              new Timer(new Duration(milliseconds: 5000), () => startGame(nextLevel));
-              game = null;
-              
-              return;
+        int nextLevel = (int.parse(game.level.attributes[0].value)) + 1;
+        if (nextLevel == maxlevels ) {
+          new Timer(new Duration(milliseconds: 5000), () => view.gameOver(false));
+        } else {
+
+                        new Timer(new Duration(milliseconds: 5000), () => startGame(nextLevel));
+                        game = null;
+                        return;
+        }      
       } else {
         view.showMessage("You lost the game! :( Restarting at level 1!");
         game = null;
-        new Timer(new Duration(milliseconds: 5000), () => startGame(1));
-                      return;
+        new Timer(new Duration(milliseconds: 5000), () => view.gameOver(true));
+      //  new Timer(new Duration(milliseconds: 5000), () => startGame(1));
+        return;
       }
       
     }
@@ -259,6 +264,9 @@ class DiceController {
     }
   }
 
+  /*
+   * Handles the AI-turn. 
+   */
   onTurn() {
     int waitfor = 0;
     bool turn = true;

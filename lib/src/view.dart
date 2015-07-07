@@ -23,6 +23,15 @@ class DiceView {
     messageBar.text = m;
   }
   
+  
+  void gameOver(bool won) {
+    if (won) {
+      //you won the last level, display button for replay 
+    } else {
+      
+    }
+  }
+  
   void removeDefeatedPlayer(Player attackedPlayer){
     sideBar.querySelector("." + attackedPlayer.id).style.display = "none";
   }
