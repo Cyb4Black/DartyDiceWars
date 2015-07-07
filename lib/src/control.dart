@@ -1,24 +1,51 @@
 part of DartyDiceWars;
 
+/* Controllerpart of the MVC structure of DiceWars
+ * 
+ * Here, the Playerinput and the general flow of the game are handled. Also,
+ * the given file containing levelinformation is loaded via the DiceController.
+ * 
+ * This class creates all subsequent classes needed to run the Game
+ */
 class DiceController {
+  /*
+   * Controller variables:
+   * final view - View module of the game
+   * DiceGame game - Model module of the game
+   * XmlNode level - the imported levelfile
+   * int maxlevels - maximum number of levels in the current session
+   * String last - ID of the last clicked tile. Only way to prevent mutiple clicks
+   *               on a tile to be registered.
+   */
   final view = new DiceView();
   DiceGame game;
   XmlNode level;
   int maxlevels;
   String last = "";
-
+  
+  /*
+   * Constructor for the DiceController. 
+   * Here, all the Listeners for Playerinput are handled. Detailed explanations 
+   * for the exact usage are above each Listener.
+   */
   DiceController() {
+    /*
+     * Starts a new game with the first level of the levelsfile. The displayed
+     * Button also gets disabled to prevent the creation of multiple games at 
+     * the same time.
+     */
     view.startButton.onClick.listen((_) {
       if (level == null) {
         view.startButton.style.display = "none";
         startGame(1);
       }
     });
-
-    view.arena.onMouseLeave.listen((ev) {
-      view.showHover("");
-    });
-
+    
+    /*
+     * Listener for the Hoverfunction of the territories. Only one territory can
+     * be hovered at one time and a territory cannot be selected and hovered at 
+     * once.
+     */
     view.arena.onMouseEnter.listen((ev) {
       if (game.currentPlayer.id == "human") {
         querySelectorAll('.hex').onMouseOver.listen((_) {
@@ -26,19 +53,35 @@ class DiceController {
             view.showHover("");
           } else {
             view.showHover(_.currentTarget.getAttribute("parent"));
-            print(_.currentTarget.getAttribute("parent"));
           }
         });
       }
     });
+    
+    /*
+     * Additional Listener to turn of hovereffect if the mouse moves out of the 
+     * arena.
+     */
+    view.arena.onMouseLeave.listen((ev) {
+      view.showHover("");
+    });
 
-    view.arena.onMouseEnter.listen((ev) {                 //Listen only when mouse is in Field
-      querySelectorAll('.hex').onClick.listen((_) {       //get all hex elements
-        if (last != _.currentTarget.id) {                          //only way to prevent multiclick due to 
-          if (!_.currentTarget.classes.contains('.corner-1') &&
-              !_.currentTarget.classes.contains('.corner-2')) {
-            if (game != null && game.currentPlayer.id == "human") {
-              
+    /*
+     * Listener to handle all clicking actions of the player inside of the arena.
+     * To prevent multiple events from triggering with one click, it is impossible
+     * to click the same hexagon twice in a row.
+     * First click on a valid territory (at least 2 dice, owned by the player) selects
+     * the first territory.
+     * Second click on a valid territoy (enemy-owned territory adjacent to the first one)
+     * Clicking twice on the same territory deselects it.
+     * If two territories are selected, an attack gets computed and shown on the view.
+     * 
+     */
+    view.arena.onMouseEnter.listen((ev) {                 
+      querySelectorAll('.hex').onClick.listen((_) {     
+        if (last != _.currentTarget.id) {                   
+          if (!_.currentTarget.classes.contains('.corner-1') && !_.currentTarget.classes.contains('.corner-2')) {
+            if (game != null && game.currentPlayer.id == "human") { 
               String parent = _.currentTarget.getAttribute("parent");
               String owner = _.currentTarget.getAttribute("owner");
               last = _.currentTarget.id;
@@ -47,13 +90,10 @@ class DiceController {
               if (game.firstTerritory == null &&
                   owner == "human" &&
                   game._arena.territories[parent].dice > 1) {
-
-                //selectTerritory as first one
                 game.firstTerritory = game._arena.territories[parent];
                 view.markTerritory(parent);
               } else if (game.firstTerritory != null &&
                   parent == game.firstTerritory.id) {
-                //if there is a territory selected and the new one is the same
                 game.firstTerritory = null;
                 view.markTerritory(parent);
               } else if (game.firstTerritory != null &&
@@ -70,10 +110,8 @@ class DiceController {
                 Player attackedPlayer = game.secondTerritory.ownerRef;
                 List<List<int>> attack =
                     game.firstTerritory.attackTerritory(game.secondTerritory);
-
-                //   new Timer(new Duration(milliseconds: 1000), () => view.displayAttack(attack, attacker, defender));
                 view.displayAttack(attack, attacker, defender);
-//save all the content that is needed for the viewupdate so that it can get updated after the given delay
+
                 String center1 = "ID" +
                     game._arena.territories[game.firstTerritory.id].x
                         .toString() +
@@ -112,8 +150,7 @@ class DiceController {
                       attackedPlayer.territories[i], list, attackedPlayer.id);
                   if (temp > enemyLongestRoute) enemyLongestRoute = temp;
                 }
-
-                
+  
                 new Timer(new Duration(milliseconds: 2000), () => view
                     .updateAfterAttack(center1, center2, tiles1, tiles2, dice1,
                         dice2, attacker, defender, ownLongestRoute, enemyLongestRoute, newOwner, emperorFlag1, emperorFlag2));
@@ -136,10 +173,12 @@ class DiceController {
             }
           }
         }
-        //COPYPASTE ALL OF THE ABOVE
       });
     });
 
+    /*
+     * Finishes the current playerturn on click
+     */
     view.endTurn.onClick.listen((_) {
       if (game != null && game.currentPlayer.id == "human") {
         if (game.firstTerritory != null) {
@@ -153,6 +192,13 @@ class DiceController {
     });
   }
 
+  /*
+   * Starts a new game based on the given levelnumber.
+   * Also initiates the model and the arena for the new level.
+   * Async to handle the import of the levelfiler
+   * 
+   * int levelnr - level that should be loaded
+   */
   startGame(int levelnr) async {
     await this.loadLevelData(levelnr);
     view.showAnim();
@@ -169,9 +215,6 @@ class DiceController {
                   if (temp > startRoutes[j-1]) startRoutes[j-1] = temp;
                 }
     }
-    
-    
-    
     view.initializeViewField(game, maxlevels, startRoutes);
     view.updateFieldWithTerritories(game);
     print("First Player: " + game.currentPlayer.id.toString());
@@ -181,21 +224,23 @@ class DiceController {
     }
   }
 
-  //gets the next player and
+  /*
+   * Selects the next player and ends the game if there is only one player left
+   * 
+   */
   nextTurn() {
     if (!(game.players.length > 2)) {
       if (game.currentPlayer.id == "human") {
-        print("CURRENT GAME WON. DANK M8");
-        view.showMessage("CURRENT GAME WON. DANK M8");
+        view.showMessage("You won the game!");
               int nextLevel = (int.parse(game.level.attributes[0].value)) + 1;
-              game = null;
               new Timer(new Duration(milliseconds: 5000), () => startGame(nextLevel));
+              game = null;
+              
               return;
       } else {
-        print("DAMN SON. YOU LOST");
-        view.showMessage("DAMN SON. YOU LOST");
+        view.showMessage("You lost the game! :( Restarting at level 1!");
         game = null;
-                      startGame(1);
+        new Timer(new Duration(milliseconds: 5000), () => startGame(1));
                       return;
       }
       
