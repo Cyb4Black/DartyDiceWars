@@ -32,8 +32,7 @@ class DiceGame {
     playercount = players.length - 1;
     //--------------------Build Arena--------------------------
     this._arena = new Arena(xSize, ySize, int.parse(level.children[2].text),
-        int.parse(level.children[6].text), 
-        players);
+        int.parse(level.children[6].text), players);
 
     //select first player based on startposition in levels.xml
     int order = players.length - int.parse(level.children[1].text);
@@ -51,8 +50,7 @@ class DiceGame {
       int temp = list[i].territories.length * 3;
       sum += temp;
     }
-    
-    
+
     sum = (sum / (list.length - 1)).floor();
     for (int i = 1; i < list.length; i++) {
       if (list[i].id == "human") {
@@ -60,8 +58,6 @@ class DiceGame {
       } else {
         list[i].giveDice(sum);
       }
-      
-      
     }
   }
 
@@ -96,18 +92,20 @@ class Arena {
   Arena(this._xSize, this._ySize, int playersCnt, int whitefields,
       List<Player> players) {
     visited = 0;
-    while(visited != playerFields){
-      players.forEach((p){
+    while (visited != playerFields) {
+      players.forEach((p) {
         p.territories.clear();
       });
       this.field = null;
       this.territories = null;
-    this.field = new Map<String, Tile>.from(initializeArena(_xSize, _ySize));
-    this.territories = new Map<String, Territory>();
-    territories.addAll(initializeTerritories(playersCnt, whitefields, players));
-    List<Territory> temp = new List<Territory>();
-    visited = allVisited(players[1].territories[0], temp);
-    print("WhiteFields: $whitefields \nPlayerFields: $playerFields \n Visited: $visited \n TmpLänge: ${temp.length}");
+      this.field = new Map<String, Tile>.from(initializeArena(_xSize, _ySize));
+      this.territories = new Map<String, Territory>();
+      territories
+          .addAll(initializeTerritories(playersCnt, whitefields, players));
+      List<Territory> temp = new List<Territory>();
+      visited = allVisited(players[1].territories[0], temp);
+      print(
+          "WhiteFields: $whitefields \nPlayerFields: $playerFields \n Visited: $visited \n TmpLänge: ${temp.length}");
     }
   }
 
@@ -214,70 +212,68 @@ class Arena {
   Map<String, Territory> initializeTerritories(
       int playersCnt, int whiteFields, List<Player> players) {
     Map<String, Territory> ret;
-      ret = new Map<String, Territory>();
-      //--------------initialize vars for calculation------------
-      int maxFields = 48 - whiteFields;
-      playerFields = (maxFields / playersCnt).floor() * playersCnt;
-      int yMax = Math.sqrt(48).floor();
-      int xMax = yMax + ((48 - (Math.pow(yMax, 2))).floor() / yMax).floor();
-      whiteFields = 48 - playerFields;
-      //-----------------create/add Territories-------------------
-      int n = 1;
-      for (int ix = 1; ix <= xMax; ix++) {
-        for (int iy = 1; iy <= yMax; iy++) {
-            Territory newT = new Territory(
-                (60 / xMax * ix).floor(), (32 / yMax * iy).floor(), "terr_$n");
-            newT.tiles.add("ID${newT.x}_${newT.y}");
-            field[newT.tiles[0]].parentTerr = newT.id;
-            field[newT.tiles[0]].neighbours
-                .forEach((str) => newT.neighbourTiles[str] = field[str]);
-            ret[newT.id] = newT;
-            n++;
-          
+    ret = new Map<String, Territory>();
+    //--------------initialize vars for calculation------------
+    int maxFields = 48 - whiteFields;
+    playerFields = (maxFields / playersCnt).floor() * playersCnt;
+    int yMax = Math.sqrt(48).floor();
+    int xMax = yMax + ((48 - (Math.pow(yMax, 2))).floor() / yMax).floor();
+    whiteFields = 48 - playerFields;
+    //-----------------create/add Territories-------------------
+    int n = 1;
+    for (int ix = 1; ix <= xMax; ix++) {
+      for (int iy = 1; iy <= yMax; iy++) {
+        Territory newT = new Territory(
+            (60 / xMax * ix).floor(), (32 / yMax * iy).floor(), "terr_$n");
+        newT.tiles.add("ID${newT.x}_${newT.y}");
+        field[newT.tiles[0]].parentTerr = newT.id;
+        field[newT.tiles[0]].neighbours
+            .forEach((str) => newT.neighbourTiles[str] = field[str]);
+        ret[newT.id] = newT;
+        n++;
+      }
+    }
+    //-----------------grow Territories 1.---------------------
+    ret.values.forEach((t) {
+      field[t.tiles[0]].neighbours.forEach((ti) {
+        if (field[ti].parentTerr == null) {
+          t.tiles.add(ti);
+          field[ti].neighbours.forEach((f) {
+            t.neighbourTiles[f] = field[f];
+          });
+          t.neighbourTiles.remove(ti);
+          field[ti].parentTerr = t.id;
         }
-      }
-      //-----------------grow Territories 1.---------------------
-      ret.values.forEach((t) {
-        field[t.tiles[0]].neighbours.forEach((ti) {
-          if (field[ti].parentTerr == null) {
-            t.tiles.add(ti);
-            field[ti].neighbours.forEach((f) {
-              t.neighbourTiles[f] = field[f];
-            });
-            t.neighbourTiles.remove(ti);
-            field[ti].parentTerr = t.id;
-          }
-        });
       });
+    });
 
-      //-----------------grow Territories 2.---------------------
-      var rng = new Math.Random();
-      List<Tile> tilesLeft = new List<Tile>();
-      tilesLeft.addAll(field.values);
-      tilesLeft.removeWhere((tiL) => tiL.parentTerr != null);
+    //-----------------grow Territories 2.---------------------
+    var rng = new Math.Random();
+    List<Tile> tilesLeft = new List<Tile>();
+    tilesLeft.addAll(field.values);
+    tilesLeft.removeWhere((tiL) => tiL.parentTerr != null);
 
-      while (tilesLeft.isNotEmpty) {
-        ret.values.where((t) => t.neighbourTiles.length > 0).forEach((t) {
-          int ranD = rng.nextInt(t.neighbourTiles.length);
-          //print(ranD);
-          Tile testTile = t.neighbourTiles.values.toList()[ranD];
-          if (testTile.parentTerr == null) {
-            t.tiles.add(testTile.id);
+    while (tilesLeft.isNotEmpty) {
+      ret.values.where((t) => t.neighbourTiles.length > 0).forEach((t) {
+        int ranD = rng.nextInt(t.neighbourTiles.length);
+        //print(ranD);
+        Tile testTile = t.neighbourTiles.values.toList()[ranD];
+        if (testTile.parentTerr == null) {
+          t.tiles.add(testTile.id);
 
-            testTile.neighbours.forEach((n) {
-              t.neighbourTiles[n] = field[n];
-            });
-            field[testTile.id].parentTerr = t.id;
-            t.neighbourTiles.remove(testTile.id);
-            tilesLeft.remove(testTile);
-          } else {
-            t.neighbours[testTile.parentTerr] = ret[testTile.parentTerr];
-            t.neighbourTiles.remove(testTile.id);
-          }
-        });
-      }
-      assignTerritories(ret, players, whiteFields, playerFields);
-      
+          testTile.neighbours.forEach((n) {
+            t.neighbourTiles[n] = field[n];
+          });
+          field[testTile.id].parentTerr = t.id;
+          t.neighbourTiles.remove(testTile.id);
+          tilesLeft.remove(testTile);
+        } else {
+          t.neighbours[testTile.parentTerr] = ret[testTile.parentTerr];
+          t.neighbourTiles.remove(testTile.id);
+        }
+      });
+    }
+    assignTerritories(ret, players, whiteFields, playerFields);
 
     return ret;
   }
@@ -305,7 +301,6 @@ class Arena {
 
   void assignTerritories(Map<String, Territory> newTs, List<Player> players,
       int whiteFields, int playerFields) {
-    
     var rng = new Math.Random();
     List<Territory> toAssign = new List<Territory>();
     toAssign.addAll(newTs.values);
@@ -364,24 +359,31 @@ class Territory {
       List<int> myList = new List();
       List<int> hisList = new List();
       if (emperorDice == true && this.dice >= ter.dice) {
-          print("AND THE MAD EMPEROR TACTIX WORK! CREEEEEEEEED");
-          myMax = 9999;
-          hisMax = 1;
-          myList.add(9999);
-          hisList.add(1);
-          emperorDice = false;
-          ter.emperorDice = true;
+        print("ATTACK WITH EMPEROR DICE!");
+        myMax = 9999;
+        hisMax = 1;
+        myList.add(9999);
+        hisList.add(1);
+        emperorDice = false;
+        ter.emperorDice = true;
       } else {
-      for (int i = 0; i < this.dice; i++) {
-        temp = 1 + _random.nextInt(5);
-        myMax += temp;
-        myList.add(temp);
-      }
-      for (int i = 0; i < ter.dice; i++) {
-        temp = 1 + _random.nextInt(5);
-        hisMax += temp;
-        hisList.add(temp);
-      }
+        if (emperorDice == true && this.dice <= ter.dice) {
+          myMax = 1;
+          hisMax = 9999;
+          myList.add(1);
+          hisList.add(9999);
+        } else {
+          for (int i = 0; i < this.dice; i++) {
+            temp = 1 + _random.nextInt(5);
+            myMax += temp;
+            myList.add(temp);
+          }
+          for (int i = 0; i < ter.dice; i++) {
+            temp = 1 + _random.nextInt(5);
+            hisMax += temp;
+            hisList.add(temp);
+          }
+        }
       }
       if (myMax > hisMax) {
         print("ATTACKER SUCCESSFUL");
@@ -391,28 +393,27 @@ class Territory {
         if (ter.emperorDice == true) {
           this.ownerRef.hasEmperor = true;
           ter.ownerRef.hasEmperor = false;
-          ter.ownerRef.territories.forEach((t){
-            if(t.emperorDice){
+          ter.ownerRef.territories.forEach((t) {
+            if (t.emperorDice) {
               ter.ownerRef.hasEmperor = true;
             }
           });
-          print("THE EMPEROR DICE GOT STOOOOOOLEN");
         }
         ter.dice = this.dice - 1;
         this.dice = 1;
       } else {
-        print("ATTACKER GOT PWNED KEK");
+        print("ATTACKER DEFEATED!");
         this.dice = 1;
-        if(emperorDice){
+        if (emperorDice) {
           emperorDice = false;
-          print("Damn boon just wasted his emperor...!");
+          this.ownerRef.hasEmperor = false;
+          print("EMPEROR DICE LOST!");
         }
       }
       print("MY ATTACKS:" + myList.toString());
       print("HIS DEFENSE:" + hisList.toString());
       ret.add(myList);
       ret.add(hisList);
-      
     }
     return ret;
   }
@@ -479,40 +480,39 @@ abstract class Player {
     var _random = new Math.Random();
     bool giveEmperor = false;
     if (id == "human" && hasEmperor == false) {
-              int giveEmperorRand = _random.nextInt(100);
-              if (giveEmperorRand > (100 - this.empChance)) { //Chance of 60% means Rand above 40 (100-60)
-                giveEmperor = true;
-              }
-            }
-  
+      int giveEmperorRand = _random.nextInt(100);
+      if (giveEmperorRand > (100 - this.empChance)) {
+        //Chance of 60% means Rand above 40 (100-60)
+        giveEmperor = true;
+      }
+    }
+
     int oldpool = pool;
     pool = 0;
     for (int i = 0; i < max + oldpool; i++) {
       var random;
       if (territory.length != 0) {
-        
         if (territory.length != 1) random =
             _random.nextInt(territory.length - 1);
         else random = 0;
         if (giveEmperor) {
-          print("GOT DAT EMPEROR BOOTY, AWWWWYUS");
           territory[random].emperorDice = true;
           hasEmperor = true;
           giveEmperor = false;
         }
-        
+
         territory[random].dice++;
         if (territory[random].dice == 8) territory.removeAt(random);
       } else {
-        //if (i < max) 
+        //if (i < max)
         pool = oldpool + (max - (i));
-        if (pool < 0 ) pool = 0;
+        if (pool < 0) pool = 0;
         if (pool > 60) pool = 60;
         break;
       }
     }
   }
-  
+
   giveDice(int dies) {
     List<Territory> list = new List<Territory>();
     for (int i = 0; i < territories.length; i++) {
@@ -527,8 +527,7 @@ abstract class Player {
     }
     if (dies > 0) pool += dies;
   }
-  
-  
+
   int longestRoute(Territory current, List<Territory> visited, String owner) {
     int ret = 0;
     if (current.ownerRef.id == owner) {

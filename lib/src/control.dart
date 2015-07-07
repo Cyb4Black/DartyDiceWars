@@ -84,8 +84,9 @@ class DiceController {
             if (game != null && game.currentPlayer.id == "human") { 
               String parent = _.currentTarget.getAttribute("parent");
               String owner = _.currentTarget.getAttribute("owner");
+              
               last = _.currentTarget.id;
-
+             
               print(game._arena.territories[parent].dice);
               if (game.firstTerritory == null &&
                   owner == "human" &&
@@ -108,10 +109,16 @@ class DiceController {
                 String attacker = game.firstTerritory.ownerRef.id;
                 String defender = game.secondTerritory.ownerRef.id;
                 Player attackedPlayer = game.secondTerritory.ownerRef;
+                bool attackingEmperor = game.secondTerritory.emperorDice;
                 List<List<int>> attack =
                     game.firstTerritory.attackTerritory(game.secondTerritory);
                 view.displayAttack(attack, attacker, defender);
-
+//          view.displayAttack(attack, actors[0].ownerRef.id, defender));
+                if (attacker == game.secondTerritory.ownerRef.id && attackingEmperor) {
+                  new Timer(new Duration(milliseconds: 1000 ), () => 
+                  view.showMessage("The Emperor Dice got stolen!"));
+                  new Timer(new Duration(milliseconds: 3000), () => view.showMessage("Now playing: " + game.currentPlayer.id));
+                }
                 String center1 = "ID" +
                     game._arena.territories[game.firstTerritory.id].x
                         .toString() +
@@ -156,8 +163,8 @@ class DiceController {
                         dice2, attacker, defender, ownLongestRoute, enemyLongestRoute, newOwner, emperorFlag1, emperorFlag2));
 
                 if (attackedPlayer.territories.length == 0) {
-                  print(attackedPlayer.id + " WAS DEFEATED. DAMN SON.");
-                  view.showMessage(attackedPlayer.id + " WAS DEFEATED. DAMN SON.");
+                  print(attackedPlayer.id + " WAS DEFEATED.");
+                  view.showMessage(attackedPlayer.id + " was defeated!");
                   game.players.remove(attackedPlayer);
                   view.removeDefeatedPlayer(attackedPlayer);
                 }
@@ -187,7 +194,6 @@ class DiceController {
         game.firstTerritory = null;
         game.secondTerritory = null;
         last = "";
-        
         
         this.nextTurn();
       }
@@ -286,6 +292,7 @@ class DiceController {
         } else {
           String defender = actors[1].ownerRef.id;
           Player attackedPlayer = actors[1].ownerRef;
+          bool attackingEmperor = actors[1].emperorDice;
           List<List<int>> attack = actors[0].attackTerritory(actors[1]);
           new Timer(new Duration(milliseconds: 300 + (waitfor * 2000)),
               () => view.markAIAttack(actors[0].id));
@@ -293,8 +300,10 @@ class DiceController {
               () => view.markAIAttack(actors[1].id));
           new Timer(new Duration(milliseconds: 1000 + (waitfor * 2000)), () =>
               view.displayAttack(attack, actors[0].ownerRef.id, defender));
-          if (actors[0].ownerRef.id == actors[1].ownerRef.id && actors[1].emperorDice == true) {
-            view.showMessage("The Emperor Die just got ST-ST-ST-STOLEN!");
+          if (actors[0].ownerRef.id == actors[1].ownerRef.id && attackingEmperor) {
+            new Timer(new Duration(milliseconds: 1000 + (waitfor * 2000)), () => 
+            view.showMessage("The Emperor Dice got stolen!"));
+            new Timer(new Duration(milliseconds: 1000), () => view.showMessage("Now playing: " + game.currentPlayer.id));
           }
           
           

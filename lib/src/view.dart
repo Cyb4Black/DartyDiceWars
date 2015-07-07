@@ -84,7 +84,7 @@ class DiceView {
       sideBar.querySelector("." + model.players[i].id).querySelector(".plName").text = "${model.players[i].id}";
     }
     
-    titleBar.text = "You're fighting in level ${model.level.attributes[0].value} of $maxLevel, private!";
+    titleBar.text = "Now playing Level ${model.level.attributes[0].value} of $maxLevel.";
     messageBar.text = "";
 
     endTurn.style.display = "";
@@ -160,14 +160,19 @@ class DiceView {
 
   //display all the dies etc. WIP
   displayAttack(List<List<int>> attack, String atckr, String dfndr) {
-    print("Shouldve waited #shrug");
+
     
     HtmlElement divAtk = sideBar.querySelector("." + atckr);
     HtmlElement divDef = sideBar.querySelector("." + dfndr);
 
     //attackbar.innerHtml = ;
     if (attack[0][0] == 9999) {
-      print("Dayum, did i just witness an emperor die being all swaggy?");
+     showMessage("Emperor Dice Attack!");
+     new Timer(new Duration(milliseconds: 1000), () => showMessage("Now playing: " + atckr));
+    }
+    if (attack[1][0] == 9999) {
+      showMessage("Emperor Dice was lost!");
+      new Timer(new Duration(milliseconds: 1000), () => showMessage("Now playing: " + atckr));
     }
     
     
@@ -208,7 +213,6 @@ class DiceView {
           if (mid == ti) {
             change.querySelector(".root").text = t.dice.toString();
             if (t.emperorDice == true) {
-              print("AND ASSIGNED TO " + t.id);
               change.querySelector(".root").classes.toggle("emperor", true);
             }else{
               change.querySelector(".root").classes.toggle("emperor", false);
@@ -226,9 +230,7 @@ class DiceView {
   updateAfterAttack(String center1, String center2, List<String> tiles1,
       List<String> tiles2, int dice1, int dice2, String attacker, String defender,
       int ownLongestRoute, int enemyLongestRoute, String newOwner, bool Flag1, bool Flag2) {
-    print(ownLongestRoute.toString() +
-        " BUT ERRYONE ALREADY KNOWS THE REAL MVP IS " +
-        enemyLongestRoute.toString());
+
     for (String ti in tiles1) {
       HtmlElement change = arena.querySelector("#" + ti);
 
