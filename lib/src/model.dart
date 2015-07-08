@@ -453,6 +453,7 @@ class Territory {
           print("EMPEROR DICE LOST!");
         }
       }
+      print(ownerRef.toString());
       print("MY ATTACKS:" + myList.toString());
       print("HIS DEFENSE:" + hisList.toString());
       ret.add(myList);
@@ -562,10 +563,17 @@ abstract class Player {
     }
     var _random = new Math.Random();
     while (list.length > 0 && dies != 0) {
+      if(list.length==1){
+        list[0].dice++;
+        if (list[0].dice == 8) list.removeAt(0);
+        dies--;
+      }
+      else{
       var random = _random.nextInt(list.length - 1);
       list[random].dice++;
       if (list[random].dice == 8) list.removeAt(random);
       dies--;
+      }
     }
     if (dies > 0) pool += dies;
   }
