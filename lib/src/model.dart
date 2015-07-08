@@ -595,9 +595,15 @@ class Ai_agg extends Player {
         territories[i].neighbours.values.forEach((f) {
           if (territories[i].ownerRef.id != f.ownerRef.id &&
               f.ownerRef.id != "whitefield"&&territories[i].dice >=f.dice-3) {
+            if(list.length==0){
             list.add(territories[i]);
             list.add(f);
-            return list;
+            }else{
+              if(f.emperorDice==true){
+                list.removeLast();
+                list.add(f);
+              }
+            }
           }
         });
       }
@@ -615,9 +621,15 @@ class Ai_deff extends Player {
           if (territories[i].ownerRef.id != f.ownerRef.id &&
               f.ownerRef.id != "whitefield") {
             if (territories[i].dice > f.dice + 1 || territories[i].dice == 8 ||(territories[i].dice == f.dice&&territories[i].emperorDice==true)) {
-              list.add(territories[i]);
-              list.add(f);
-              return list;
+              if(list.length==0){
+                 list.add(territories[i]);
+                 list.add(f);
+              }else{
+                 if(f.emperorDice==true){
+                  list.removeLast();
+                  list.add(f);
+                }
+              }
             }
           }
         });
@@ -645,9 +657,15 @@ class Ai_smart extends Player {
                 }
               });
               if(territories[i].dice >=max-2){
-              list.add(territories[i]);
-              list.add(f);
-              return list;
+                if(list.length==0){
+                  list.add(territories[i]);
+                  list.add(f);
+                }else{
+                 if(f.emperorDice==true){
+                   list.removeLast();
+                   list.add(f);
+                 }
+                }
               }
             }
           }
