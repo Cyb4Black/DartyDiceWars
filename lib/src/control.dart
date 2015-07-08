@@ -113,7 +113,6 @@ class DiceController {
                 List<List<int>> attack =
                     game.firstTerritory.attackTerritory(game.secondTerritory);
                 view.displayAttack(attack, attacker, defender);
-//          view.displayAttack(attack, actors[0].ownerRef.id, defender));
                 if (attacker == game.secondTerritory.ownerRef.id && attackingEmperor) {
                   new Timer(new Duration(milliseconds: 1000 ), () => 
                   view.showMessage("The Emperor Dice got stolen!"));
@@ -267,7 +266,6 @@ class DiceController {
     List<Territory> toUpdate = game.currentPlayer.territories;
     game.nextPlayer();
     view.updateSelectedTerritories(toUpdate);
-    //resupply n stuff, ALSO ASSIGN NEW CURRENT PLAYER
     view.displayPlayer(game.currentPlayer.id, oldPlayer);
     print("Next Player: " + game.currentPlayer.id);
     view.showMessage("Now playing: " + game.currentPlayer.id);
@@ -277,7 +275,9 @@ class DiceController {
   }
 
   /*
-   * Handles the AI-turn. 
+   * Handles the AI-turn via the Player method 'turn()' until the AI decides to 
+   * end the turn. Then the next Player will get selected with nextTurn()
+   * Gives the results to the View
    */
   onTurn() {
     int waitfor = 0;
@@ -290,6 +290,7 @@ class DiceController {
         if (actors.length == 0) {
           turn = false;
         } else {
+          
           String defender = actors[1].ownerRef.id;
           Player attackedPlayer = actors[1].ownerRef;
           bool attackingEmperor = actors[1].emperorDice;
@@ -306,9 +307,6 @@ class DiceController {
             new Timer(new Duration(milliseconds: 1000), () => view.showMessage("Now playing: " + game.currentPlayer.id));
           }
           
-          
-          
-          //save all the content that is needed for the viewupdate so that it can get updated after the given delay
           String center1 = "ID" +
               game._arena.territories[actors[0].id].x.toString() +
               "_" +
@@ -348,7 +346,7 @@ class DiceController {
               () => view.updateAfterAttack(center1, center2, tiles1, tiles2,
                   dice1, dice2, owner1, owner2, ownLongestRoute, enemyLongestRoute, newOwner, emperorFlag1, emperorFlag2));
 
-          waitfor++;
+         
 
           if (attackedPlayer.territories.length == 0) {
             print(attackedPlayer.id + " WAS DEFEATED. DAMN SON.");
@@ -361,9 +359,9 @@ class DiceController {
           if (!(game.players.length > 2)) {
             turn = false;
           }
+          waitfor++;
         }
       }
-      //new Timer(new Duration(milliseconds: 100), () => view.clearFooter(game.currentPlayer.id.toString()));
     }
     if (game.currentPlayer.id != "whitefield") {
       new Timer(new Duration(milliseconds: 1000 + (waitfor * 2000)),
@@ -371,6 +369,10 @@ class DiceController {
     } else this.nextTurn();
   }
 
+  /*
+   * Loads the assigned Level from the level file (normally 'levels.xml')
+   * For a more indepth explanation of the levelfile layout use the documentation
+   */
  loadLevelData(int levelnr) async {
     try {
       dynamic file = await HttpRequest.getString('levels.xml');
@@ -384,10 +386,7 @@ class DiceController {
         }
       }
     } catch (e) {
-      print("How did you even get here?! oh also: " + e.toString());
-    }
-    
-    
-  }
-  
+      print("How did you even get here?! Oh also: " + e.toString());
+    } 
+ } 
 }

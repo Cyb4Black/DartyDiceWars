@@ -1,6 +1,20 @@
 part of DartyDiceWars;
 
+/*
+ * Class for the Model of the MVC structure of the game.
+ * Manages all subsequent Model-elements and the internal flow of 
+ * the game.
+ */
 class DiceGame {
+  /*
+   * Model variables:
+   * XmlNode level - currently played level, as loaded from the levelfile
+   * int playercount - current number of players, including the whitefield player
+   * Territory firstTerritory - First Playerselected Territory
+   * Territory secondTerritory - Second Playerselected Territory
+   * Arena _arena - Complete Arena with all Territories and Tiles
+   * List<Player> players - List of all players still actively in the game.
+   */
   XmlNode level;
   int playercount;
   Player currentPlayer;
@@ -8,6 +22,16 @@ class DiceGame {
   Territory secondTerritory;
   Arena _arena;
   List<Player> players;
+  
+  /*
+   * Constructor for the DiceGame
+   * Fills the playerlist and creates the arena. Also selects the player who
+   * should play first.
+   * 
+   * int xSize - intended x Size of the arena
+   * int ySize - intended y Size of the arena
+   * XmlNode level - level to be played
+   */
   DiceGame(int xSize, int ySize, this.level) {
     //-----Add Players (and whitefielddummy) to playerlist-----
     players = new List<Player>();
@@ -34,23 +58,25 @@ class DiceGame {
     this._arena = new Arena(xSize, ySize, int.parse(level.children[2].text),
         int.parse(level.children[6].text), players);
 
-    //select first player based on startposition in levels.xml
     int order = players.length - int.parse(level.children[1].text);
     if (order == players.length) {
       order = 1;
     }
     currentPlayer = players[order];
 
-    initDies(players, int.parse(level.children[0].text));
+    initDice(players, int.parse(level.children[0].text));
   }
 
-  initDies(List<Player> list, int handycap) {
+  /*
+   * Initialises the Startingamount of Dice for all players based on 
+   * the starting amount of territories and the handycap
+   */
+  initDice(List<Player> list, int handycap) {
     int sum = 0;
     for (int i = 1; i < list.length; i++) {
       int temp = list[i].territories.length * 3;
       sum += temp;
     }
-
     sum = (sum / (list.length - 1)).floor();
     for (int i = 1; i < list.length; i++) {
       if (list[i].id == "human") {
@@ -61,12 +87,14 @@ class DiceGame {
     }
   }
 
+  /*
+   * Resupplies the last player via resupply() and then selects the next player
+   */
   nextPlayer() {
     if (currentPlayer.id != "whitefield") {
       currentPlayer
-          .resupply(); //give this player the right amount of dies on random fields
+          .resupply();
     }
-
     for (int i = 0; i < players.length; i++) {
       if (players[i].id == currentPlayer.id) {
         if (i < players.length - 1) {
@@ -77,10 +105,22 @@ class DiceGame {
         break;
       }
     }
-    //ALSO SET NEXT CURRENTPLAYER
   }
 }
 
+
+/*
+ * Structure to manage the complete arena.
+ * 
+ * int _xSize - x Size of the arena
+ * int _ySize - y Size of the arena
+ * Map<String, Tile> field - Map of all the Tile-IDs (same as the <div> elements of the View)
+ *                           and the corresponding Tile objects
+ * Map<String, Territory> territories - Map of all the Territory-IDs (same as the <div> elements of the View)
+ *                                      and the corresponding Territory objects
+ * int visited - Checker value to see if all Territories are connected
+ * int playerFields - the total amount of playerowned fields (so total territories minus whitefields)
+ */
 class Arena {
   int _xSize;
   int _ySize;
@@ -89,6 +129,9 @@ class Arena {
   int visited;
   int playerFields;
 
+  /*
+   * Constructor 
+   */
   Arena(this._xSize, this._ySize, int playersCnt, int whitefields,
       List<Player> players) {
     visited = 0;
