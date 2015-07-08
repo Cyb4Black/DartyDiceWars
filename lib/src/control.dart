@@ -47,6 +47,7 @@ class DiceController {
      * once.
      */
     view.arena.onMouseEnter.listen((ev) {
+      if(game!=null){
       if (game.currentPlayer.id == "human") {
         querySelectorAll('.hex').onMouseOver.listen((_) {
           if (_.currentTarget.classes.contains("selected")) {
@@ -56,7 +57,7 @@ class DiceController {
           }
         });
       }
-    });
+    }});
     
     /*
      * Additional Listener to turn of hovereffect if the mouse moves out of the 
