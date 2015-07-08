@@ -47,8 +47,7 @@ class DiceController {
      * once.
      */
     view.arena.onMouseEnter.listen((ev) {
-      if(game!=null){
-      if (game.currentPlayer.id == "human") {
+      if (game != null && game.currentPlayer.id == "human") {
         querySelectorAll('.hex').onMouseOver.listen((_) {
           if (_.currentTarget.classes.contains("selected")) {
             view.showHover("");
@@ -56,7 +55,7 @@ class DiceController {
             view.showHover(_.currentTarget.getAttribute("parent"));
           }
         });
-      }
+      
     }});
     
     /*
