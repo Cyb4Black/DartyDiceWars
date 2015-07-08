@@ -552,7 +552,7 @@ class Ai_agg extends Player {
       if (territories[i].dice > 1) {
         territories[i].neighbours.values.forEach((f) {
           if (territories[i].ownerRef.id != f.ownerRef.id &&
-              f.ownerRef.id != "whitefield") {
+              f.ownerRef.id != "whitefield"&&territories[i].dice >=f.dice-3) {
             list.add(territories[i]);
             list.add(f);
             return list;
@@ -572,7 +572,7 @@ class Ai_deff extends Player {
         territories[i].neighbours.values.forEach((f) {
           if (territories[i].ownerRef.id != f.ownerRef.id &&
               f.ownerRef.id != "whitefield") {
-            if (territories[i].dice > f.dice + 1 || territories[i].dice == 8) {
+            if (territories[i].dice > f.dice + 1 || territories[i].dice == 8 ||(territories[i].dice == f.dice&&territories[i].emperorDice==true)) {
               list.add(territories[i]);
               list.add(f);
               return list;
@@ -587,16 +587,26 @@ class Ai_deff extends Player {
 class Ai_smart extends Player {
   Ai_smart(id) : super(id, 0);
   List<Territory> turn() {
+    int max=0;
     List<Territory> list = new List<Territory>();
     for (int i = 0; i < territories.length; i++) {
       if (territories[i].dice > 2) {
         territories[i].neighbours.values.forEach((f) {
           if (territories[i].ownerRef.id != f.ownerRef.id &&
               f.ownerRef.id != "whitefield") {
-            if (territories[i].dice > f.dice + 1 || territories[i].dice == 8) {
+            if (territories[i].dice > f.dice + 1 || territories[i].dice == 8||(territories[i].dice == f.dice&&territories[i].emperorDice==true)) {
+              
+              f.neighbours.values.forEach((nf){
+                if(territories[i].ownerRef.id != f.ownerRef.id &&
+                    f.ownerRef.id != "whitefield"){
+                    if(max<nf.dice) max=nf.dice;
+                }
+              });
+              if(territories[i].dice >=max-2){
               list.add(territories[i]);
               list.add(f);
               return list;
+              }
             }
           }
         });
