@@ -525,7 +525,6 @@ abstract class Player {
     if (id == "human" && hasEmperor == false) {
       int giveEmperorRand = _random.nextInt(100);
       if (giveEmperorRand > (100 - this.empChance)) {
-        //Chance of 60% means Rand above 40 (100-60)
         giveEmperor = true;
       }
     }
