@@ -227,7 +227,7 @@ class DiceController {
     print("First Player: " + game.currentPlayer.id.toString());
     view.showMessage("First Player: " + game.currentPlayer.id.toString());
     if (game.currentPlayer.id != "human") {
-      this.onTurn();
+      new Timer(new Duration(milliseconds: 2000), () => this.onTurn());    
     }
   }
 
