@@ -229,14 +229,14 @@ class DiceView {
 
   updateAfterAttack(String center1, String center2, List<String> tiles1,
       List<String> tiles2, int dice1, int dice2, String attacker, String defender,
-      int ownLongestRoute, int enemyLongestRoute, String newOwner, bool Flag1, bool Flag2) {
+      int ownLongestRoute, int enemyLongestRoute, String newOwner, bool flag1, bool flag2) {
 
     for (String ti in tiles1) {
       HtmlElement change = arena.querySelector("#" + ti);
 
       if (center1 == ti) {
         change.querySelector(".root").text = dice1.toString();
-        if(Flag1){
+        if(flag1){
           change.querySelector(".root").classes.toggle("emperor", true);
         }else{
           change.querySelector(".root").classes.toggle("emperor", false);
@@ -252,7 +252,7 @@ class DiceView {
 
       if (center2 == ti) {
         change.querySelector(".root").text = dice2.toString();
-        if(Flag2){
+        if(flag2){
           change.querySelector(".root").classes.toggle("emperor", true);
         }else{
           change.querySelector(".root").classes.toggle("emperor", false);
