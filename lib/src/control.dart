@@ -164,6 +164,7 @@ class DiceController {
                 if (attackedPlayer.territories.length == 0) {
                   print(attackedPlayer.id + " WAS DEFEATED.");
                   view.showMessage(attackedPlayer.id + " was defeated!");
+                  new Timer(new Duration(milliseconds: 1000), () => view.showMessage("Now playing: " + attacker));
                   game.players.remove(attackedPlayer);
                   view.removeDefeatedPlayer(attackedPlayer);
                 }
@@ -349,10 +350,10 @@ class DiceController {
          
 
           if (attackedPlayer.territories.length == 0) {
-            print(attackedPlayer.id + " WAS DEFEATED. DAMN SON.");
-            view.showMessage(attackedPlayer.id + " WAS DEFEATED. DAMN SON.");
+            print(attackedPlayer.id + " WAS DEFEATED.");
+            new Timer(new Duration(milliseconds: 1000 + (waitfor * 2000)), () => view.showMessage(attackedPlayer.id + " was defeated."));
             game.players.remove(attackedPlayer);
-
+            new Timer(new Duration(milliseconds: 2000 + (waitfor * 2000)), () => view.showMessage("Now playing: " + owner1));
             view.removeDefeatedPlayer(attackedPlayer);
           }
 
