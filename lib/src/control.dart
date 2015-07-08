@@ -202,7 +202,7 @@ class DiceController {
   /*
    * Starts a new game based on the given levelnumber.
    * Also initiates the model and the arena for the new level.
-   * Async to handle the import of the levelfiler
+   * Async to handle the import of the levelfile
    * 
    * int levelnr - level that should be loaded
    */
