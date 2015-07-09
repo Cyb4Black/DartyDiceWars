@@ -168,20 +168,13 @@ class DiceView {
   }
 
   //display first field getting colored, then wait
-  markAIAttack(String ter1) async {
+  markAIAttack(String ter1) {
     List<Element> tiles = querySelectorAll("[parent = '$ter1']");
     for (HtmlElement t in tiles) {
       t.classes.toggle('selected');
     }
   }
 
-  //display second field getting colored, then wait
-  markAIAttack2(String ter2) {
-    List<Element> tiles = querySelectorAll("[parent = '$ter2']");
-    for (HtmlElement t in tiles) {
-      t.classes.toggle('selected');
-    }
-  }
 
   updatePlayerBar(String newPlayer, Player oldPlayer) {
     sideBar.querySelector("." + oldPlayer.id).querySelector(".plPool").text =
