@@ -151,71 +151,71 @@ class Arena {
   /*
    * Generates a Map with all the Tiles of the arena, giving each an unique ID etc.
    * 
-   * int x - intended x-Size of the arena
-   * int y - intended y-Size of the arena
+   * int xSize - intended x-Size of the arena
+   * int ySize - intended y-Size of the arena
    * return Map<String, Tile> - a Map with all the Tiles of the playfield, identified via the String id
    */
-  Map<String, Tile> initializeArena(int x, int y) {
+  Map<String, Tile> initializeArena(int xSize, int ySize) {
     Map<String, Tile> ret = new Map<String, Tile>();
     //---------------------initialize fieldcorners-------------
     Tile c = new Tile(1, 1);
     c.neighbours.add("ID2_1");
     c.neighbours.add("ID1_2");
     ret[c.id] = c;
-    c = new Tile(x, 1);
-    c.neighbours.add("ID" + (x - 1).toString() + "_1");
-    c.neighbours.add("ID" + (x - 1).toString() + "_2");
-    c.neighbours.add("ID" + x.toString() + "_2");
+    c = new Tile(xSize, 1);
+    c.neighbours.add("ID" + (xSize - 1).toString() + "_1");
+    c.neighbours.add("ID" + (xSize - 1).toString() + "_2");
+    c.neighbours.add("ID" + xSize.toString() + "_2");
     ret[c.id] = c;
-    c = new Tile(1, y);
-    c.neighbours.add("ID1_" + (y - 1).toString());
-    c.neighbours.add("ID2_" + (y - 1).toString());
-    c.neighbours.add("ID2_" + (y).toString());
+    c = new Tile(1, ySize);
+    c.neighbours.add("ID1_" + (ySize - 1).toString());
+    c.neighbours.add("ID2_" + (ySize - 1).toString());
+    c.neighbours.add("ID2_" + (ySize).toString());
     ret[c.id] = c;
-    c = new Tile(x, y);
-    c.neighbours.add("ID" + x.toString() + "_" + (y - 1).toString());
-    c.neighbours.add("ID" + (x - 1).toString() + "_" + y.toString());
+    c = new Tile(xSize, ySize);
+    c.neighbours.add("ID" + xSize.toString() + "_" + (ySize - 1).toString());
+    c.neighbours.add("ID" + (xSize - 1).toString() + "_" + ySize.toString());
     ret[c.id] = c;
     //---------------------initialize borders------------------
-    for (int ix = 2; ix < x; ix++) {
+    for (int ix = 2; ix < xSize; ix++) {
       Tile t = new Tile(ix, 1); //top-border-tile
-      Tile b = new Tile(ix, y); //bottom-border-tile
+      Tile b = new Tile(ix, ySize); //bottom-border-tile
       if (ix % 2 == 0) {
         t.neighbours.add("ID" + (ix - 1).toString() + "_2");
         t.neighbours.add("ID" + (ix + 1).toString() + "_2");
       }
       if (ix % 2 != 0) {
-        b.neighbours.add("ID" + (ix - 1).toString() + "_" + (y - 1).toString());
-        b.neighbours.add("ID" + (ix + 1).toString() + "_" + (y - 1).toString());
+        b.neighbours.add("ID" + (ix - 1).toString() + "_" + (ySize - 1).toString());
+        b.neighbours.add("ID" + (ix + 1).toString() + "_" + (ySize - 1).toString());
       }
       t.neighbours.add("ID" + (ix - 1).toString() + "_1");
       t.neighbours.add("ID" + ix.toString() + "_2");
       t.neighbours.add("ID" + (ix + 1).toString() + "_1");
-      b.neighbours.add("ID" + (ix - 1).toString() + "_" + y.toString());
-      b.neighbours.add("ID" + ix.toString() + "_" + (y - 1).toString());
-      b.neighbours.add("ID" + (ix + 1).toString() + "_" + y.toString());
+      b.neighbours.add("ID" + (ix - 1).toString() + "_" + ySize.toString());
+      b.neighbours.add("ID" + ix.toString() + "_" + (ySize - 1).toString());
+      b.neighbours.add("ID" + (ix + 1).toString() + "_" + ySize.toString());
       ret[t.id] = t;
       ret[b.id] = b;
     }
     //---------------------------------------------------------
-    for (int iy = 2; iy < y; iy++) {
+    for (int iy = 2; iy < ySize; iy++) {
       Tile l = new Tile(1, iy); //left-border-tile
-      Tile r = new Tile(x, iy); //right-border-tile
+      Tile r = new Tile(xSize, iy); //right-border-tile
       l.neighbours.add("ID1_" + (iy - 1).toString());
       l.neighbours.add("ID2_" + (iy - 1).toString());
       l.neighbours.add("ID2_" + iy.toString());
       l.neighbours.add("ID1_" + (iy + 1).toString());
-      r.neighbours.add("ID" + x.toString() + "_" + (iy - 1).toString());
-      r.neighbours.add("ID" + (x - 1).toString() + "_" + iy.toString());
-      r.neighbours.add("ID" + (x - 1).toString() + "_" + (iy + 1).toString());
-      r.neighbours.add("ID" + x.toString() + "_" + (iy + 1).toString());
+      r.neighbours.add("ID" + xSize.toString() + "_" + (iy - 1).toString());
+      r.neighbours.add("ID" + (xSize - 1).toString() + "_" + iy.toString());
+      r.neighbours.add("ID" + (xSize - 1).toString() + "_" + (iy + 1).toString());
+      r.neighbours.add("ID" + xSize.toString() + "_" + (iy + 1).toString());
       ret[r.id] = r;
       ret[l.id] = l;
     }
     //----------------------initialize inner field-------------
-    for (int ix = 2; ix < x; ix++) {
+    for (int ix = 2; ix < xSize; ix++) {
       if (ix % 2 == 0) {
-        for (int iy = 2; iy < y; iy++) {
+        for (int iy = 2; iy < ySize; iy++) {
           Tile n = new Tile(ix, iy);
           n.neighbours.add("ID" + ix.toString() + "_" + (iy - 1).toString());
           n.neighbours.add("ID" + (ix - 1).toString() + "_" + iy.toString());
@@ -228,7 +228,7 @@ class Arena {
           ret[n.id] = n;
         }
       } else {
-        for (int iy = 2; iy < y; iy++) {
+        for (int iy = 2; iy < ySize; iy++) {
           Tile n = new Tile(ix, iy);
           n.neighbours.add("ID" + (ix - 1).toString() + "_" + (iy - 1).toString());
           n.neighbours.add("ID" + ix.toString() + "_" + (iy - 1).toString());
