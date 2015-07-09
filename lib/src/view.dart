@@ -9,60 +9,8 @@ class DiceView {
   HtmlElement get loadingAnim => querySelector('#loadinganim');
   List<Element> spinningDiceAnim = querySelectorAll('.cuboid-1');
   final arena = querySelector('#arena');
-  var territories;
 
   DiceView() {}
-  void showAnim() {
-    loadingAnim.style.display = "";
-  }
-
-  void hideAnim() {
-    loadingAnim.style.display = "none";
-  }
-
-  void showSpin() {
-    spinningDiceAnim.forEach((e) {
-      e.style.display = "";
-    });
-  }
-
-  void hideSpin() {
-    spinningDiceAnim.forEach((e) {
-      e.style.display = "none";
-    });
-  }
-
-  void showMessage(String m) {
-    messageBar.text = m;
-  }
-
-  void gameOver(bool won) {
-    if (won) {
-      endTurn.style.display = "none";
-      sideBar.style.display = "none";
-      arena.innerHtml = "";
-
-      titleBar.text = "You won! Congratulations for beating all levels!";
-      showMessage("The game is over, but do you want to restart at Level 1?");
-      startButton.innerHtml = "Restart";
-      startButton.style.display = "";
-      showAnim();
-    } else {
-      endTurn.style.display = "none";
-      sideBar.style.display = "none";
-      arena.innerHtml = "";
-
-      titleBar.text = "You lost! Better luck next time!";
-      showMessage("The game is over, but do you want to restart at Level 1?");
-      startButton.innerHtml = "Restart";
-      startButton.style.display = "";
-      showAnim();
-    }
-  }
-
-  void removeDefeatedPlayer(Player attackedPlayer) {
-    sideBar.querySelector("." + attackedPlayer.id).style.display = "none";
-  }
 
   void initializeViewField(DiceGame model, int maxLevel, List<int> pools) {
     sideBar.style.display = "";
@@ -110,6 +58,53 @@ class DiceView {
     arena.innerHtml = htmlField;
   }
 
+  void updateFieldWithTerritories(DiceGame model) {
+    model._arena.territories.values.forEach((t) {
+      t.tiles.forEach((ti) {
+        HtmlElement change = arena.querySelector("#" + ti);
+
+        if (!(t.ownerRef.id == "whitefield")) {
+          String mid = "ID" + t.x.toString() + "_" + t.y.toString();
+          if (mid == ti) {
+            String newEl = '<div class="root">' + t.dice.toString() + '</div>';
+            change.appendHtml(newEl);
+            //change.children.add((new HtmlElement.created().text = t.dice.toString()));
+            //change.text = t.dice.toString();
+          }
+        }
+
+        //  HtmlElement change = arena.querySelector("#" + ti);
+        change.setAttribute("class", "hex ${t.ownerRef.id}");
+        change.setAttribute("owner", t.ownerRef.id);
+        change.setAttribute("parent", t.id);
+      });
+    });
+  }
+
+  void showAnim() {
+    loadingAnim.style.display = "";
+  }
+
+  void hideAnim() {
+    loadingAnim.style.display = "none";
+  }
+
+  void showSpin() {
+    spinningDiceAnim.forEach((e) {
+      e.style.display = "";
+    });
+  }
+
+  void hideSpin() {
+    spinningDiceAnim.forEach((e) {
+      e.style.display = "none";
+    });
+  }
+
+  void showMessage(String m) {
+    messageBar.text = m;
+  }
+
   showHover(String ter) {
     if (ter == "") {
       List<Element> turnoff = querySelectorAll(".hover");
@@ -132,6 +127,34 @@ class DiceView {
         }
       }
     }
+  }
+
+  void gameOver(bool won) {
+    if (won) {
+      endTurn.style.display = "none";
+      sideBar.style.display = "none";
+      arena.innerHtml = "";
+
+      titleBar.text = "You won! Congratulations for beating all levels!";
+      showMessage("The game is over, but do you want to restart at Level 1?");
+      startButton.innerHtml = "Restart";
+      startButton.style.display = "";
+      showAnim();
+    } else {
+      endTurn.style.display = "none";
+      sideBar.style.display = "none";
+      arena.innerHtml = "";
+
+      titleBar.text = "You lost! Better luck next time!";
+      showMessage("The game is over, but do you want to restart at Level 1?");
+      startButton.innerHtml = "Restart";
+      startButton.style.display = "";
+      showAnim();
+    }
+  }
+
+  void removeDefeatedPlayer(Player attackedPlayer) {
+    sideBar.querySelector("." + attackedPlayer.id).style.display = "none";
   }
 
   //ter = territory to mark, direction true = mark it, false = unmark it
@@ -293,28 +316,5 @@ class DiceView {
     HtmlElement divOwn2 = sideBar.querySelector("." + defender);
     divOwn1.querySelector(".plSupply").text = "MaxChain: $ownLongestRoute";
     divOwn2.querySelector(".plSupply").text = "MaxChain: $enemyLongestRoute";
-  }
-
-  void updateFieldWithTerritories(DiceGame model) {
-    model._arena.territories.values.forEach((t) {
-      t.tiles.forEach((ti) {
-        HtmlElement change = arena.querySelector("#" + ti);
-
-        if (!(t.ownerRef.id == "whitefield")) {
-          String mid = "ID" + t.x.toString() + "_" + t.y.toString();
-          if (mid == ti) {
-            String newEl = '<div class="root">' + t.dice.toString() + '</div>';
-            change.appendHtml(newEl);
-            //change.children.add((new HtmlElement.created().text = t.dice.toString()));
-            //change.text = t.dice.toString();
-          }
-        }
-
-        //  HtmlElement change = arena.querySelector("#" + ti);
-        change.setAttribute("class", "hex ${t.ownerRef.id}");
-        change.setAttribute("owner", t.ownerRef.id);
-        change.setAttribute("parent", t.id);
-      });
-    });
   }
 }
