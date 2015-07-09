@@ -16,6 +16,10 @@ class DiceView {
     loadingAnim.style.display = "";
   }
   
+  void hideAnim(){
+    loadingAnim.style.display = "none";
+  }
+  
   void showSpin(){
     spinningDiceAnim.forEach((e){
       e.style.display = "";
@@ -27,10 +31,6 @@ class DiceView {
         e.style.display = "none";
       });
     }
-  
-  void hideAnim(){
-    loadingAnim.style.display = "none";
-  }
   
   void showMessage(String m){
     messageBar.text = m;
@@ -117,12 +117,12 @@ class DiceView {
         List<Element> turnoff = querySelectorAll(".hover");
         for (HtmlElement t in turnoff) {
           t.classes.toggle('hover');
-          print("toggled on: ${t.id}");
+         // print("toggled on: ${t.id}");
         }
 
         for (HtmlElement t in tiles) {
           t.classes.toggle('hover');
-          print("toggled on: ${t.id}");
+         // print("toggled on: ${t.id}");
         }
       }
     }
