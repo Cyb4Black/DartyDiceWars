@@ -12,37 +12,36 @@ class DiceView {
   var territories;
 
   DiceView() {}
-  void showAnim(){
+  void showAnim() {
     loadingAnim.style.display = "";
   }
-  
-  void hideAnim(){
+
+  void hideAnim() {
     loadingAnim.style.display = "none";
   }
-  
-  void showSpin(){
-    spinningDiceAnim.forEach((e){
+
+  void showSpin() {
+    spinningDiceAnim.forEach((e) {
       e.style.display = "";
     });
   }
-  
-  void hideSpin(){
-      spinningDiceAnim.forEach((e){
-        e.style.display = "none";
-      });
-    }
-  
-  void showMessage(String m){
+
+  void hideSpin() {
+    spinningDiceAnim.forEach((e) {
+      e.style.display = "none";
+    });
+  }
+
+  void showMessage(String m) {
     messageBar.text = m;
   }
-  
-  
+
   void gameOver(bool won) {
     if (won) {
       endTurn.style.display = "none";
       sideBar.style.display = "none";
       arena.innerHtml = "";
-      
+
       titleBar.text = "You won! Congratulations for beating all levels!";
       showMessage("The game is over, but do you want to restart at Level 1?");
       startButton.innerHtml = "Restart";
@@ -52,7 +51,7 @@ class DiceView {
       endTurn.style.display = "none";
       sideBar.style.display = "none";
       arena.innerHtml = "";
-      
+
       titleBar.text = "You lost! Better luck next time!";
       showMessage("The game is over, but do you want to restart at Level 1?");
       startButton.innerHtml = "Restart";
@@ -60,8 +59,8 @@ class DiceView {
       showAnim();
     }
   }
-  
-  void removeDefeatedPlayer(Player attackedPlayer){
+
+  void removeDefeatedPlayer(Player attackedPlayer) {
     sideBar.querySelector("." + attackedPlayer.id).style.display = "none";
   }
 
@@ -84,20 +83,27 @@ class DiceView {
       }
       htmlField += (rowA + '</div>' + rowB + '</div>');
     }
-    sideBar.querySelectorAll(".player").forEach((pl){
-      pl.querySelectorAll("div").forEach((d){
+    sideBar.querySelectorAll(".player").forEach((pl) {
+      pl.querySelectorAll("div").forEach((d) {
         d.text = "";
       });
       pl.style.display = "none";
     });
-    for(int i = 1; i < model.players.length; i++){
+    for (int i = 1; i < model.players.length; i++) {
       sideBar.querySelector("." + model.players[i].id).style.display = "";
-      sideBar.querySelector("." + model.players[i].id).querySelector(".plSupply").text = "MaxChain: ${pools[i - 1]}";
-      sideBar.querySelector("." + model.players[i].id).querySelector(".plPool").text = "Dice pool: 0";
-      sideBar.querySelector("." + model.players[i].id).querySelector(".plName").text = "${model.players[i].id}";
+      sideBar
+          .querySelector("." + model.players[i].id)
+          .querySelector(".plSupply").text = "MaxChain: ${pools[i - 1]}";
+      sideBar
+          .querySelector("." + model.players[i].id)
+          .querySelector(".plPool").text = "Dice pool: 0";
+      sideBar
+          .querySelector("." + model.players[i].id)
+          .querySelector(".plName").text = "${model.players[i].id}";
     }
-    
-    titleBar.text = "Now playing Level ${model.level.attributes[0].value} of $maxLevel.";
+
+    titleBar.text =
+        "Now playing Level ${model.level.attributes[0].value} of $maxLevel.";
     messageBar.text = "";
 
     endTurn.style.display = "";
@@ -117,12 +123,12 @@ class DiceView {
         List<Element> turnoff = querySelectorAll(".hover");
         for (HtmlElement t in turnoff) {
           t.classes.toggle('hover');
-         // print("toggled on: ${t.id}");
+          // print("toggled on: ${t.id}");
         }
 
         for (HtmlElement t in tiles) {
           t.classes.toggle('hover');
-         // print("toggled on: ${t.id}");
+          // print("toggled on: ${t.id}");
         }
       }
     }
@@ -132,7 +138,7 @@ class DiceView {
   markTerritory(String ter) {
     showHover("");
     List<Element> tiles = querySelectorAll("[parent = '$ter']");
-   
+
     for (HtmlElement t in tiles) {
       t.classes.toggle('selected');
     }
@@ -155,7 +161,8 @@ class DiceView {
   }
 
   displayPlayer(String newPlayer, Player oldPlayer) {
-    sideBar.querySelector("." + oldPlayer.id).querySelector(".plPool").text = "DicePool: ${oldPlayer.pool}";
+    sideBar.querySelector("." + oldPlayer.id).querySelector(".plPool").text =
+        "DicePool: ${oldPlayer.pool}";
     sideBar.querySelector("." + newPlayer).classes.add("attacker");
   }
 
@@ -168,29 +175,28 @@ class DiceView {
     HtmlElement divDef = sideBar.querySelector("." + def);
     divAtk.attributes["class"] = "player $atk attacker";
     divDef.attributes["class"] = "player $def";
-    
+
     divAtk.querySelector(".attackbar").text = "";
     divDef.querySelector(".attackbar").text = "";
   }
 
   //display all the dies etc. WIP
   displayAttack(List<List<int>> attack, String atckr, String dfndr) {
-
-    
     HtmlElement divAtk = sideBar.querySelector("." + atckr);
     HtmlElement divDef = sideBar.querySelector("." + dfndr);
 
     //attackbar.innerHtml = ;
     if (attack[0][0] == 9999) {
-     showMessage("Emperor Dice Attack!");
-     new Timer(new Duration(milliseconds: 1000), () => showMessage("Now playing: " + atckr));
+      showMessage("Emperor Dice Attack!");
+      new Timer(new Duration(milliseconds: 1000),
+          () => showMessage("Now playing: " + atckr));
     }
     if (attack[1][0] == 9999) {
       showMessage("Emperor Dice was lost!");
-      new Timer(new Duration(milliseconds: 1000), () => showMessage("Now playing: " + atckr));
+      new Timer(new Duration(milliseconds: 1000),
+          () => showMessage("Now playing: " + atckr));
     }
-    
-    
+
     int sum1 = 0;
     int sum2 = 0;
     attack[0].forEach((f) {
@@ -199,8 +205,10 @@ class DiceView {
     attack[1].forEach((f) {
       sum2 += f;
     });
-    divAtk.querySelector(".attackbar").text = "ATK: " + attack[0].toString() + " " + sum1.toString();
-    divDef.querySelector(".attackbar").text = "DEF: " + attack[1].toString() + " " + sum2.toString();
+    divAtk.querySelector(".attackbar").text =
+        "ATK: " + attack[0].toString() + " " + sum1.toString();
+    divDef.querySelector(".attackbar").text =
+        "DEF: " + attack[1].toString() + " " + sum2.toString();
     if (sum1 > sum2) {
       divAtk.classes.add("winner");
     } else {
@@ -211,25 +219,26 @@ class DiceView {
       t.classes.toggle('selected');
     }
     if (atckr == "human") {
-      new Timer(new Duration(milliseconds: 2000), () => this.clearSidebar(atckr, dfndr));
+      new Timer(new Duration(milliseconds: 2000),
+          () => this.clearSidebar(atckr, dfndr));
     } else {
-      new Timer(new Duration(milliseconds: 1000), () => this.clearSidebar(atckr, dfndr));
+      new Timer(new Duration(milliseconds: 1000),
+          () => this.clearSidebar(atckr, dfndr));
     }
-   
   }
 
   updateSelectedTerritories(List<Territory> ters) {
     for (Territory t in ters) {
       t.tiles.forEach((ti) {
         HtmlElement change = arena.querySelector("#" + ti);
-        
+
         if (!(t.ownerRef.id == "whitefield")) {
           String mid = "ID" + t.x.toString() + "_" + t.y.toString();
           if (mid == ti) {
             change.querySelector(".root").text = t.dice.toString();
             if (t.emperorDice == true) {
               change.querySelector(".root").classes.toggle("emperor", true);
-            }else{
+            } else {
               change.querySelector(".root").classes.toggle("emperor", false);
             }
           }
@@ -243,17 +252,17 @@ class DiceView {
   }
 
   updateAfterAttack(String center1, String center2, List<String> tiles1,
-      List<String> tiles2, int dice1, int dice2, String attacker, String defender,
-      int ownLongestRoute, int enemyLongestRoute, String newOwner, bool flag1, bool flag2) {
-
+      List<String> tiles2, int dice1, int dice2, String attacker,
+      String defender, int ownLongestRoute, int enemyLongestRoute,
+      String newOwner, bool flag1, bool flag2) {
     for (String ti in tiles1) {
       HtmlElement change = arena.querySelector("#" + ti);
 
       if (center1 == ti) {
         change.querySelector(".root").text = dice1.toString();
-        if(flag1){
+        if (flag1) {
           change.querySelector(".root").classes.toggle("emperor", true);
-        }else{
+        } else {
           change.querySelector(".root").classes.toggle("emperor", false);
         }
       }
@@ -267,9 +276,9 @@ class DiceView {
 
       if (center2 == ti) {
         change.querySelector(".root").text = dice2.toString();
-        if(flag2){
+        if (flag2) {
           change.querySelector(".root").classes.toggle("emperor", true);
-        }else{
+        } else {
           change.querySelector(".root").classes.toggle("emperor", false);
         }
       }
@@ -278,7 +287,6 @@ class DiceView {
       change.setAttribute("class", "hex $newOwner");
       change.setAttribute("owner", newOwner);
     }
-    
 
     //UPDATE THE PLAYERBAR WITH INFO ON THE MAX CONNECTED TILES
     HtmlElement divOwn1 = sideBar.querySelector("." + attacker);
