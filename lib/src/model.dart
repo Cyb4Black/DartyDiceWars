@@ -22,7 +22,7 @@ class DiceGame {
   Territory secondTerritory;
   Arena _arena;
   List<Player> players;
-  
+
   /*
    * Constructor for the DiceGame
    * Fills the playerlist and creates the arena. Also selects the player who
@@ -92,8 +92,7 @@ class DiceGame {
    */
   nextPlayer() {
     if (currentPlayer.id != "whitefield") {
-      currentPlayer
-          .resupply();
+      currentPlayer.resupply();
     }
     for (int i = 0; i < players.length; i++) {
       if (players[i].id == currentPlayer.id) {
@@ -107,7 +106,6 @@ class DiceGame {
     }
   }
 }
-
 
 /*
  * Structure to manage the complete arena.
@@ -563,16 +561,15 @@ abstract class Player {
     }
     var _random = new Math.Random();
     while (list.length > 0 && dies != 0) {
-      if(list.length==1){
+      if (list.length == 1) {
         list[0].dice++;
         if (list[0].dice == 8) list.removeAt(0);
         dies--;
-      }
-      else{
-      var random = _random.nextInt(list.length - 1);
-      list[random].dice++;
-      if (list[random].dice == 8) list.removeAt(random);
-      dies--;
+      } else {
+        var random = _random.nextInt(list.length - 1);
+        list[random].dice++;
+        if (list[random].dice == 8) list.removeAt(random);
+        dies--;
       }
     }
     if (dies > 0) pool += dies;
@@ -601,12 +598,13 @@ class Ai_agg extends Player {
       if (territories[i].dice > 1) {
         territories[i].neighbours.values.forEach((f) {
           if (territories[i].ownerRef.id != f.ownerRef.id &&
-              f.ownerRef.id != "whitefield"&&territories[i].dice >=f.dice-3) {
-            if(list.length==0){
-            list.add(territories[i]);
-            list.add(f);
-            }else{
-              if(f.emperorDice==true){
+              f.ownerRef.id != "whitefield" &&
+              territories[i].dice >= f.dice - 3) {
+            if (list.length == 0) {
+              list.add(territories[i]);
+              list.add(f);
+            } else {
+              if (f.emperorDice == true) {
                 list.removeLast();
                 list.add(f);
               }
@@ -627,12 +625,15 @@ class Ai_deff extends Player {
         territories[i].neighbours.values.forEach((f) {
           if (territories[i].ownerRef.id != f.ownerRef.id &&
               f.ownerRef.id != "whitefield") {
-            if (territories[i].dice > f.dice + 1 || territories[i].dice == 8 ||(territories[i].dice == f.dice&&territories[i].emperorDice==true)) {
-              if(list.length==0){
-                 list.add(territories[i]);
-                 list.add(f);
-              }else{
-                 if(f.emperorDice==true){
+            if (territories[i].dice > f.dice + 1 ||
+                territories[i].dice == 8 ||
+                (territories[i].dice == f.dice &&
+                    territories[i].emperorDice == true)) {
+              if (list.length == 0) {
+                list.add(territories[i]);
+                list.add(f);
+              } else {
+                if (f.emperorDice == true) {
                   list.removeLast();
                   list.add(f);
                 }
@@ -648,30 +649,32 @@ class Ai_deff extends Player {
 class Ai_smart extends Player {
   Ai_smart(id) : super(id, 0);
   List<Territory> turn() {
-    int max=0;
+    int max = 0;
     List<Territory> list = new List<Territory>();
     for (int i = 0; i < territories.length; i++) {
       if (territories[i].dice > 2) {
         territories[i].neighbours.values.forEach((f) {
           if (territories[i].ownerRef.id != f.ownerRef.id &&
               f.ownerRef.id != "whitefield") {
-            if (territories[i].dice > f.dice + 1 || territories[i].dice == 8||(territories[i].dice == f.dice&&territories[i].emperorDice==true)) {
-              
-              f.neighbours.values.forEach((nf){
-                if(territories[i].ownerRef.id != f.ownerRef.id &&
-                    f.ownerRef.id != "whitefield"){
-                    if(max<nf.dice) max=nf.dice;
+            if (territories[i].dice > f.dice + 1 ||
+                territories[i].dice == 8 ||
+                (territories[i].dice == f.dice &&
+                    territories[i].emperorDice == true)) {
+              f.neighbours.values.forEach((nf) {
+                if (territories[i].ownerRef.id != f.ownerRef.id &&
+                    f.ownerRef.id != "whitefield") {
+                  if (max < nf.dice) max = nf.dice;
                 }
               });
-              if(territories[i].dice >=max-2){
-                if(list.length==0){
+              if (territories[i].dice >= max - 2) {
+                if (list.length == 0) {
                   list.add(territories[i]);
                   list.add(f);
-                }else{
-                 if(f.emperorDice==true){
-                   list.removeLast();
-                   list.add(f);
-                 }
+                } else {
+                  if (f.emperorDice == true) {
+                    list.removeLast();
+                    list.add(f);
+                  }
                 }
               }
             }

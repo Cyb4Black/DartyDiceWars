@@ -22,7 +22,7 @@ class DiceController {
   XmlNode level;
   int maxlevels;
   String last = "";
-  
+
   /*
    * Constructor for the DiceController. 
    * Here, all the Listeners for Playerinput are handled. Detailed explanations 
@@ -41,7 +41,7 @@ class DiceController {
         startGame(1);
       }
     });
-    
+
     /*
      * Listener for the Hoverfunction of the territories. Only one territory can
      * be hovered at one time and a territory cannot be selected and hovered at 
@@ -56,9 +56,9 @@ class DiceController {
             view.showHover(_.currentTarget.getAttribute("parent"));
           }
         });
-      
-    }});
-    
+      }
+    });
+
     /*
      * Additional Listener to turn of hovereffect if the mouse moves out of the 
      * arena.
@@ -78,16 +78,17 @@ class DiceController {
      * If two territories are selected, an attack gets computed and shown on the view.
      * 
      */
-    view.arena.onMouseEnter.listen((ev) {                 
-      querySelectorAll('.hex').onClick.listen((_) {     
-        if (last != _.currentTarget.id) {                   
-          if (!_.currentTarget.classes.contains('.corner-1') && !_.currentTarget.classes.contains('.corner-2')) {
-            if (game != null && game.currentPlayer.id == "human") { 
+    view.arena.onMouseEnter.listen((ev) {
+      querySelectorAll('.hex').onClick.listen((_) {
+        if (last != _.currentTarget.id) {
+          if (!_.currentTarget.classes.contains('.corner-1') &&
+              !_.currentTarget.classes.contains('.corner-2')) {
+            if (game != null && game.currentPlayer.id == "human") {
               String parent = _.currentTarget.getAttribute("parent");
               String owner = _.currentTarget.getAttribute("owner");
-              
+
               last = _.currentTarget.id;
-             
+
               print(game._arena.territories[parent].dice);
               if (game.firstTerritory == null &&
                   owner == "human" &&
@@ -114,10 +115,12 @@ class DiceController {
                 List<List<int>> attack =
                     game.firstTerritory.attackTerritory(game.secondTerritory);
                 view.displayAttack(attack, attacker, defender);
-                if (attacker == game.secondTerritory.ownerRef.id && attackingEmperor) {
-                  new Timer(new Duration(milliseconds: 1000 ), () => 
-                  view.showMessage("The Emperor Dice got stolen!"));
-                  new Timer(new Duration(milliseconds: 3000), () => view.showMessage("Now playing: " + game.currentPlayer.id));
+                if (attacker == game.secondTerritory.ownerRef.id &&
+                    attackingEmperor) {
+                  new Timer(new Duration(milliseconds: 1000),
+                      () => view.showMessage("The Emperor Dice got stolen!"));
+                  new Timer(new Duration(milliseconds: 3000), () => view
+                      .showMessage("Now playing: " + game.currentPlayer.id));
                 }
                 String center1 = "ID" +
                     game._arena.territories[game.firstTerritory.id].x
@@ -140,32 +143,39 @@ class DiceController {
                 int dice2 =
                     game._arena.territories[game.secondTerritory.id].dice;
                 int ownLongestRoute = 1;
-                String newOwner = game._arena.territories[game.secondTerritory.id].ownerRef.id;
+                String newOwner = game._arena.territories[
+                    game.secondTerritory.id].ownerRef.id;
                 bool emperorFlag1 = game.firstTerritory.emperorDice;
                 bool emperorFlag2 = game.secondTerritory.emperorDice;
                 int enemyLongestRoute = 1;
                 int temp;
-                for (int i = 0; i < game.currentPlayer.territories.length; i++) {
+                for (int i = 0;
+                    i < game.currentPlayer.territories.length;
+                    i++) {
                   List<Territory> list = new List<Territory>();
                   temp = game.currentPlayer.longestRoute(
-                      game.currentPlayer.territories[i], list, game.currentPlayer.id);
+                      game.currentPlayer.territories[i], list,
+                      game.currentPlayer.id);
                   if (temp > ownLongestRoute) ownLongestRoute = temp;
-                } 
+                }
                 for (int i = 0; i < attackedPlayer.territories.length; i++) {
                   List<Territory> list = new List<Territory>();
                   temp = attackedPlayer.longestRoute(
                       attackedPlayer.territories[i], list, attackedPlayer.id);
                   if (temp > enemyLongestRoute) enemyLongestRoute = temp;
                 }
-  
+
                 new Timer(new Duration(milliseconds: 2000), () => view
                     .updateAfterAttack(center1, center2, tiles1, tiles2, dice1,
-                        dice2, attacker, defender, ownLongestRoute, enemyLongestRoute, newOwner, emperorFlag1, emperorFlag2));
+                        dice2, attacker, defender, ownLongestRoute,
+                        enemyLongestRoute, newOwner, emperorFlag1,
+                        emperorFlag2));
 
                 if (attackedPlayer.territories.length == 0) {
                   print(attackedPlayer.id + " WAS DEFEATED.");
                   view.showMessage(attackedPlayer.id + " was defeated!");
-                  new Timer(new Duration(milliseconds: 1000), () => view.showMessage("Now playing: " + attacker));
+                  new Timer(new Duration(milliseconds: 1000),
+                      () => view.showMessage("Now playing: " + attacker));
                   game.players.remove(attackedPlayer);
                   view.removeDefeatedPlayer(attackedPlayer);
                 }
@@ -216,20 +226,20 @@ class DiceController {
     List<int> startRoutes = new List();
     for (int j = 1; j < game.players.length; j++) {
       int temp;
-                startRoutes.add(1);
-                for (int i = 0; i < game.players[j].territories.length; i++) {
-                  List<Territory> list = new List<Territory>();
-                  temp = game.players[j].longestRoute(
-                      game.players[j].territories[i], list, game.players[j].id);
-                  if (temp > startRoutes[j-1]) startRoutes[j-1] = temp;
-                }
+      startRoutes.add(1);
+      for (int i = 0; i < game.players[j].territories.length; i++) {
+        List<Territory> list = new List<Territory>();
+        temp = game.players[j].longestRoute(
+            game.players[j].territories[i], list, game.players[j].id);
+        if (temp > startRoutes[j - 1]) startRoutes[j - 1] = temp;
+      }
     }
     view.initializeViewField(game, maxlevels, startRoutes);
     view.updateFieldWithTerritories(game);
     print("First Player: " + game.currentPlayer.id.toString());
     view.showMessage("First Player: " + game.currentPlayer.id.toString());
     if (game.currentPlayer.id != "human") {
-      new Timer(new Duration(milliseconds: 2000), () => this.onTurn());    
+      new Timer(new Duration(milliseconds: 2000), () => this.onTurn());
     }
   }
 
@@ -243,17 +253,18 @@ class DiceController {
         view.showMessage("You won the game!");
         int nextLevel = (int.parse(game.level.attributes[0].value)) + 1;
         view.showMessage("You won the game!");
-        if (nextLevel == maxlevels ) {
+        if (nextLevel == maxlevels) {
           game = null;
           level = null;
-          new Timer(new Duration(milliseconds: 5000), () => view.gameOver(false));
+          new Timer(
+              new Duration(milliseconds: 5000), () => view.gameOver(false));
           return;
         } else {
-
-                        new Timer(new Duration(milliseconds: 5000), () => startGame(nextLevel));
-                        game = null;
-                        return;
-        }      
+          new Timer(
+              new Duration(milliseconds: 5000), () => startGame(nextLevel));
+          game = null;
+          return;
+        }
       } else {
         view.showMessage("You lost the game!");
         game = null;
@@ -261,7 +272,6 @@ class DiceController {
         new Timer(new Duration(milliseconds: 5000), () => view.gameOver(true));
         return;
       }
-      
     }
     Player oldPlayer = game.currentPlayer;
     view.undisplayPlayer(oldPlayer.id);
@@ -274,7 +284,7 @@ class DiceController {
     if (game.currentPlayer.id != "human") {
       this.onTurn();
     }
-    if(game.currentPlayer.id == "human"){
+    if (game.currentPlayer.id == "human") {
       view.hideSpin();
     }
   }
@@ -295,7 +305,6 @@ class DiceController {
         if (actors.length == 0) {
           turn = false;
         } else {
-          
           String defender = actors[1].ownerRef.id;
           Player attackedPlayer = actors[1].ownerRef;
           bool attackingEmperor = actors[1].emperorDice;
@@ -306,12 +315,14 @@ class DiceController {
               () => view.markAIAttack(actors[1].id));
           new Timer(new Duration(milliseconds: 1000 + (waitfor * 2000)), () =>
               view.displayAttack(attack, actors[0].ownerRef.id, defender));
-          if (actors[0].ownerRef.id == actors[1].ownerRef.id && attackingEmperor) {
-            new Timer(new Duration(milliseconds: 1000 + (waitfor * 2000)), () => 
-            view.showMessage("The Emperor Dice got stolen!"));
-            new Timer(new Duration(milliseconds: 1000), () => view.showMessage("Now playing: " + game.currentPlayer.id));
+          if (actors[0].ownerRef.id == actors[1].ownerRef.id &&
+              attackingEmperor) {
+            new Timer(new Duration(milliseconds: 1000 + (waitfor * 2000)),
+                () => view.showMessage("The Emperor Dice got stolen!"));
+            new Timer(new Duration(milliseconds: 1000), () =>
+                view.showMessage("Now playing: " + game.currentPlayer.id));
           }
-          
+
           String center1 = "ID" +
               game._arena.territories[actors[0].id].x.toString() +
               "_" +
@@ -332,14 +343,14 @@ class DiceController {
           int ownLongestRoute = 1;
           int enemyLongestRoute = 1;
           int temp;
-          
+
           for (int i = 0; i < game.currentPlayer.territories.length; i++) {
             List<Territory> list = new List<Territory>();
             temp = game.currentPlayer.longestRoute(
                 game.currentPlayer.territories[i], list, game.currentPlayer.id);
             if (temp > ownLongestRoute) ownLongestRoute = temp;
           }
-     
+
           for (int i = 0; i < attackedPlayer.territories.length; i++) {
             List<Territory> list = new List<Territory>();
             temp = attackedPlayer.longestRoute(
@@ -349,15 +360,16 @@ class DiceController {
 
           new Timer(new Duration(milliseconds: 1000 + (waitfor * 2000)),
               () => view.updateAfterAttack(center1, center2, tiles1, tiles2,
-                  dice1, dice2, owner1, owner2, ownLongestRoute, enemyLongestRoute, newOwner, emperorFlag1, emperorFlag2));
-
-         
+                  dice1, dice2, owner1, owner2, ownLongestRoute,
+                  enemyLongestRoute, newOwner, emperorFlag1, emperorFlag2));
 
           if (attackedPlayer.territories.length == 0) {
             print(attackedPlayer.id + " WAS DEFEATED.");
-            new Timer(new Duration(milliseconds: 1000 + (waitfor * 2000)), () => view.showMessage(attackedPlayer.id + " was defeated."));
+            new Timer(new Duration(milliseconds: 1000 + (waitfor * 2000)),
+                () => view.showMessage(attackedPlayer.id + " was defeated."));
             game.players.remove(attackedPlayer);
-            new Timer(new Duration(milliseconds: 2000 + (waitfor * 2000)), () => view.showMessage("Now playing: " + owner1));
+            new Timer(new Duration(milliseconds: 2000 + (waitfor * 2000)),
+                () => view.showMessage("Now playing: " + owner1));
             view.removeDefeatedPlayer(attackedPlayer);
           }
 
@@ -378,13 +390,13 @@ class DiceController {
    * Loads the assigned Level from the level file (normally 'levels.xml')
    * For a more indepth explanation of the levelfile layout use the documentation
    */
- loadLevelData(int levelnr) async {
+  loadLevelData(int levelnr) async {
     try {
       dynamic file = await HttpRequest.getString('levels.xml');
       var levels = parse(file);
       print(file);
       maxlevels = levels.firstChild.children.length;
-      
+
       for (XmlNode x in levels.firstChild.children) {
         if (x.attributes[0].value == levelnr.toString()) {
           level = x;
@@ -392,6 +404,6 @@ class DiceController {
       }
     } catch (e) {
       print("How did you even get here?! Oh also: " + e.toString());
-    } 
- } 
+    }
+  }
 }

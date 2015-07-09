@@ -2,7 +2,7 @@ body{
     font-family:Calibri;
     font-size:16px;
     width:1250px;
-    margin: 0 auto;
+    margin:0 auto;
 }
 
 #content{
@@ -10,9 +10,9 @@ body{
     left:50%;
     text-align:left;
     width:1250px;
-    border: 1px solid black;
-    border-radius: 5px;
-    background-color: rgba(222, 255, 255, 0.8);
+    border:1px solid black;
+    border-radius:5px;
+    background-color:rgba(222, 255, 255, 0.8);
 }
 
 #arena{
@@ -62,7 +62,7 @@ body{
     clear:left;
     height:40px;
     width:1244px;
-    background-color: rgba(180, 226, 255, 1);
+    background-color:rgba(180, 226, 255, 1);
     font-style:normal;
     font-size:2em;
     text-decoration:none;
@@ -97,14 +97,14 @@ h6{
 }
 
 h1{
-    margin: 0;
+    margin:0;
     position:relative;
-    width: 600px;
-    left: 50%;
+    width:600px;
+    left:50%;
     margin-left:-303px;
-    border: 3px solid black;
-    border-radius: 5px;
-    background-color: rgb(62, 154, 222);
+    border:3px solid black;
+    border-radius:5px;
+    background-color:rgb(62, 154, 222);
 }
 
 .hex{
@@ -243,7 +243,7 @@ h1{
 }
 
 .emperor{
-     background-color: gold;
+    background-color:gold;
 }
 
 .attacker{
@@ -269,14 +269,14 @@ h1{
 #loadinganim div{
     border-radius:50%;
     position:relative;
-    
+
     left:50%;
 }
 #loadinganim div:nth-of-type(odd){
-    background-color: rgb(255, 121,75);
+    background-color:rgb(255, 121, 75);
 }
 #loadinganim div:nth-of-type(even){
-    background-color: rgb(153,255,102);
+    background-color:rgb(153, 255, 102);
 }
 #loadinganim div:nth-of-type(11){
     height:0.4px;
