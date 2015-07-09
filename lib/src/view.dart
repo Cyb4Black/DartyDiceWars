@@ -1,6 +1,23 @@
 part of DartyDiceWars;
 
+/*
+ * Viewpart of the MVC structure of DiceWars
+ * 
+ * Here, the internal results get displayed on the HTML document
+ */
 class DiceView {
+  
+  /*
+   * View Variables:
+   * HtmlElement startButton - Button displayed for the gamestart
+   * HtmlElement endTurn - Button allowing the player to end his turn
+   * HtmlElement messageBar - Bar for displaying various messages to the player
+   * HtmlElement sideBar - Bar displaying all active players
+   * HtmlElement titleBar - upper Bar for displaying levelinformation
+   * HtmlElement loadingAnim - Element for displaying the rotating circle animation
+   * List<Element> spinningDiceAnim - List managing all the Elements of the rotating Die
+   * final arena - contains all the Elements in the arena, such as all hexagons
+   */
   HtmlElement get startButton => querySelector('#start');
   HtmlElement get endTurn => querySelector('#endTurn');
   HtmlElement get messageBar => querySelector('#messagebar');
@@ -9,39 +26,64 @@ class DiceView {
   HtmlElement get loadingAnim => querySelector('#loadinganim');
   List<Element> spinningDiceAnim = querySelectorAll('.cuboid-1');
   final arena = querySelector('#arena');
-  var territories;
 
+  /*
+   * Constructor for the DiceView, not intended to do anything
+   */
   DiceView() {}
+  
+  /*
+   * switches the Loadinganimation on
+   */
   void showAnim() {
     loadingAnim.style.display = "";
   }
 
+  /*
+   * switches the Loadinganimation off
+   */
   void hideAnim() {
     loadingAnim.style.display = "none";
   }
 
+  /*
+   * switches the display of rotating dice on
+   */
   void showSpin() {
     spinningDiceAnim.forEach((e) {
       e.style.display = "";
     });
   }
 
+  /*
+   * switches the display of rotating dice off
+   */
   void hideSpin() {
     spinningDiceAnim.forEach((e) {
       e.style.display = "none";
     });
   }
 
+  /*
+   * Displays a given message on the Messagebar
+   * 
+   * String m - Message that should be displayed
+   */
   void showMessage(String m) {
     messageBar.text = m;
   }
 
+  /*
+   * Notifies the player about the end of the current game - either because he finished
+   * all levels or lost
+   * 
+   * bool won - true if the player won all levels or false if he got defeated
+   */
   void gameOver(bool won) {
     if (won) {
       endTurn.style.display = "none";
       sideBar.style.display = "none";
       arena.innerHtml = "";
-
       titleBar.text = "You won! Congratulations for beating all levels!";
       showMessage("The game is over, but do you want to restart at Level 1?");
       startButton.innerHtml = "Restart";
@@ -51,7 +93,6 @@ class DiceView {
       endTurn.style.display = "none";
       sideBar.style.display = "none";
       arena.innerHtml = "";
-
       titleBar.text = "You lost! Better luck next time!";
       showMessage("The game is over, but do you want to restart at Level 1?");
       startButton.innerHtml = "Restart";
@@ -60,6 +101,9 @@ class DiceView {
     }
   }
 
+  /*
+   * Removes a given player from the displayed playerlist
+   */
   void removeDefeatedPlayer(Player attackedPlayer) {
     sideBar.querySelector("." + attackedPlayer.id).style.display = "none";
   }
