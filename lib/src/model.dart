@@ -66,7 +66,7 @@ class DiceGame {
    * Initialises the Startingamount of Dice for all players based on 
    * the starting amount of territories and the handycap
    */
-  initDice(List<Player> list, int handycap) {
+  void initDice(List<Player> list, int handycap) {
     int sum = 0;
     for (int i = 1; i < list.length; i++) {
       int temp = list[i].territories.length * 3;
@@ -85,7 +85,7 @@ class DiceGame {
   /*
    * Resupplies the last player via resupply() and then selects the next player
    */
-  nextPlayer() {
+  void nextPlayer() {
     if (currentPlayer.id != "whitefield") {
       currentPlayer.resupply();
     }
@@ -601,7 +601,7 @@ abstract class Player {
    * 
    * int dice - number of dice 
    */
-  giveDice(int dice) {
+  void giveDice(int dice) {
     List<Territory> list = new List<Territory>();
     for (int i = 0; i < territories.length; i++) {
       if (territories[i].dice < 8) list.add(territories[i]);

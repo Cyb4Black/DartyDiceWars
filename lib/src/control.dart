@@ -247,7 +247,7 @@ class DiceController {
    * Selects the next player and ends the game if there is only one player left.
    * Also decides what to do when the game is over.
    */
-  nextTurn() {
+  void nextTurn() {
     if (!(game.players.length > 2)) {
       if (game.currentPlayer.id == "human") {
         view.showMessage("You won the game!");
@@ -277,7 +277,7 @@ class DiceController {
     List<Territory> toUpdate = game.currentPlayer.territories;
     game.nextPlayer();
     view.updateSelectedTerritories(toUpdate);
-    view.displayPlayer(game.currentPlayer.id, oldPlayer);
+    view.updatePlayerBar(game.currentPlayer.id, oldPlayer);
     print("Next Player: " + game.currentPlayer.id);
     view.showMessage("Now playing: " + game.currentPlayer.id);
     if (game.currentPlayer.id != "human") {
@@ -293,7 +293,7 @@ class DiceController {
    * end the turn. Then the next Player will get selected with nextTurn()
    * Gives the results to the View
    */
-  onTurn() {
+  void onTurn() {
     int waitfor = 0;
     bool turn = true;
     while (turn) {
