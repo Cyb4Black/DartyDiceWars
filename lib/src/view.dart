@@ -176,15 +176,13 @@ class DiceView {
   }
 
 
-  displayPlayer(String newPlayer, Player oldPlayer) {
+  updatePlayerBar(String newPlayer, Player oldPlayer) {
     sideBar.querySelector("." + oldPlayer.id).querySelector(".plPool").text =
         "DicePool: ${oldPlayer.pool}";
+    sideBar.querySelector("." + oldPlayer.id).classes.remove("attacker");
     sideBar.querySelector("." + newPlayer).classes.add("attacker");
   }
 
-  undisplayPlayer(String player) {
-    sideBar.querySelector("." + player).classes.remove("attacker");
-  }
 
   clearSidebar(String atk, String def) {
     HtmlElement divAtk = sideBar.querySelector("." + atk);
