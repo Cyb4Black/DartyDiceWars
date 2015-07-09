@@ -37,6 +37,7 @@ class DiceController {
     view.startButton.onClick.listen((_) {
       if (level == null) {
         view.startButton.style.display = "none";
+        view.hideSpin();
         startGame(1);
       }
     });
@@ -194,7 +195,7 @@ class DiceController {
         game.firstTerritory = null;
         game.secondTerritory = null;
         last = "";
-        
+        view.showSpin();
         this.nextTurn();
       }
     });
@@ -272,6 +273,9 @@ class DiceController {
     view.showMessage("Now playing: " + game.currentPlayer.id);
     if (game.currentPlayer.id != "human") {
       this.onTurn();
+    }
+    if(game.currentPlayer.id == "human"){
+      view.hideSpin();
     }
   }
 

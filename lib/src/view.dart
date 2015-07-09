@@ -7,6 +7,7 @@ class DiceView {
   HtmlElement get sideBar => querySelector("#sidebar");
   HtmlElement get titleBar => querySelector('#titlebar');
   HtmlElement get loadingAnim => querySelector('#loadinganim');
+  List<Element> spinningDiceAnim = querySelectorAll('.cuboid-1');
   final arena = querySelector('#arena');
   var territories;
 
@@ -14,6 +15,18 @@ class DiceView {
   void showAnim(){
     loadingAnim.style.display = "";
   }
+  
+  void showSpin(){
+    spinningDiceAnim.forEach((e){
+      e.style.display = "";
+    });
+  }
+  
+  void hideSpin(){
+      spinningDiceAnim.forEach((e){
+        e.style.display = "none";
+      });
+    }
   
   void hideAnim(){
     loadingAnim.style.display = "none";
@@ -104,10 +117,12 @@ class DiceView {
         List<Element> turnoff = querySelectorAll(".hover");
         for (HtmlElement t in turnoff) {
           t.classes.toggle('hover');
+          print("toggled on: ${t.id}");
         }
 
         for (HtmlElement t in tiles) {
           t.classes.toggle('hover');
+          print("toggled on: ${t.id}");
         }
       }
     }
