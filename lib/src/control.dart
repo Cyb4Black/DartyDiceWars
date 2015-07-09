@@ -277,7 +277,7 @@ class DiceController {
     List<Territory> toUpdate = game.currentPlayer.territories;
     game.nextPlayer();
     view.updateSelectedTerritories(toUpdate);
-    view.displayPlayer(game.currentPlayer.id, oldPlayer);
+    view.updatePlayerBar(game.currentPlayer.id, oldPlayer);
     print("Next Player: " + game.currentPlayer.id);
     view.showMessage("Now playing: " + game.currentPlayer.id);
     if (game.currentPlayer.id != "human") {
