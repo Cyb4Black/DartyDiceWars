@@ -23,6 +23,7 @@ body{
 
 #start,
 #endTurn{
+    float:left;
     position:relative;
     left:50%;
     margin-left:-83px;
@@ -38,6 +39,10 @@ body{
     background:lightgray;
     border:3px solid black;
     border-radius:5px;
+}
+
+#endTurn{
+    margin-top:5px;
 }
 
 #sidebar{
@@ -70,6 +75,10 @@ body{
     color:black;
     border:3px solid black;
     border-radius:5px;
+}
+
+#buttonbar{
+    height:60px;
 }
 
 #defender{

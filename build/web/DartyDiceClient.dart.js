@@ -1316,15 +1316,6 @@ cG:function(a){var z,y
 z="[parent = '"+H.d(a)+"']"
 y=new W.O(document.querySelectorAll(z))
 for(z=y.gu(y);z.D();)J.pP(z.c).lo(0,"selected")},
-WR:function(a,b){var z,y
-z=document.querySelector("#sidebar").querySelector(C.xB.g(".",a))
-y=document.querySelector("#sidebar").querySelector(C.xB.g(".",b))
-z.toString
-z.setAttribute("class","player "+H.d(a)+" attacker")
-y.toString
-y.setAttribute("class","player "+H.d(b))
-z.querySelector(".attackbar").textContent=""
-y.querySelector(".attackbar").textContent=""},
 Fz:function(a,b,c){var z,y,x,w,v
 z={}
 y=document.querySelector("#sidebar").querySelector(C.xB.g(".",b))
@@ -1355,6 +1346,15 @@ v=new W.O(document.querySelectorAll(".selected"))
 for(z=v.gu(v);z.D();)J.pP(z.c).lo(0,"selected")
 if(b==="human")P.rT(P.k5(0,0,0,2000,0,0),new B.Zb(this,b,c))
 else P.rT(P.k5(0,0,0,1000,0,0),new B.LJ(this,b,c))},
+WR:function(a,b){var z,y
+z=document.querySelector("#sidebar").querySelector(C.xB.g(".",a))
+y=document.querySelector("#sidebar").querySelector(C.xB.g(".",b))
+z.toString
+z.setAttribute("class","player "+H.d(a)+" attacker")
+y.toString
+y.setAttribute("class","player "+H.d(b))
+z.querySelector(".attackbar").textContent=""
+y.querySelector(".attackbar").textContent=""},
 RR:function(a){var z,y
 for(z=J.Nx(a);z.D();){y=z.c
 C.Nm.aN(y.gE2(),new B.AI(this,y))}},
